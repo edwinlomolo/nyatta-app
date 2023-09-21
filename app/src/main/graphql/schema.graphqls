@@ -1,0 +1,462 @@
+type Amenity {
+  id: ID!
+
+  name: String!
+
+  provider: String
+
+  category: String
+
+  propertyId: ID!
+
+  createdAt: Time
+
+  updatedAt: Time
+}
+
+input AmenityInput {
+  name: String!
+
+  provider: String!
+
+  category: String
+
+  propertyId: ID!
+}
+
+type Bedroom {
+  id: ID!
+
+  propertyUnitId: ID!
+
+  bedroomNumber: Int!
+
+  enSuite: Boolean!
+
+  master: Boolean!
+
+  createdAt: Time
+
+  updatedAt: Time
+}
+
+type Caretaker {
+  id: ID!
+
+  first_name: String!
+
+  last_name: String!
+
+  phone: String!
+
+  idVerification: String!
+
+  countryCode: String!
+
+  verified: Boolean!
+
+  shootsInCharge: [Shoot!]!
+
+  createdAt: Time
+
+  updatedAt: Time
+}
+
+input CaretakerInput {
+  first_name: String!
+
+  last_name: String!
+
+  phone: String!
+
+  countryCode: CountryCode!
+
+  idVerification: String!
+}
+
+input CaretakerVerificationInput {
+  phone: String!
+
+  countryCode: CountryCode!
+
+  verifyCode: String!
+}
+
+enum CountryCode {
+  KE
+}
+
+input HandshakeInput {
+  phone: String!
+}
+
+type ListingOverview {
+  occupiedUnits: Int!
+
+  vacantUnits: Int!
+
+  totalUnits: Int!
+}
+
+type Mutation {
+  createUser(input: NewUser!): User!
+
+  createProperty(input: NewProperty!): Property!
+
+  addAmenity(input: AmenityInput!): Amenity!
+
+  addPropertyUnit(input: PropertyUnitInput!): PropertyUnit!
+
+  addUnitBedrooms(input: [UnitBedroomInput!]!): [Bedroom!]!
+
+  addPropertyUnitTenant(input: TenancyInput!): Tenant!
+
+  uploadImage(file: Upload!): String!
+
+  sendVerificationCode(input: VerificationInput!): Status!
+
+  verifyUserVerificationCode(input: UserVerificationInput!): Status!
+
+  verifyCaretakerVerificationCode(input: CaretakerVerificationInput!): Status!
+
+  handshake(input: HandshakeInput!): User!
+
+  updateUser(input: UpdateUserInput!): User!
+
+  setupProperty(input: SetupPropertyInput!): Status!
+
+  onboardUser(input: OnboardUserInput!): User!
+
+  saveMailing(email: String): Status!
+}
+
+input NewProperty {
+  name: String!
+
+  town: String!
+
+  postalCode: String!
+
+  type: String!
+
+  createdBy: ID!
+}
+
+input NewUser {
+  email: String!
+
+  first_name: String!
+
+  last_name: String!
+
+  avatar: String!
+
+  phone: String!
+}
+
+input OnboardUserInput {
+  email: String!
+
+  onboarding: Boolean!
+}
+
+type Property {
+  id: ID!
+
+  name: String!
+
+  town: String!
+
+  postalCode: String!
+
+  type: String!
+
+  status: String!
+
+  minPrice: Int!
+
+  maxPrice: Int!
+
+  amenities: [Amenity!]!
+
+  units: [PropertyUnit!]!
+
+  createdBy: ID!
+
+  owner: User!
+
+  createdAt: Time
+
+  updatedAt: Time
+}
+
+type PropertyUnit {
+  id: ID!
+
+  name: String!
+
+  bedrooms: [Bedroom!]!
+
+  propertyId: ID!
+
+  price: String!
+
+  amenityCount: Int!
+
+  bathrooms: Int!
+
+  state: UnitState!
+
+  type: String!
+
+  tenancy: [Tenant!]!
+
+  createdAt: Time
+
+  updatedAt: Time
+}
+
+input PropertyUnitInput {
+  propertyId: ID!
+
+  baths: Int!
+
+  name: String!
+
+  type: String!
+
+  amenities: [UnitAmenityInput!]!
+
+  bedrooms: [UnitBedroomInput!]!
+
+  price: String!
+}
+
+type Query {
+  getUser(email: String!): User!
+
+  getProperty(id: ID!): Property!
+
+  hello: String!
+
+  searchTown(town: String!): [Town!]!
+
+  getTowns: [Town!]!
+
+  getPropertyUnits(propertyId: ID!): [PropertyUnit!]!
+
+  getPropertyTenancy(propertyId: ID!): [Tenant!]!
+
+  getUserProperties: [Property!]!
+
+  listingOverview(propertyId: ID!): ListingOverview!
+}
+
+input SetupPropertyInput {
+  name: String!
+
+  town: String!
+
+  postalCode: String!
+
+  propertyType: String!
+
+  caretaker: CaretakerInput!
+
+  units: [UnitInput!]!
+
+  shoot: ShootInput!
+
+  creator: String!
+}
+
+type Shoot {
+  id: ID!
+
+  propertyId: String!
+
+  date: Time!
+
+  status: String!
+
+  createdAt: Time
+
+  updatedAt: Time
+
+  contact: Caretaker!
+
+  contactId: ID!
+}
+
+input ShootInput {
+  date: Time!
+
+  contactPerson: String!
+}
+
+type Status {
+  success: String!
+}
+
+input TenancyInput {
+  startDate: Time!
+
+  endDate: Time
+
+  propertyUnitId: ID!
+}
+
+type Tenant {
+  id: ID!
+
+  startDate: Time!
+
+  endDate: Time
+
+  propertyUnitId: ID!
+
+  createdAt: Time
+
+  updatedAt: Time
+}
+
+scalar Time
+
+type Token {
+  token: String!
+}
+
+type Town {
+  id: ID!
+
+  town: String!
+
+  postalCode: String!
+}
+
+input UnitAmenityInput {
+  name: String!
+
+  category: String!
+}
+
+input UnitBedroomInput {
+  propertyUnitId: ID
+
+  bedroomNumber: Int!
+
+  enSuite: Boolean!
+
+  master: Boolean!
+}
+
+input UnitInput {
+  name: String!
+
+  price: String!
+
+  type: String!
+
+  amenities: [UnitAmenityInput!]!
+
+  bedrooms: [UnitBedroomInput!]!
+
+  baths: Int!
+}
+
+enum UnitState {
+  VACANT
+
+  OCCUPIED
+
+  UNAVAILABLE
+}
+
+input UpdateUserInput {
+  first_name: String!
+
+  last_name: String!
+
+  avatar: String!
+
+  email: String!
+
+  phone: String!
+
+  onboarding: Boolean!
+}
+
+scalar Upload
+
+type User {
+  id: ID!
+
+  email: String!
+
+  first_name: String!
+
+  last_name: String!
+
+  phone: String!
+
+  onboarding: Boolean!
+
+  avatar: String!
+
+  properties: [Property!]!
+
+  createdAt: Time
+
+  updatedAt: Time
+}
+
+input UserVerificationInput {
+  phone: String!
+
+  email: String!
+
+  countryCode: CountryCode!
+
+  verifyCode: String!
+}
+
+input VerificationInput {
+  phone: String!
+
+  countryCode: CountryCode!
+
+  verifyCode: String
+}
+
+# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
+# noinspection GraphQLTypeRedefinition
+"""
+The @deprecated built-in directive is used within the type system definition language to indicate deprecated portions of a GraphQL service's schema, such as deprecated fields on a type, arguments on a field, input fields on an input type, or values of an enum type.
+"""
+directive @deprecated (reason: String = "No longer supported") on FIELD_DEFINITION|ARGUMENT_DEFINITION|INPUT_FIELD_DEFINITION|ENUM_VALUE
+
+# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
+# noinspection GraphQLTypeRedefinition
+"""
+The @include directive may be provided for fields, fragment spreads, and inline fragments, and allows for conditional inclusion during execution as described by the if argument.
+"""
+directive @include (if: Boolean!) on FIELD|FRAGMENT_SPREAD|INLINE_FRAGMENT
+
+# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
+# noinspection GraphQLTypeRedefinition
+"""
+The @skip directive may be provided for fields, fragment spreads, and inline fragments, and allows for conditional exclusion during execution as described by the if argument.
+"""
+directive @skip (if: Boolean!) on FIELD|FRAGMENT_SPREAD|INLINE_FRAGMENT
+
+# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
+# noinspection GraphQLTypeRedefinition
+"""
+The @specifiedBy built-in directive is used within the type system definition language to provide a scalar specification URL for specifying the behavior of custom scalar types.
+"""
+directive @specifiedBy (url: String!) on SCALAR
+
+schema {
+  query: Query
+  mutation: Mutation
+}
