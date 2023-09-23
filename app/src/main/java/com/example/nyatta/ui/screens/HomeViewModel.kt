@@ -9,18 +9,19 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.apollographql.apollo3.api.ApolloResponse
-import com.example.nyatta.HelloQuery
-import com.example.nyatta.Nyatta
+import com.apollographql.apollo3.exception.ApolloException
+import com.example.nyatta.NyattaApp
 import com.example.nyatta.data.HelloRepository
 import kotlinx.coroutines.launch
-import java.io.IOException
+import com.apollographql.apollo3.api.Error
 
 sealed interface HomeUiState {
-    data class Success(val hello: ApolloResponse<HelloQuery.Data>): HomeUiState
+    data class Success(val hello: String?): HomeUiState
     object Loading: HomeUiState
-    object Error: HomeUiState
+    data class ApolloError(val errors: List<Error>): HomeUiState
+    data class ApplicationError(val error: ApolloException): HomeUiState
 }
+
 class HomeViewModel(
     private val helloRepository: HelloRepository
 ): ViewModel() {
@@ -36,9 +37,14 @@ class HomeViewModel(
     fun getHello() {
         viewModelScope.launch {
             homeUiState = try {
-                HomeUiState.Success(helloRepository.getHello())
-            } catch (e: IOException) {
-                HomeUiState.Error
+                val response = helloRepository.getHello()
+                if (response.hasErrors()) {
+                    HomeUiState.ApolloError(errors = response.errors!!)
+                } else {
+                    HomeUiState.Success(response.data?.hello)
+                }
+            } catch (e: ApolloException) {
+                HomeUiState.ApplicationError(e)
             }
         }
     }
@@ -46,7 +52,7 @@ class HomeViewModel(
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val application = (this[APPLICATION_KEY] as Nyatta)
+                val application = (this[APPLICATION_KEY] as NyattaApp)
                 val helloRepository = application.container.helloRepository
                 HomeViewModel(helloRepository = helloRepository)
             }

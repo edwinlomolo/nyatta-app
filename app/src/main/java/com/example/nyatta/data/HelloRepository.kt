@@ -1,6 +1,5 @@
 package com.example.nyatta.data
 
-import android.util.Log
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.example.nyatta.HelloQuery
