@@ -1,0 +1,6 @@
+query GetListings {
+    getListings {
+        id
+        name
+    }
+}

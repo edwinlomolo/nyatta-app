@@ -7,7 +7,7 @@ import com.example.nyatta.HelloQuery
 interface HelloRepository {
     suspend fun getHello(): ApolloResponse<HelloQuery.Data>
 }
-class ApolloHelloRepository(
+class GqlHelloRepository(
     private val apolloClient: ApolloClient
 ): HelloRepository {
     override suspend fun getHello(): ApolloResponse<HelloQuery.Data> {

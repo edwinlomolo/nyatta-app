@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.onEach
 
 interface AppContainer {
     val helloRepository: HelloRepository
+    val listingsRepository: ListingsRepository
 }
 
 // TODO: Sample intercept: can refactor it to handle authentication?
@@ -35,9 +36,13 @@ class DefaultContainer: AppContainer {
     private val client = ApolloClient.Builder()
         .serverUrl(baseUrl)
         //.addInterceptor(LoggingApolloInterceptor())
-        .build()
+        .build()    
 
     override val helloRepository: HelloRepository by lazy {
-        ApolloHelloRepository(client)
+        GqlHelloRepository(client)
+    }
+
+    override val listingsRepository: ListingsRepository by lazy {
+        GqlListingsRepository(client)
     }
 }

@@ -250,6 +250,8 @@ type Query {
   getUserProperties: [Property!]!
 
   listingOverview(propertyId: ID!): ListingOverview!
+
+  getListings: [Property!]!
 }
 
 input SetupPropertyInput {
