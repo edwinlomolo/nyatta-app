@@ -17,7 +17,7 @@ interface AppContainer {
     val helloRepository: HelloRepository
 }
 
-// TODO: Intercept http to handle authentication?
+// TODO: Sample intercept: can refactor it to handle authentication?
 /**
  * class LoggingApolloInterceptor: ApolloInterceptor {
  *     override fun <D : Operation.Data> intercept(request: ApolloRequest<D>, chain: ApolloInterceptorChain): Flow<ApolloResponse<D>> {
