@@ -26,7 +26,6 @@ class HomeViewModel(
     private val helloRepository: HelloRepository
 ): ViewModel() {
     var homeUiState: HomeUiState by mutableStateOf(HomeUiState.Loading)
-        private set
 
     // Initialize state
     init {
