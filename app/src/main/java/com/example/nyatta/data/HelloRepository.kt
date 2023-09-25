@@ -8,9 +8,9 @@ interface HelloRepository {
     suspend fun getHello(): ApolloResponse<HelloQuery.Data>
 }
 class GqlHelloRepository(
-    private val apolloClient: ApolloClient
+    private val client: ApolloClient
 ): HelloRepository {
     override suspend fun getHello(): ApolloResponse<HelloQuery.Data> {
-        return apolloClient.query(HelloQuery()).execute()
+        return client.query(HelloQuery()).execute()
     }
 }
