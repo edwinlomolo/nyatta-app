@@ -11,7 +11,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.apollographql.apollo3.exception.ApolloException
 import com.example.nyatta.NyattaApp
-import com.example.nyatta.data.HelloRepository
+import com.example.nyatta.data.hello.HelloRepository
 import kotlinx.coroutines.launch
 import com.apollographql.apollo3.api.Error
 

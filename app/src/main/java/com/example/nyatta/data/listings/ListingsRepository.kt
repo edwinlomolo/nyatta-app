@@ -1,4 +1,4 @@
-package com.example.nyatta.data
+package com.example.nyatta.data.listings
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse

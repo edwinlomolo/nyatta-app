@@ -1,17 +1,10 @@
 package com.example.nyatta.data
 
 import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.api.ApolloRequest
-import com.apollographql.apollo3.api.ApolloResponse
-import com.apollographql.apollo3.api.Operation
-import com.apollographql.apollo3.api.http.HttpRequest
-import com.apollographql.apollo3.api.http.HttpResponse
-import com.apollographql.apollo3.interceptor.ApolloInterceptor
-import com.apollographql.apollo3.interceptor.ApolloInterceptorChain
-import com.apollographql.apollo3.network.http.HttpInterceptor
-import com.apollographql.apollo3.network.http.HttpInterceptorChain
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.onEach
+import com.example.nyatta.data.hello.GqlHelloRepository
+import com.example.nyatta.data.hello.HelloRepository
+import com.example.nyatta.data.listings.GqlListingsRepository
+import com.example.nyatta.data.listings.ListingsRepository
 
 interface AppContainer {
     val helloRepository: HelloRepository
