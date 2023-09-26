@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.screens
+package com.example.nyatta.ui.screens.home
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

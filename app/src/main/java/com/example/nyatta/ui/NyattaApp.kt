@@ -10,9 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.nyatta.ui.screens.HomeScreen
-import com.example.nyatta.ui.screens.HomeUiState
-import com.example.nyatta.ui.screens.HomeViewModel
+import com.example.nyatta.ui.screens.home.HomeScreen
+import com.example.nyatta.ui.screens.home.HomeUiState
+import com.example.nyatta.ui.screens.home.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

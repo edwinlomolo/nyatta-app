@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.screens
+package com.example.nyatta.ui.screens.home
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
