@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.screens.onboarding.description
+package com.example.nyatta.ui.screens.onboarding.location
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,14 +9,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -28,22 +31,19 @@ import com.example.nyatta.ui.theme.NyattaTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Description(modifier: Modifier = Modifier) {
-    var description by remember {
-        mutableStateOf("")
-    }
+fun Location(modifier: Modifier = Modifier) {
+    var location by remember { mutableStateOf("") }
+
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(top = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
             modifier = Modifier.padding(24.dp)
         ) {
             Text(
-                text = "This is what people will call your property",
+                text = "Where is your property located",
                 style = MaterialTheme.typography.titleLarge
             )
         }
@@ -51,12 +51,11 @@ fun Description(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(24.dp)
         ) {
             OutlinedTextField(
-                value = description,
-                onValueChange = { description = it },
+                value = location,
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Property name") },
+                onValueChange = { location = it },
+                label = { Text(text = "Location") },
                 keyboardActions = KeyboardActions(
-                    // TODO: onDone
                     onDone = {}
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -75,10 +74,11 @@ fun Description(modifier: Modifier = Modifier) {
                 shape = MaterialTheme.shapes.small
             ) {
                 Text(
-                    modifier = Modifier.padding(8.dp),
+                    style = MaterialTheme.typography.titleMedium,
                     text = "Next",
-                    style = MaterialTheme.typography.titleMedium
+                    modifier = Modifier.padding(8.dp)
                 )
+                Icon(painter = Icons.Filled.ArrowForward, contentDescription = "Next step")
             }
         }
     }
@@ -86,8 +86,8 @@ fun Description(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun DescriptionPreview() {
+fun LocationPreview() {
     NyattaTheme {
-        Description()
+        Location()
     }
 }
