@@ -21,9 +21,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.nyatta.R
 import com.example.nyatta.ui.theme.NyattaTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,7 +42,7 @@ fun Location(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(24.dp)
         ) {
             Text(
-                text = "Where is your property located",
+                text = stringResource(R.string.location_description),
                 style = MaterialTheme.typography.titleLarge
             )
         }
@@ -51,7 +53,7 @@ fun Location(modifier: Modifier = Modifier) {
                 value = location,
                 modifier = Modifier.fillMaxWidth(),
                 onValueChange = { location = it },
-                label = { Text(text = "Location") },
+                label = { Text(text = stringResource(R.string.location_label)) },
                 keyboardActions = KeyboardActions(
                     onDone = {}
                 ),
@@ -72,7 +74,7 @@ fun Location(modifier: Modifier = Modifier) {
             ) {
                 Text(
                     style = MaterialTheme.typography.titleMedium,
-                    text = "Next",
+                    text = stringResource(R.string.location_next),
                     modifier = Modifier.padding(8.dp)
                 )
             }

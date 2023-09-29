@@ -21,9 +21,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.nyatta.R
 import com.example.nyatta.ui.theme.NyattaTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +45,7 @@ fun Description(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(24.dp)
         ) {
             Text(
-                text = "This is what people will call your property",
+                text = stringResource(R.string.description_title),
                 style = MaterialTheme.typography.titleLarge
             )
         }
@@ -54,7 +56,7 @@ fun Description(modifier: Modifier = Modifier) {
                 value = description,
                 onValueChange = { description = it },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Property name") },
+                label = { Text(text = stringResource(R.string.description_label)) },
                 keyboardActions = KeyboardActions(
                     // TODO: onDone
                     onDone = {}
@@ -76,7 +78,7 @@ fun Description(modifier: Modifier = Modifier) {
             ) {
                 Text(
                     modifier = Modifier.padding(8.dp),
-                    text = "Next",
+                    text = stringResource(R.string.description_next),
                     style = MaterialTheme.typography.titleMedium
                 )
             }

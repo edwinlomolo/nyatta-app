@@ -1,5 +1,7 @@
 package com.example.nyatta.ui
 
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,7 +18,9 @@ import com.example.nyatta.ui.screens.home.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NyattaApp() {
+fun NyattaApp(
+    pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
+) {
     Scaffold {
         Surface(modifier = Modifier
             .fillMaxSize()
