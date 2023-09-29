@@ -43,7 +43,7 @@ fun Caretaker(
     var phone by remember {
         mutableStateOf("")
     }
-    var countryCode by remember {
+    val countryCode by remember {
         mutableStateOf("+254")
     }
     Column(
