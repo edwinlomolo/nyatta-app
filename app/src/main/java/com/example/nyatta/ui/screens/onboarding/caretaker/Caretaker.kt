@@ -98,14 +98,15 @@ fun Caretaker(
                 value = countryCode,
                 onValueChange = {},
                 modifier = Modifier.weight(.5f),
-                label = {}
+                label = {},
+                enabled = false
             )
             Spacer(modifier = Modifier.size(32.dp))
             OutlinedTextField(
                 modifier = Modifier.weight(1f),
                 value = phone,
                 onValueChange = { phone = it },
-                label = { Text(text = stringResource(R.string.caretaker_phone))}
+                label = { Text(text = stringResource(R.string.caretaker_phone)) }
             )
         }
         Row(
