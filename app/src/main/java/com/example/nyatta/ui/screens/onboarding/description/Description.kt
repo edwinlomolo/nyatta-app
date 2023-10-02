@@ -20,7 +20,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,29 +30,22 @@ import androidx.compose.ui.unit.dp
 import com.example.nyatta.R
 import com.example.nyatta.ui.theme.NyattaTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun Description(modifier: Modifier = Modifier) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     var description by remember {
         mutableStateOf("")
     }
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .padding(top = 32.dp),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Row(
-            modifier = Modifier.padding(24.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.description_title),
-                style = MaterialTheme.typography.titleLarge
-            )
-        }
-        Row(
-            modifier = Modifier.padding(24.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
             OutlinedTextField(
                 value = description,
@@ -58,19 +53,26 @@ fun Description(modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = stringResource(R.string.description_label)) },
                 keyboardActions = KeyboardActions(
-                    // TODO: onDone
-                    onDone = {}
+                    onDone = {
+                        keyboardController?.hide()
+                    }
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Next
-                )
+                    imeAction = ImeAction.Done
+                ),
+                supportingText = {
+                    Text(
+                        text = stringResource(R.string.description_supporting_text),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                }
             )
         }
         Spacer(modifier = Modifier.weight(1f))
         Row(
             modifier = Modifier
                 .align(Alignment.End)
-                .padding(8.dp)
+                .padding(16.dp)
         ) {
             Button(
                 onClick = { /*TODO*/ },

@@ -1,13 +1,20 @@
 <resources>
     <string name="app_name">Nyatta</string>
-    <string name="caretaker_description">This can be the caretaker. Likely a person that can be readily available to schedule a view or provide more information about the listing</string>
-    <string name="location_description">Where is your property located</string>
-    <string name="location_label">Location</string>
-    <string name="description_title">This is what people will call your property</string>
+    <string name="location_label">Town</string>
     <string name="description_label">Property name</string>
     <string name="description_next">Next</string>
     <string name="location_next">Next</string>
     <string name="caretaker_firstname">Firstname</string>
     <string name="caretaker_lastname">Lastname</string>
     <string name="caretaker_phone">Phone number</string>
+    <string name="description_supporting_text">e.g Beach House Properties</string>
+    <string name="location_supporting_text">This is your local town</string>
+    <string name="caretaker_supporting_firstname">Legal First Name</string>
+    <string name="caretaker_supporting_lastname">Legal Last Name</string>
+    <string name="caretaker_supporting_phone">Active Phone Number</string>
+    <string name="unit_label">Unit Type</string>
+    <string name="unit_supporting_text">Select your unit type</string>
+    <string name="next_text">Next</string>
+    <string name="bath_label">Baths</string>
+    <string name="bath_supporting_text">Bathroom count</string>
 </resources>
