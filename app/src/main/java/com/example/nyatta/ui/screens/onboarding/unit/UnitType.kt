@@ -1,6 +1,7 @@
 package com.example.nyatta.ui.screens.onboarding.unit
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -49,7 +50,7 @@ fun Unit(modifier: Modifier = Modifier) {
         ) {
             Column {
                 Text(
-                    text = "Select unit type",
+                    text = stringResource(R.string.unit_label_text),
                     modifier = Modifier.then(pad),
                     style = MaterialTheme.typography.titleMedium
                 )
@@ -94,7 +95,7 @@ fun Unit(modifier: Modifier = Modifier) {
             }
         }
         Spacer(modifier = Modifier.weight(1f))
-        Row(
+        Box(
             modifier = Modifier
                 .align(Alignment.End)
                 .padding(16.dp)

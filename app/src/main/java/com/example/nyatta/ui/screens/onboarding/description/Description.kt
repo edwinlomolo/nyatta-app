@@ -1,6 +1,7 @@
 package com.example.nyatta.ui.screens.onboarding.description
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +29,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.nyatta.R
+import com.example.nyatta.ui.screens.onboarding.baths.pad
 import com.example.nyatta.ui.theme.NyattaTheme
 
 
@@ -47,29 +49,37 @@ fun Description(modifier: Modifier = Modifier) {
         Row(
             modifier = Modifier.padding(16.dp)
         ) {
-            OutlinedTextField(
-                value = description,
-                onValueChange = { description = it },
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = stringResource(R.string.description_label)) },
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        keyboardController?.hide()
+            Column {
+                Text(
+                    text = stringResource(R.string.description_label_text),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.then(pad)
+                )
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .then(pad),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                        }
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Done
+                    ),
+                    supportingText = {
+                        Text(
+                            text = stringResource(R.string.description_supporting_text),
+                            style = MaterialTheme.typography.titleSmall
+                        )
                     }
-                ),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Done
-                ),
-                supportingText = {
-                    Text(
-                        text = stringResource(R.string.description_supporting_text),
-                        style = MaterialTheme.typography.titleSmall
-                    )
-                }
-            )
+                )
+            }
         }
         Spacer(modifier = Modifier.weight(1f))
-        Row(
+        Box(
             modifier = Modifier
                 .align(Alignment.End)
                 .padding(16.dp)

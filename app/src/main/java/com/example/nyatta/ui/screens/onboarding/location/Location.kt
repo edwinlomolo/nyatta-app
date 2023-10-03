@@ -1,6 +1,7 @@
 package com.example.nyatta.ui.screens.onboarding.location
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +29,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.nyatta.R
+import com.example.nyatta.ui.screens.onboarding.baths.pad
 import com.example.nyatta.ui.theme.NyattaTheme
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -44,29 +46,30 @@ fun Location(modifier: Modifier = Modifier) {
         Row(
             modifier = Modifier.padding(16.dp)
         ) {
-            OutlinedTextField(
-                value = location,
-                modifier = Modifier.fillMaxWidth(),
-                onValueChange = { location = it },
-                label = { Text(text = stringResource(R.string.location_label)) },
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        keyboardController?.hide()
-                    }
-                ),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Done
-                ),
-                supportingText =  {
-                    Text(
-                        text = stringResource(R.string.location_supporting_text),
-                        style = MaterialTheme.typography.titleSmall
+            Column {
+                Text(
+                    text = stringResource(R.string.location_label_text),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.then(pad)
+                )
+                OutlinedTextField(
+                    readOnly = true,
+                    value = location,
+                    modifier = Modifier.fillMaxWidth().then(pad),
+                    onValueChange = { location = it },
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                        }
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Done
                     )
-                }
-            )
+                )
+            }
         }
         Spacer(modifier = Modifier.weight(1f))
-        Row(
+        Box(
             modifier = Modifier
                 .align(Alignment.End)
                 .padding(16.dp)

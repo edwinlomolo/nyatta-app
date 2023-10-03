@@ -17,4 +17,8 @@
     <string name="next_text">Next</string>
     <string name="bath_label">Baths</string>
     <string name="bath_supporting_text">Bathroom count</string>
+    <string name="description_label_text">Property description</string>
+    <string name="location_label_text">Town</string>
+    <string name="bath_label_text">Bathroom count</string>
+    <string name="unit_label_text">Select unit type</string>
 </resources>
