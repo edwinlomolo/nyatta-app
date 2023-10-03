@@ -1,18 +1,15 @@
 package com.example.nyatta.ui.screens.onboarding.caretaker
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,6 +31,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.nyatta.R
+import com.example.nyatta.ui.screens.onboarding.Onboarding
 import com.example.nyatta.ui.theme.NyattaTheme
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -54,40 +52,35 @@ fun Caretaker(
     val countryCode by remember {
         mutableStateOf("+254")
     }
-    Column(
+    Onboarding(
         modifier = modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // TODO Image upload
-        Row(
-            modifier = Modifier.padding(16.dp)
+        Column(
+            modifier = Modifier.padding(16.dp),
         ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+            Text(
+                text = stringResource(R.string.caretaker_photo_label),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 16.dp).align(Alignment.CenterHorizontally)
+            )
+            IconButton(
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .size(100.dp)
             ) {
-                Text(
-                    text = "Photo",
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                Icon(
+                    Icons.Filled.AccountCircle,
+                    contentDescription = null,
+                    modifier = Modifier.size(100.dp),
+                    tint = MaterialTheme.colorScheme.primary
                 )
-                IconButton(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier
-                        .size(100.dp)
-                ) {
-                    Icon(
-                        Icons.Filled.AccountCircle,
-                        contentDescription = null,
-                        modifier = Modifier.size(100.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
             }
         }
-        Row(
+        Box(
             modifier = Modifier.padding(16.dp)
         ) {
             OutlinedTextField(
@@ -106,7 +99,7 @@ fun Caretaker(
                 label = { Text(text = stringResource(R.string.caretaker_firstname)) }
             )
         }
-        Row {
+        Box {
             OutlinedTextField(
                 modifier = Modifier.padding(16.dp),
                 value = lastName,
@@ -123,7 +116,7 @@ fun Caretaker(
                 label = { Text(text = stringResource(R.string.caretaker_lastname)) }
             )
         }
-        Row(modifier = Modifier.weight(1f)) {
+        Box {
             OutlinedTextField(
                 leadingIcon = {
                     Text(text = countryCode)
@@ -148,23 +141,6 @@ fun Caretaker(
                 },
                 label = { Text(text = stringResource(R.string.caretaker_phone)) }
             )
-        }
-        Row(
-            modifier = Modifier
-                .align(Alignment.End)
-                .padding(16.dp)
-
-        ) {
-            Button(
-                onClick = { /*TODO*/ },
-                shape = MaterialTheme.shapes.small
-            ) {
-                Text(
-                    text = "Next",
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(8.dp)
-                )
-            }
         }
     }
 }
