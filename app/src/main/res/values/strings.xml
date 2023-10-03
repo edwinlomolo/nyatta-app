@@ -22,4 +22,7 @@
     <string name="bath_label_text">Bathroom count</string>
     <string name="unit_label_text">Select unit type</string>
     <string name="caretaker_photo_label">Photo</string>
+    <string name="price_label_text">Monthly rental price</string>
+    <string name="pricing_leading_label">KES</string>
+    <string name="pricing_trailing_label">/ Month</string>
 </resources>
