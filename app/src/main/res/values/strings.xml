@@ -25,4 +25,6 @@
     <string name="caretaker_label">He/She can give more info or schedule a view with</string>
     <string name="amenities_label">What amenities does this unit offer</string>
     <string name="select_amenities">Select amenities</string>
+    <string name="bedroom_label">How does your bedrooms look like</string>
+    <string name="bedroom">Bedroom %1$s</string>
 </resources>
