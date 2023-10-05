@@ -61,10 +61,12 @@ fun Caretaker(
         // TODO Image upload
         Column(
             modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.caretaker_photo_label),
-                style = MaterialTheme.typography.titleMedium,
+                text = stringResource(R.string.caretaker_label),
+                style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(bottom = 16.dp).align(Alignment.CenterHorizontally)
             )
             IconButton(

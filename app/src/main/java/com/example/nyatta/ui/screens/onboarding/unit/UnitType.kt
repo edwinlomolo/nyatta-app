@@ -45,9 +45,9 @@ fun Unit(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(16.dp)
         ) {
                 Text(
-                    text = stringResource(R.string.unit_label_text),
+                    text = stringResource(R.string.unit_label),
                     modifier = Modifier.then(pad),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleLarge
                 )
                 ExposedDropdownMenuBox(
                     expanded = expanded,

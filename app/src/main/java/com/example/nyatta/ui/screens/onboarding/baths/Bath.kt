@@ -42,7 +42,7 @@ fun Bath(modifier: Modifier = Modifier) {
         ) {
                 Text(
                     text = stringResource(R.string.bath_label_text),
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier
                         .then(pad)
                 )

@@ -41,8 +41,8 @@ fun Description(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(16.dp)
         ) {
                 Text(
-                    text = stringResource(R.string.description_label_text),
-                    style = MaterialTheme.typography.titleMedium,
+                    text = stringResource(R.string.description_label),
+                    style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.then(pad)
                 )
                 OutlinedTextField(
