@@ -27,4 +27,11 @@
     <string name="select_amenities">Select amenities</string>
     <string name="bedroom_label">How does your bedrooms look like</string>
     <string name="bedroom">Bedroom %1$s</string>
+    <string name="living_room">Living Room</string>
+    <string name="baths">Baths</string>
+    <string name="bedrooms">Bedrooms</string>
+    <string name="balcony">Balcony</string>
+    <string name="front_porch">Front Porch</string>
+    <string name="kitchen">Kitchen</string>
+    <string name="parking">Parking</string>
 </resources>
