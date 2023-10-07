@@ -56,7 +56,7 @@ fun FeatureImage(text: String, imageCount: Int, modifier: Modifier = Modifier) {
         Row(modifier = Modifier
             .padding(8.dp)
             .horizontalScroll(rememberScrollState())) {
-            repeat(imageCount) { it ->
+            repeat(imageCount) {
                 Image(
                     painter = painterResource(R.drawable.rottweiler),
                     contentDescription = "Rottweiler",
