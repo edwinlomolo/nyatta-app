@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -17,13 +19,16 @@ import com.example.nyatta.ui.NyattaApp
 class MainActivity : ComponentActivity() {
 
     // Pick photo from device
-    val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        if (uri != null) {
-            Log.d("PhotoPicker", "Success $uri")
-        } else {
-            Log.d("PhotoPicker", "No media selected")
+    private fun pickMedia(maxItems: Int = 1): ActivityResultLauncher<PickVisualMediaRequest> {
+        return registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(maxItems)) { uri ->
+            if (uri != null) {
+                Log.d("PhotoPicker", "Success $uri")
+            } else {
+                Log.d("PhotoPicker", "No media selected")
+            }
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -33,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NyattaApp(pickMedia)
+                    NyattaApp(pickMedia())
                 }
             }
         }
