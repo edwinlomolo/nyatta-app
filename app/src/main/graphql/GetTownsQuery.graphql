@@ -1,0 +1,7 @@
+query GetTowns {
+    getTowns {
+        id
+        town
+        postalCode
+    }
+}

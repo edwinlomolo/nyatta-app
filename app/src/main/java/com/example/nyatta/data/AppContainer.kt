@@ -5,10 +5,13 @@ import com.example.nyatta.data.hello.GqlHelloRepository
 import com.example.nyatta.data.hello.HelloRepository
 import com.example.nyatta.data.listings.GqlListingsRepository
 import com.example.nyatta.data.listings.ListingsRepository
+import com.example.nyatta.data.towns.GqlTownsRepository
+import com.example.nyatta.data.towns.TownsRepository
 
 interface AppContainer {
     val helloRepository: HelloRepository
     val listingsRepository: ListingsRepository
+    val townsRepository: TownsRepository
 }
 
 // TODO: Sample intercept: can refactor it to handle authentication?
@@ -37,5 +40,9 @@ class DefaultContainer: AppContainer {
 
     override val listingsRepository: ListingsRepository by lazy {
         GqlListingsRepository(client)
+    }
+
+    override val townsRepository: TownsRepository by lazy {
+        GqlTownsRepository(client)
     }
 }
