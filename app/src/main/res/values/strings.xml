@@ -34,4 +34,6 @@
     <string name="front_porch">Front Porch</string>
     <string name="kitchen">Kitchen</string>
     <string name="parking">Parking</string>
+    <string name="rottweiler_description">Rottweiler</string>
+    <string name="pick">Pick</string>
 </resources>

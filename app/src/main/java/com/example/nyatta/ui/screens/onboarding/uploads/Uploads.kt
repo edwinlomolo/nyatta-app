@@ -4,13 +4,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -28,10 +31,9 @@ fun Uploads(modifier: Modifier = Modifier) {
     Onboarding(modifier = modifier) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            FeatureImage(text = stringResource(R.string.living_room), imageCount = 3)
+            FeatureImage(text = stringResource(R.string.living_room), imageCount = 4)
             FeatureImage(text = stringResource(R.string.baths), imageCount = 2)
             // TODO if has bedroom count
             FeatureImage(text = stringResource(R.string.bedrooms), imageCount = 3)
@@ -47,24 +49,36 @@ fun Uploads(modifier: Modifier = Modifier) {
 
 @Composable
 fun FeatureImage(text: String, imageCount: Int, modifier: Modifier = Modifier) {
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(modifier = modifier) {
         Text(
             text = text,
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.then(pad)
         )
-        Row(modifier = Modifier
-            .padding(8.dp)
-            .horizontalScroll(rememberScrollState())) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState())) {
             repeat(imageCount) {
                 Image(
                     painter = painterResource(R.drawable.rottweiler),
-                    contentDescription = "Rottweiler",
+                    contentDescription = stringResource(R.string.rottweiler_description),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(135.dp)
                         .padding(8.dp)
                         .clip(MaterialTheme.shapes.small)
+                )
+            }
+            // TODO show if there no images picked
+            Button(
+                onClick = { /*TODO*/ },
+                shape = MaterialTheme.shapes.small
+            ) {
+                Text(
+                    text = stringResource(R.string.pick),
+                    style = MaterialTheme.typography.titleMedium
                 )
             }
         }
