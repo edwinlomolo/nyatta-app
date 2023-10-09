@@ -7,17 +7,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.nyatta.ui.theme.NyattaTheme
 
 @Composable
-fun Home(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = name,
-        modifier = modifier
-    )
+fun Home(modifier: Modifier = Modifier) {
 }
 
 @Preview(showBackground = true)
 @Composable
 fun HomePreview() {
     NyattaTheme {
-        Home("Hello")
+        Home()
     }
 }

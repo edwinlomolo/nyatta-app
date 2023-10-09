@@ -35,7 +35,7 @@ fun NyattaApp(
                 HomeUiState.Loading -> CircularProgressIndicator()
                 is HomeUiState.ApolloError -> Text(text = s.errors[0].message)
                 is HomeUiState.ApplicationError -> Text(text = "${s.error}")
-                is HomeUiState.Success -> Home("${s.hello}")
+                is HomeUiState.Success -> Home()
             }
         }
     }
