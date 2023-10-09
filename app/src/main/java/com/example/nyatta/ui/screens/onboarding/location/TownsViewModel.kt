@@ -14,10 +14,18 @@ import com.apollographql.apollo3.exception.ApolloException
 import com.example.nyatta.GetTownsQuery
 import com.example.nyatta.NyattaApp
 import com.example.nyatta.data.towns.TownsRepository
+import com.example.nyatta.ui.screens.onboarding.location.TownsUiState.Success
+import com.example.nyatta.ui.screens.onboarding.location.TownsUiState.ApolloError
+import com.example.nyatta.ui.screens.onboarding.location.TownsUiState.ApplicationError
+import com.example.nyatta.ui.screens.onboarding.location.TownsUiState.Loading
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 sealed interface TownsUiState {
-    data class Success(val towns: List<GetTownsQuery.GetTown>?): TownsUiState
+    data class Success(val towns: List<GetTownsQuery.GetTown>? = null): TownsUiState
     object Loading: TownsUiState
     data class ApolloError(val errors: List<Error>): TownsUiState
     data class ApplicationError(val error: ApolloException): TownsUiState
@@ -25,8 +33,10 @@ sealed interface TownsUiState {
 class TownsViewModel(
     private val townsRepository: TownsRepository
 ): ViewModel() {
-    var townsUiState: TownsUiState by mutableStateOf(TownsUiState.Loading)
+    var townsUiState: TownsUiState by mutableStateOf(Loading)
         private set
+    private val _townsList = MutableStateFlow(Success())
+    val townsList: StateFlow<Success> = _townsList.asStateFlow()
 
     // Initialize state
     init {
@@ -38,13 +48,23 @@ class TownsViewModel(
             townsUiState = try {
                 val response = townsRepository.getTowns()
                 if (response.hasErrors()) {
-                    TownsUiState.ApolloError(errors = response.errors!!)
+                    ApolloError(errors = response.errors!!)
                 } else {
-                    TownsUiState.Success(response.data?.getTowns)
+                    _townsList.update { currentState ->
+                        currentState.copy(towns = response.data?.getTowns)
+                    }
+                    Success(response.data?.getTowns)
                 }
             } catch (e: ApolloException) {
-                TownsUiState.ApplicationError(e)
+                ApplicationError(e)
             }
+        }
+    }
+
+    fun filterTowns(query: String) {
+        _townsList.update { currentState ->
+            val newTowns = currentState.towns?.filter { it.town.contains(query) }
+            currentState.copy(towns = newTowns)
         }
     }
 
