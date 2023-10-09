@@ -14,7 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.nyatta.ui.screens.home.HomeScreen
+import com.example.nyatta.ui.screens.home.Home
 import com.example.nyatta.ui.screens.home.HomeUiState
 import com.example.nyatta.ui.screens.home.HomeViewModel
 
@@ -35,7 +35,7 @@ fun NyattaApp(
                 HomeUiState.Loading -> CircularProgressIndicator()
                 is HomeUiState.ApolloError -> Text(text = s.errors[0].message)
                 is HomeUiState.ApplicationError -> Text(text = "${s.error}")
-                is HomeUiState.Success -> HomeScreen("${s.hello}")
+                is HomeUiState.Success -> Home("${s.hello}")
             }
         }
     }
