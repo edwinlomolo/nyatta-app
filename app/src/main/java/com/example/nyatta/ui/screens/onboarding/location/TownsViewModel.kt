@@ -61,13 +61,6 @@ class TownsViewModel(
         }
     }
 
-    fun filterTowns(query: String) {
-        _townsList.update { currentState ->
-            val newTowns = currentState.towns?.filter { it.town.contains(query) }
-            currentState.copy(towns = newTowns)
-        }
-    }
-
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
