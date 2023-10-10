@@ -36,4 +36,6 @@
     <string name="parking">Parking</string>
     <string name="rottweiler_description">Rottweiler</string>
     <string name="pick">Pick</string>
+    <string name="vacant_homes">Vacant Homes</string>
+    <string name="filter_menu">Filter menu</string>
 </resources>
