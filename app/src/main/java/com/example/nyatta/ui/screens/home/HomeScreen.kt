@@ -61,6 +61,11 @@ fun Home(modifier: Modifier = Modifier) {
 
 @Composable
 fun Listing(modifier: Modifier = Modifier) {
+    val image =
+        painterResource(
+            R.drawable.apartment_sunset_in_the_background_in_africa_and_person_c4dadd13_9720_4c7f_ad7b_86e197bfd86c
+        )
+
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -71,8 +76,7 @@ fun Listing(modifier: Modifier = Modifier) {
         shape = RoundedCornerShape(16.dp)
     ) {
         Image(
-            painter =
-                painterResource(R.drawable.apartment_sunset_in_the_background_in_africa_and_person_c4dadd13_9720_4c7f_ad7b_86e197bfd86c),
+            painter = image,
             contentDescription = "Apartment",
             contentScale = ContentScale.Crop,
             modifier = Modifier
