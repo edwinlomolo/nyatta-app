@@ -31,9 +31,14 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 24.sp,
     ),
+    titleSmall = TextStyle(
+        fontFamily = MabryFont,
+        fontWeight = FontWeight.Normal,
+        fontSize = 20.sp
+    ),
     labelSmall = TextStyle(
         fontFamily = MabryFont,
         fontWeight = FontWeight.Medium,
-        fontSize = 16.sp,
+        fontSize = 20.sp,
     )
 )
