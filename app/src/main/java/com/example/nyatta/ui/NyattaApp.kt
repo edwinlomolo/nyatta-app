@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -32,7 +33,7 @@ import com.example.nyatta.ui.screens.home.HomeViewModel
 fun NyattaApp() {
     var selectedItem by remember { mutableIntStateOf(0) }
     val items = listOf("Home", "Favorite", "Add")
-    val icons = listOf(Icons.Filled.Home, Icons.Filled.Favorite, Icons.Filled.Add)
+    val icons = listOf(Icons.Filled.Home, Icons.Filled.Favorite, Icons.Filled.AccountCircle)
 
     Scaffold(
         bottomBar = {
@@ -41,7 +42,6 @@ fun NyattaApp() {
                     NavigationBarItem(
                         selected = selectedItem == index,
                         onClick = { selectedItem = index },
-                        label = { Text(text = item) },
                         icon = { Icon(icons[index], contentDescription = item) }
                     )
                 }
