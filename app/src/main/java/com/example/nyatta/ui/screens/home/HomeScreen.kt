@@ -98,7 +98,7 @@ fun Listing(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(bottom = 2.dp)
             )
             Text(
-                text = "Added 2 days ago",
+                text = "2 days ago",
                 style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.padding(bottom = 2.dp)
             )

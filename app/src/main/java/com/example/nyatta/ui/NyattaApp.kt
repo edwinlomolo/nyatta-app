@@ -22,10 +22,12 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.ui.screens.home.Home
 import com.example.nyatta.ui.screens.home.HomeUiState
 import com.example.nyatta.ui.screens.home.HomeViewModel
+import com.example.nyatta.ui.theme.NyattaTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,5 +64,13 @@ fun NyattaApp() {
                 is HomeUiState.Success -> Home()
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NyattaAppPreview() {
+    NyattaTheme {
+        NyattaApp()
     }
 }
