@@ -21,6 +21,7 @@ import com.example.nyatta.ui.screens.onboarding.location.TownsUiState.Loading
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -37,6 +38,8 @@ class TownsViewModel(
         private set
     private val _townsList = MutableStateFlow(Success())
     val townsList: StateFlow<Success> = _townsList.asStateFlow()
+    var searchQuery by mutableStateOf("")
+        private set
 
     // Initialize state
     init {
@@ -59,6 +62,14 @@ class TownsViewModel(
                 ApplicationError(e)
             }
         }
+    }
+
+    fun updateSearchQuery(query: String) {
+        searchQuery = query
+    }
+
+    fun townSuggestions(): List<GetTownsQuery.GetTown>? {
+        return _townsList.value.towns?.filter { it.town.contains(searchQuery, ignoreCase = true) }
     }
 
     companion object {
