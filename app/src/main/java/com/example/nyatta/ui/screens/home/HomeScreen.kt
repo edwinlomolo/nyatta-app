@@ -115,7 +115,11 @@ fun Listing(modifier: Modifier = Modifier) {
             }
             Text(
                 text = "3 KM away",
-                style = TextStyle(fontFamily = MabryFont, fontSize = 16.sp, fontStyle = FontStyle.Italic),
+                style = TextStyle(
+                    fontFamily = MabryFont,
+                    fontSize = 16.sp,
+                    fontStyle = FontStyle.Italic
+                ),
                 modifier = Modifier.padding(bottom = 2.dp)
             )
             Text(
