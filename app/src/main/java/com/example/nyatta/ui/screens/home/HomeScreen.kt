@@ -3,6 +3,8 @@ package com.example.nyatta.ui.screens.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,10 +29,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.nyatta.R
+import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 
 
@@ -68,7 +74,7 @@ fun Listing(modifier: Modifier = Modifier) {
 
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.background
         ),
         modifier = modifier
             .fillMaxWidth()
@@ -86,20 +92,35 @@ fun Listing(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
         )
         Column(modifier = Modifier.padding(8.dp)) {
-            Text(
-                text = "KES 10,000 . 2 bedroom",
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 4.dp)
-            )
+            Row {
+                Text(
+                    text = "2 bedroom",
+                    style = TextStyle(
+                        fontFamily = MabryFont,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = "KES 10,000",
+                    style = TextStyle(
+                        fontFamily = MabryFont,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
+            }
             Text(
                 text = "3 KM away",
-                style = MaterialTheme.typography.titleSmall,
+                style = TextStyle(fontFamily = MabryFont, fontSize = 16.sp, fontStyle = FontStyle.Italic),
                 modifier = Modifier.padding(bottom = 2.dp)
             )
             Text(
                 text = "2 days ago",
-                style = MaterialTheme.typography.titleSmall,
+                style = TextStyle(fontFamily = MabryFont, fontSize = 16.sp),
                 modifier = Modifier.padding(bottom = 2.dp)
             )
         }
@@ -111,7 +132,22 @@ fun Listing(modifier: Modifier = Modifier) {
 fun HomeAppBar(modifier: Modifier = Modifier) {
     TopAppBar(
         modifier = modifier,
-        title = { Text(text = stringResource(R.string.vacant_homes)) },
+        title = {
+            Column {
+                Text(
+                    text = stringResource(R.string.vacant_homes),
+                    style = TextStyle(fontFamily = MabryFont, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                )
+                Text(
+                    text = "5 listings in your area",
+                    style = TextStyle(
+                        fontFamily = MabryFont,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                )
+            }
+        },
         actions = {
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(
