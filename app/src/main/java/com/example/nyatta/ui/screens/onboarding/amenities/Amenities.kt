@@ -19,7 +19,7 @@ fun Amenities(modifier: Modifier = Modifier) {
         LazyColumn {
             items(amenities) { amenity ->
                 ListItem(
-                    headlineText = {
+                    headlineContent = {
                         Text(
                             text = amenity.label
                         )

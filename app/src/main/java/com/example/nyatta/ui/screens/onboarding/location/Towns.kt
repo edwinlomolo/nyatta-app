@@ -43,7 +43,7 @@ fun Town(towns: List<GetTownsQuery.GetTown>, modifier: Modifier = Modifier) {
             LazyColumn {
                 items(towns) { town ->
                     ListItem(
-                        headlineText = {
+                        headlineContent = {
                             Text(text = town.town)
                         }
                     )
