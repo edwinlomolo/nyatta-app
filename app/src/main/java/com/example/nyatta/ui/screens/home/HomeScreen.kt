@@ -39,8 +39,6 @@ import com.example.nyatta.R
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home(modifier: Modifier = Modifier) {
     Scaffold(
