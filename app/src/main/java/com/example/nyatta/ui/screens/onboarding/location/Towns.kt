@@ -26,6 +26,7 @@ import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.GetTownsQuery
 import com.example.nyatta.ui.theme.NyattaTheme
@@ -92,6 +93,7 @@ fun TownsTopBar(townsViewModel: TownsViewModel, towns: List<GetTownsQuery.GetTow
                             .fillMaxWidth()
                     )
                 }
+                if (towns.isEmpty()) item { Text("Can't find town", style = MaterialTheme.typography.titleSmall, modifier = Modifier.padding(8.dp)) }
             }
         }
     }
