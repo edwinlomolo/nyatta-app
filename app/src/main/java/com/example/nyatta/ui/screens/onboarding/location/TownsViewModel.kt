@@ -68,7 +68,7 @@ class TownsViewModel(
     }
 
     fun townSuggestions(): List<GetTownsQuery.GetTown>? {
-        return _townsList.value.towns?.filter { it.town.contains(searchQuery, ignoreCase = true) }
+        return townsList.value.towns?.filter { it.town.contains(searchQuery, ignoreCase = true) }
     }
 
     companion object {
