@@ -60,8 +60,8 @@ fun Home(modifier: Modifier = Modifier) {
                 repeat(10) {
                     Listing(onOpenModalBottomSheet = { openBottomSheet = true })
                 }
+                if (openBottomSheet) ListingView(onClose = { openBottomSheet = false }, bottomSheetState = bottomSheetState)
             }
-            if (openBottomSheet) ListingView(onClose = { openBottomSheet = false }, bottomSheetState = bottomSheetState)
         }
     }
 }
