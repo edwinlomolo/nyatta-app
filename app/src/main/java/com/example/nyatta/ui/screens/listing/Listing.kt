@@ -11,9 +11,12 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.ui.screens.home.HomeViewModel
-
+import com.example.nyatta.ui.theme.MabryFont
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,11 +41,25 @@ fun ListingView(
             TabRow(selectedTabIndex = tabState) {
                 tabTitles.forEachIndexed { index, title ->
                     Tab(
-                        text = { Text(title) },
+                        text = {
+                            Text(
+                                text = title,
+                                style = TextStyle(
+                                    fontFamily = MabryFont,
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            )
+                        },
                         onClick = { homeViewModel.updateTabState(index) },
                         selected = (index == tabState)
                     )
                 }
+            }
+            when(tabTitles[tabState]) {
+                "Photos" -> ListingPhoto()
+                "Amenities" -> ListingAmenity()
+                "Reviews" -> ListingReview()
             }
         }
     }

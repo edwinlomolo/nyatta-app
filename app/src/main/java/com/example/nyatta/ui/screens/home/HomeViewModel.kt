@@ -28,7 +28,7 @@ class HomeViewModel(
     var homeUiState: HomeUiState by mutableStateOf(HomeUiState.Loading)
 
     // Listing view
-    val titles = listOf("Photos", "Reviews", "Amenities")
+    val titles = listOf("Photos", "Amenities", "Reviews")
     var tabState by mutableStateOf(0)
         private set
 
