@@ -27,10 +27,10 @@ class HomeViewModel(
 ): ViewModel() {
     var homeUiState: HomeUiState by mutableStateOf(HomeUiState.Loading)
 
-    // Initialize state
-    init {
-        getHello()
-    }
+    // Listing view
+    val titles = listOf("Photos", "Reviews", "Amenities")
+    var tabState by mutableStateOf(0)
+        private set
 
     // Run hello query
     fun getHello() {
@@ -46,6 +46,16 @@ class HomeViewModel(
                 HomeUiState.ApplicationError(e)
             }
         }
+    }
+
+    // Listing view state
+    fun updateTabState(state: Int) {
+        tabState = state
+    }
+
+    // Initialize state
+    init {
+        getHello()
     }
 
     companion object {

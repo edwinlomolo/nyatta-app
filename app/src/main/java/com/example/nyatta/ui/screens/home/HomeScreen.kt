@@ -38,7 +38,7 @@ import com.example.nyatta.ui.theme.NyattaTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home(modifier: Modifier = Modifier) {
+fun Home( modifier: Modifier = Modifier) {
     var openBottomSheet by rememberSaveable {
         mutableStateOf(false)
     }

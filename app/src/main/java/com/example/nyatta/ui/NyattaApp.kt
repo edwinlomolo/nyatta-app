@@ -7,7 +7,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -29,12 +28,13 @@ import com.example.nyatta.ui.screens.home.HomeUiState
 import com.example.nyatta.ui.screens.home.HomeViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun NyattaApp() {
     var selectedItem by remember { mutableIntStateOf(0) }
     val items = listOf("Home", "Favorite", "Account")
     val icons = listOf(Icons.Filled.Home, Icons.Filled.Favorite, Icons.Filled.AccountCircle)
+    val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
 
     Scaffold(
         bottomBar = {
@@ -55,7 +55,6 @@ fun NyattaApp() {
             .fillMaxSize()
             .padding(it)
         ) {
-            val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
 
             when(val s = homeViewModel.homeUiState) {
                 HomeUiState.Loading -> CircularProgressIndicator()
