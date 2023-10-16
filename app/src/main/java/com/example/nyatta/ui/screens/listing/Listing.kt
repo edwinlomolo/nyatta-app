@@ -1,6 +1,7 @@
 package com.example.nyatta.ui.screens.listing
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -10,30 +11,29 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -44,13 +44,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
-import com.example.nyatta.ui.screens.home.HomeViewModel
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 
@@ -66,6 +63,7 @@ val amenities = listOf(
     Amenity("Parking", "Free premises parking")
 ).groupBy { it.category }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ListingView(
     modifier: Modifier = Modifier,
@@ -73,6 +71,7 @@ fun ListingView(
     val image = painterResource(
         R.drawable.apartment_sunset_in_the_background_in_africa_and_person_c4dadd13_9720_4c7f_ad7b_86e197bfd86c
     )
+    val state = rememberPagerState { 10 }
 
     Scaffold(
         topBar = {
@@ -96,8 +95,9 @@ fun ListingView(
                        contentScale = ContentScale.Crop,
                        modifier = Modifier
                            .fillMaxWidth()
-                           .height(280.dp),
-                       contentDescription = null
+                           .height(500.dp),
+                       contentDescription = null,
+                       alpha = 0.8f
                    )
                    Row(
                        modifier = Modifier
@@ -106,6 +106,27 @@ fun ListingView(
                        Tag(text= "master")
                        Spacer(modifier = Modifier.weight(1f))
                        Tag(text = "en-suite")
+                   }
+               }
+               Row(
+                   modifier = Modifier
+                       .fillMaxWidth()
+                       .offset(y = -50.dp),
+                   horizontalArrangement = Arrangement.End
+               ) {
+                   Button(
+                       onClick = { /*TODO*/ },
+                       modifier = Modifier
+                           .padding(start = 16.dp, end = 16.dp),
+                       shape = MaterialTheme.shapes.small
+                   ) {
+                       Text(
+                           text = "View",
+                           style = TextStyle(
+                               fontFamily = MabryFont,
+                               fontSize = 18.sp
+                           )
+                       )
                    }
                }
                Section (
@@ -249,8 +270,9 @@ fun Tag(
         modifier = modifier
             .background(
                 color = MaterialTheme.colorScheme.background,
+                shape = RoundedCornerShape(16.dp)
             )
-            .padding(4.dp)
+            .padding(start = 16.dp, end = 16.dp, bottom = 4.dp, top = 4.dp)
     ) {
         Text(
             text = text,
