@@ -16,12 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,17 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nyatta.R
 import com.example.nyatta.ui.screens.listing.Listing
-import com.example.nyatta.ui.screens.listing.ListingView
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home( modifier: Modifier = Modifier) {
-    var openBottomSheet by rememberSaveable {
-        mutableStateOf(false)
-    }
-    val bottomSheetState = rememberModalBottomSheetState()
 
     Scaffold(
         topBar = {
@@ -57,10 +46,9 @@ fun Home( modifier: Modifier = Modifier) {
                 .padding(it)
         ) {
             Column(modifier = modifier.verticalScroll(rememberScrollState())) {
-                repeat(10) {
-                    Listing(onOpenModalBottomSheet = { openBottomSheet = true })
+                repeat(5) {
+                    Listing()
                 }
-                if (openBottomSheet) ListingView(onClose = { openBottomSheet = false }, bottomSheetState = bottomSheetState)
             }
         }
     }

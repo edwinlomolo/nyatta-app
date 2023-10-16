@@ -1,21 +1,20 @@
 package com.example.nyatta.ui.screens.listing
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -30,7 +29,6 @@ import com.example.nyatta.ui.theme.MabryFont
 @Composable
 fun Listing(
     modifier: Modifier = Modifier,
-    onOpenModalBottomSheet: () -> Unit
 ) {
     val image =
         painterResource(
@@ -43,58 +41,61 @@ fun Listing(
         ),
         modifier = modifier
             .fillMaxWidth()
-            .clickable {
-                onOpenModalBottomSheet()
-            }
-            .padding(8.dp),
-        shape = RoundedCornerShape(16.dp)
+            .clickable {}
+            .padding(8.dp)
     ) {
-        Image(
-            painter = image,
-            contentDescription = "Apartment",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .height(260.dp)
-                .padding(8.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .fillMaxWidth()
-        )
-        Column(modifier = Modifier.padding(8.dp)) {
-            Row {
+        Box {
+            Image(
+                painter = image,
+                contentDescription = "Apartment",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .padding(8.dp)
+            )
+            Column(
+                modifier = Modifier
+                    .padding(18.dp)
+                    .background(MaterialTheme.colorScheme.background)
+            ) {
+                Row(
+                    modifier = Modifier
+                ) {
+                    Text(
+                        text = "2 bedroom",
+                        style = TextStyle(
+                            fontFamily = MabryFont,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold
+                        ),
+                        modifier = Modifier.padding(8.dp)
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = "KES 10,000",
+                        style = TextStyle(
+                            fontFamily = MabryFont,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold
+                        ),
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
                 Text(
-                    text = "2 bedroom",
+                    text = "3 KM away",
                     style = TextStyle(
                         fontFamily = MabryFont,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.SemiBold
+                        fontSize = 16.sp,
+                        fontStyle = FontStyle.Italic
                     ),
-                    modifier = Modifier.padding(bottom = 4.dp)
+                    modifier = Modifier.padding(start = 8.dp, bottom = 2.dp)
                 )
-                Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "KES 10,000",
-                    style = TextStyle(
-                        fontFamily = MabryFont,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.SemiBold
-                    ),
-                    modifier = Modifier.padding(bottom = 4.dp)
+                    text = "2 days ago",
+                    style = TextStyle(fontFamily = MabryFont, fontSize = 16.sp),
+                    modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
                 )
             }
-            Text(
-                text = "3 KM away",
-                style = TextStyle(
-                    fontFamily = MabryFont,
-                    fontSize = 16.sp,
-                    fontStyle = FontStyle.Italic
-                ),
-                modifier = Modifier.padding(bottom = 2.dp)
-            )
-            Text(
-                text = "2 days ago",
-                style = TextStyle(fontFamily = MabryFont, fontSize = 16.sp),
-                modifier = Modifier.padding(bottom = 2.dp)
-            )
         }
+
     }
 }

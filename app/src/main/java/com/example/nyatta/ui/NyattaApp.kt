@@ -4,9 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,8 +33,8 @@ import com.example.nyatta.ui.theme.NyattaTheme
 @Composable
 fun NyattaApp() {
     var selectedItem by remember { mutableIntStateOf(0) }
-    val items = listOf("Home", "Favorite", "Account")
-    val icons = listOf(Icons.Filled.Home, Icons.Filled.Favorite, Icons.Filled.AccountCircle)
+    val items = listOf("Home", "Favorite", "Add", "Account")
+    val icons = listOf(Icons.Outlined.Home, Icons.Outlined.FavoriteBorder, Icons.Outlined.Add, Icons.Outlined.AccountCircle)
     val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
 
     Scaffold(
