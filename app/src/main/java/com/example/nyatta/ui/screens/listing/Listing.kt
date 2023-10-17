@@ -18,7 +18,9 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -57,13 +59,14 @@ data class Amenity(
 )
 
 val amenities = listOf(
-    Amenity("Internet", "Safaricom hom fibre"),
+    Amenity("Internet", "Safaricom home fibre"),
     Amenity("Kitchen", "Open kitchen plan"),
     Amenity("Outdoor", "Front porch"),
-    Amenity("Parking", "Free premises parking")
+    Amenity("Parking", "Free premises parking"),
+    Amenity("Internet", "Zuku home fibre")
 ).groupBy { it.category }
 
-@OptIn(ExperimentalFoundationApi::class)
+
 @Composable
 fun ListingView(
     modifier: Modifier = Modifier,
@@ -71,7 +74,7 @@ fun ListingView(
     val image = painterResource(
         R.drawable.apartment_sunset_in_the_background_in_africa_and_person_c4dadd13_9720_4c7f_ad7b_86e197bfd86c
     )
-    val state = rememberPagerState { 10 }
+    val itemList = (0..50).toList()
 
     Scaffold(
         topBar = {
@@ -104,14 +107,14 @@ fun ListingView(
                            .padding(16.dp)
                    ) {
                        Tag(text= "master")
-                       Spacer(modifier = Modifier.weight(1f))
+                       Spacer(modifier = Modifier.size(18.dp))
                        Tag(text = "en-suite")
                    }
                }
                Row(
                    modifier = Modifier
                        .fillMaxWidth()
-                       .offset(y = -50.dp),
+                       .offset(y = (-50).dp),
                    horizontalArrangement = Arrangement.End
                ) {
                    Button(
@@ -188,17 +191,24 @@ fun ListingView(
                Section(
                    title = "Amenities",
                ) {
-                   amenities.keys.map { it ->
-                       Text(
-                           text = it,
-                           modifier = Modifier.padding(8.dp),
-                           fontWeight = FontWeight.SemiBold
-                       )
-                       amenities[it]?.map {
+                   LazyHorizontalGrid(
+                       rows = GridCells.Fixed(1),
+                       modifier = Modifier.height(156.dp)
+                   ) {
+                       items(amenities.keys.toList()) {
                            Text(
-                               text = it.name,
-                               modifier = Modifier.padding(start = 16.dp)
+                               text = it,
+                               modifier = Modifier.padding(8.dp),
+                               fontWeight = FontWeight.Bold
                            )
+                           Column(modifier = Modifier.offset(y = 36.dp)) {
+                               amenities[it]?.map {
+                                   Text(
+                                       text = it.name,
+                                       modifier = Modifier.padding(start = 16.dp)
+                                   )
+                               }
+                           }
                        }
                    }
                }
