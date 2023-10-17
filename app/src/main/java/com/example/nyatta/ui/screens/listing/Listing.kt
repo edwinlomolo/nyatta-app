@@ -1,7 +1,6 @@
 package com.example.nyatta.ui.screens.listing
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -297,6 +296,7 @@ fun ListingTopBar(
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
+        modifier = modifier,
         title = {
             Text(
                 text = "Unit name"
