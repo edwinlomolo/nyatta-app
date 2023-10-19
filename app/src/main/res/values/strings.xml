@@ -38,4 +38,9 @@
     <string name="pick">Pick</string>
     <string name="vacant_homes">Vacant Homes</string>
     <string name="filter_menu">Filter menu</string>
+    <string name="personal_details">Personal details</string>
+    <string name="account_info">Account info</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
 </resources>
