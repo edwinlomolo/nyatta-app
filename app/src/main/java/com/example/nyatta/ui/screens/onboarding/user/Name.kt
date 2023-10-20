@@ -58,7 +58,10 @@ fun Names(
                 imeAction = ImeAction.Done
             )
         )
-        ActionButton(text = "Save")
+        ActionButton(
+            text = "Save",
+            onClick = {}
+        )
     }
 }
 
@@ -66,14 +69,15 @@ fun Names(
 fun ActionButton(
     modifier: Modifier = Modifier,
     text: String = "",
-    content: (@Composable () -> Unit)? = null
+    onClick: () -> Unit = {},
+    content: (@Composable () -> Unit)? = null,
 ) {
     Button(
         modifier = modifier
             .padding(top = 12.dp)
             .fillMaxWidth(),
         shape = MaterialTheme.shapes.small,
-        onClick = { /*TODO*/ }
+        onClick = { onClick() }
     ) {
         Text(
             text = text,
@@ -93,6 +97,7 @@ fun TextInput(
     value: String = "",
     placeholder: (@Composable () -> Unit)? = null,
     onValueChange: () -> Unit,
+    prefix: (@Composable () -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default
 ) {
@@ -100,6 +105,7 @@ fun TextInput(
         modifier = modifier
             .padding(top = 12.dp, bottom = 12.dp)
             .fillMaxWidth(),
+        prefix = prefix,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.background,
             unfocusedContainerColor = MaterialTheme.colorScheme.background

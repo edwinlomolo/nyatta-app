@@ -1,6 +1,7 @@
 package com.example.nyatta.ui.screens.onboarding.user
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -11,10 +12,12 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.nyatta.ui.theme.NyattaTheme
 
+// TODO reuse for phone verification
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun VerifyEmail(
@@ -23,6 +26,7 @@ fun VerifyEmail(
     val keyboardController = LocalSoftwareKeyboardController.current
     Column(
         modifier = modifier
+            .fillMaxSize()
             .padding(18.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -32,7 +36,8 @@ fun VerifyEmail(
                 Text("Verification code")
             },
             keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Number
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
@@ -40,7 +45,10 @@ fun VerifyEmail(
                 }
             )
         )
-        ActionButton(text = "Verify")
+        ActionButton(
+            text = "Verify",
+            onClick = {}
+        )
     }
 }
 

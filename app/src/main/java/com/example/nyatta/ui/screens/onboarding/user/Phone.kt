@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowForward
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,38 +16,43 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.nyatta.ui.theme.NyattaTheme
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun Email(
+fun Phone(
     modifier: Modifier = Modifier
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     Column(
         modifier = modifier
-            .padding(18.dp)
-            .fillMaxSize(),
+            .fillMaxSize()
+            .padding(18.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextInput(
-            onValueChange = { /*TODO*/ },
-            placeholder = {
-                Text("Email address")
+            onValueChange = {},
+            prefix = {
+                Text(
+                    "+254",
+                    color = MaterialTheme.colorScheme.primary
+                )
             },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Number
+            ),
             keyboardActions = KeyboardActions(
                 onDone = {
                     keyboardController?.hide()
                 }
-            ),
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done
             )
         )
         ActionButton(
-            text = "Verify email",
+            text = "Verify phone",
             onClick = {}
         ) {
             Icon(
@@ -59,8 +65,8 @@ fun Email(
 
 @Preview(showBackground = true)
 @Composable
-fun EmailPreview() {
+fun PhonePreview() {
     NyattaTheme {
-        Email()
+        Phone()
     }
 }
