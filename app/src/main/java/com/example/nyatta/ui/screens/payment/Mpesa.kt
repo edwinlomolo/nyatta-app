@@ -50,14 +50,13 @@ fun Mpesa(
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(paymentOptions[0]) }
 
     Onboarding(
-        modifier = modifier
-            .padding(18.dp),
+        modifier = modifier,
         actionButtonText = stringResource(R.string.pay_monthly),
         onActionButtonClick = {}
     ) {
         Title(stringResource(R.string.pay_monthly))
         Description(stringResource(R.string.pay_monthly_description))
-        Row(Modifier.selectableGroup()) {
+        Row(Modifier.selectableGroup().padding(start = 8.dp)) {
             paymentOptions.forEachIndexed { index, option ->
                 Row(
                     modifier = Modifier
@@ -84,7 +83,10 @@ fun Mpesa(
                 }
             }
         }
-        Column {
+        Column(
+            modifier = Modifier
+                .padding(8.dp)
+        ) {
             TextInput(
                 onValueChange = {},
                 prefix = {
