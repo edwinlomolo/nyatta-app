@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.screens.onboarding.property.description
+package com.example.nyatta.ui.screens.onboarding.apartments.description
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
