@@ -21,6 +21,7 @@ fun Description(
         style = TextStyle(
             fontFamily = MabryFont,
             fontSize = 21.sp,
+            lineHeight = 32.sp,
             fontWeight = FontWeight.ExtraLight
         )
     )

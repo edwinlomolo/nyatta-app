@@ -48,4 +48,10 @@
     <string name="save_caretaker">Save</string>
     <string name="no_caretaker">No</string>
     <string name="yes_caretaker">Yes</string>
+    <string name="pay_monthly">Pay monthly</string>
+    <string name="pay_monthly_description">Get your 30 days of unlimited access to the number of units/properties/listings you can add to start managing on Nyatta.</string>
+    <string name="pay">Pay</string>
+    <string name="kes">KES</string>
+    <string name="monthly_fee">1,500</string>
+    <string name="_254">+254</string>
 </resources>

@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -31,7 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.nyatta.R
 import com.example.nyatta.ui.components.onboarding.ActionButton
+import com.example.nyatta.ui.components.onboarding.Description
 import com.example.nyatta.ui.components.onboarding.TextInput
+import com.example.nyatta.ui.components.onboarding.Title
 import com.example.nyatta.ui.theme.NyattaTheme
 
 val paymentOptions = listOf("Mpesa")
@@ -43,13 +46,15 @@ fun Mpesa(
     modifier: Modifier = Modifier
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(paymentOptions[0])}
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(paymentOptions[0]) }
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(18.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Title(stringResource(R.string.pay_monthly))
+        Description(stringResource(R.string.pay_monthly_description))
         Row(Modifier.selectableGroup()) {
             paymentOptions.forEachIndexed { index, option ->
                 Row(
@@ -82,7 +87,7 @@ fun Mpesa(
                 onValueChange = {},
                 prefix = {
                     Text(
-                        text = "+254",
+                        text = stringResource(R.string._254),
                         color = MaterialTheme.colorScheme.primary
                     )
                 },
@@ -98,19 +103,18 @@ fun Mpesa(
             )
             TextInput(
                 onValueChange = {},
-                value = "1,000",
+                value = stringResource(R.string.monthly_fee),
                 prefix = {
                     Text(
-                        text = "KES",
+                        text = stringResource(R.string.kes),
                         color = MaterialTheme.colorScheme.primary
                     )
                 },
-                enabled = false,
-                readOnly = true
+                enabled = false
             )
         }
         ActionButton(
-            text = "Pay",
+            text = stringResource(R.string.pay),
             onClick = {}
         )
     }
