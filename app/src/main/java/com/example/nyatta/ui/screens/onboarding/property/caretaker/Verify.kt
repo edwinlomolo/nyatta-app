@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.screens.onboarding.caretaker
+package com.example.nyatta.ui.screens.onboarding.property.caretaker
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

@@ -30,8 +30,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.nyatta.R
-import com.example.nyatta.ui.screens.onboarding.user.ActionButton
-import com.example.nyatta.ui.screens.onboarding.user.TextInput
+import com.example.nyatta.ui.components.onboarding.ActionButton
+import com.example.nyatta.ui.components.onboarding.TextInput
 import com.example.nyatta.ui.theme.NyattaTheme
 
 val paymentOptions = listOf("Mpesa")

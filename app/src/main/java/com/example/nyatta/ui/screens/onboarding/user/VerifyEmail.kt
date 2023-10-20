@@ -15,6 +15,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.nyatta.ui.components.onboarding.ActionButton
+import com.example.nyatta.ui.components.onboarding.TextInput
 import com.example.nyatta.ui.theme.NyattaTheme
 
 // TODO reuse for phone verification

@@ -1,14 +1,9 @@
 <resources>
     <string name="app_name">Nyatta</string>
-    <string name="location_label">Town</string>
-    <string name="description_label">Property name</string>
-    <string name="description_next">Next</string>
-    <string name="location_next">Next</string>
     <string name="caretaker_firstname">Firstname</string>
     <string name="caretaker_lastname">Lastname</string>
     <string name="caretaker_phone">Phone number</string>
     <string name="description_supporting_text">e.g Beach House Properties</string>
-    <string name="location_supporting_text">This is your local town</string>
     <string name="caretaker_supporting_firstname">Legal First Name</string>
     <string name="caretaker_supporting_lastname">Legal Last Name</string>
     <string name="caretaker_supporting_phone">Active Phone Number</string>
@@ -44,4 +39,13 @@
     <string name="name">Name</string>
     <string name="phone">Phone</string>
     <string name="email">Email</string>
+    <string name="property_name">Property name</string>
+    <string name="property_name_description">You can name this property only once and can\'t be changed later. This name will be tied to all units added under this property</string>
+    <string name="location">Location</string>
+    <string name="enable_location">Enable location</string>
+    <string name="save_description">Save</string>
+    <string name="location_description">Improve vacant units discoverability with accurate property location. Property units will share this location. Vacant units will be discovered independently.</string>
+    <string name="save_caretaker">Save</string>
+    <string name="no_caretaker">No</string>
+    <string name="yes_caretaker">Yes</string>
 </resources>

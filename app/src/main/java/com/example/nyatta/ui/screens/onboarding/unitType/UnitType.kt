@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.screens.onboarding.unit
+package com.example.nyatta.ui.screens.onboarding.unitType
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

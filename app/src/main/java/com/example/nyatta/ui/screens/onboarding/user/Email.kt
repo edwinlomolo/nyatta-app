@@ -17,6 +17,8 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.nyatta.ui.components.onboarding.ActionButton
+import com.example.nyatta.ui.components.onboarding.TextInput
 import com.example.nyatta.ui.theme.NyattaTheme
 
 @OptIn(ExperimentalComposeUiApi::class)
