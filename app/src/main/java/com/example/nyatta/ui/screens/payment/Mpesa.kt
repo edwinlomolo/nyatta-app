@@ -35,6 +35,7 @@ import com.example.nyatta.ui.components.onboarding.ActionButton
 import com.example.nyatta.ui.components.onboarding.Description
 import com.example.nyatta.ui.components.onboarding.TextInput
 import com.example.nyatta.ui.components.onboarding.Title
+import com.example.nyatta.ui.screens.onboarding.Onboarding
 import com.example.nyatta.ui.theme.NyattaTheme
 
 val paymentOptions = listOf("Mpesa")
@@ -48,10 +49,11 @@ fun Mpesa(
     val keyboardController = LocalSoftwareKeyboardController.current
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(paymentOptions[0]) }
 
-    Column(
+    Onboarding(
         modifier = modifier
-            .fillMaxSize()
             .padding(18.dp),
+        actionButtonText = stringResource(R.string.pay_monthly),
+        onActionButtonClick = {}
     ) {
         Title(stringResource(R.string.pay_monthly))
         Description(stringResource(R.string.pay_monthly_description))
@@ -113,10 +115,6 @@ fun Mpesa(
                 enabled = false
             )
         }
-        ActionButton(
-            text = stringResource(R.string.pay),
-            onClick = {}
-        )
     }
 }
 

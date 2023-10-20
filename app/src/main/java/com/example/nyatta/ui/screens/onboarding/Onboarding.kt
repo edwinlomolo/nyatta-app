@@ -38,7 +38,6 @@ fun Onboarding(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
         ) {
             Button(
                 onClick = { onActionButtonClick() },
