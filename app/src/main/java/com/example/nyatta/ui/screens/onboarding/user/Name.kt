@@ -34,8 +34,6 @@ fun Names(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextInput(
-            modifier = Modifier
-                .padding(top = 12.dp, bottom = 12.dp),
             value = "",
             onValueChange = {},
             placeholder = {
@@ -46,8 +44,6 @@ fun Names(
             )
         )
         TextInput(
-            modifier = Modifier
-                .padding(top = 12.dp, bottom = 12.dp),
             value = "",
             placeholder = {
                 Text("Last name")
@@ -62,19 +58,31 @@ fun Names(
                 imeAction = ImeAction.Done
             )
         )
-        Button(
+        ActionButton(text = "Save")
+    }
+}
+
+@Composable
+fun ActionButton(
+    modifier: Modifier = Modifier,
+    text: String = "",
+    content: (@Composable () -> Unit)? = null
+) {
+    Button(
+        modifier = modifier
+            .padding(top = 12.dp)
+            .fillMaxWidth(),
+        shape = MaterialTheme.shapes.small,
+        onClick = { /*TODO*/ }
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier
-                .padding(top = 12.dp)
-                .fillMaxWidth(),
-            shape = MaterialTheme.shapes.small,
-            onClick = { /*TODO*/ }
-        ) {
-            Text(
-                text = "Save",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier
-                    .padding(8.dp)
-            )
+                .padding(8.dp)
+        )
+        if (content != null) {
+            content()
         }
     }
 }
@@ -90,6 +98,7 @@ fun TextInput(
 ) {
     TextField(
         modifier = modifier
+            .padding(top = 12.dp, bottom = 12.dp)
             .fillMaxWidth(),
         colors = TextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.background,
