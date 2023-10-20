@@ -62,7 +62,7 @@ fun Location(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun LocationPreview() {
     NyattaTheme {

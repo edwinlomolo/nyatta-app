@@ -57,7 +57,7 @@ fun Email(
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun EmailPreview() {
     NyattaTheme {

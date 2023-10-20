@@ -30,7 +30,7 @@ fun Amenities(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun AmenitiesPreview() {
     NyattaTheme {

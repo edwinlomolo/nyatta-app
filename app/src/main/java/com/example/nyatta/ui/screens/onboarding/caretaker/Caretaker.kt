@@ -147,7 +147,7 @@ fun Caretaker(
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun CaretakerPreview() {
     NyattaTheme {

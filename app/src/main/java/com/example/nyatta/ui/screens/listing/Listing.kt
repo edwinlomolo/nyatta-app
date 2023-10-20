@@ -339,7 +339,7 @@ fun ListingBottomBar(
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun ListingPreview() {
     NyattaTheme {

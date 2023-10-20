@@ -91,7 +91,7 @@ fun Unit(modifier: Modifier = Modifier) {
         }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun UnitPreview() {
     NyattaTheme {

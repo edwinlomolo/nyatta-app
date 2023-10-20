@@ -49,7 +49,7 @@ fun Face(
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun FacePreview() {
     NyattaTheme {

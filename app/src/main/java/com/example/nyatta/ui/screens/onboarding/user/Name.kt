@@ -99,7 +99,9 @@ fun TextInput(
     onValueChange: () -> Unit,
     prefix: (@Composable () -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    readOnly: Boolean = false,
+    enabled: Boolean = true
 ) {
     TextField(
         modifier = modifier
@@ -114,11 +116,13 @@ fun TextInput(
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         placeholder = placeholder,
+        enabled = enabled,
+        readOnly = readOnly,
         onValueChange = { onValueChange() }
     )
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun NamesPreview() {
     NyattaTheme {

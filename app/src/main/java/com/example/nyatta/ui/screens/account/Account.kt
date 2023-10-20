@@ -167,7 +167,7 @@ fun Section(
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun AccountPreview() {
     NyattaTheme {

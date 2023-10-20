@@ -43,7 +43,7 @@ fun ListingPhoto(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun ListingPhotoPreview() {
     NyattaTheme {

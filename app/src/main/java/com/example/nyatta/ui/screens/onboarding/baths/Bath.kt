@@ -67,7 +67,7 @@ fun Bath(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun BathPreview() {
     NyattaTheme {

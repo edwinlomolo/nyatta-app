@@ -70,7 +70,7 @@ fun Description(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun DescriptionPreview() {
     NyattaTheme {

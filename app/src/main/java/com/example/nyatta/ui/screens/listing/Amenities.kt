@@ -20,7 +20,7 @@ fun ListingAmenity(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun ListingAmenityPreview() {
     NyattaTheme {

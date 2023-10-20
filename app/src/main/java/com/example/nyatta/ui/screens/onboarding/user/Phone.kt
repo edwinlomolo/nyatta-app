@@ -63,7 +63,7 @@ fun Phone(
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun PhonePreview() {
     NyattaTheme {

@@ -99,7 +99,7 @@ fun TownsTopBar(townsViewModel: TownsViewModel, towns: List<GetTownsQuery.GetTow
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun TownsPreview() {
     NyattaTheme {

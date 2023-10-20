@@ -81,7 +81,7 @@ fun Bedroom(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun BedroomPreview() {
     NyattaTheme {

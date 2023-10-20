@@ -66,7 +66,7 @@ fun Price(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun PricePreview() {
     NyattaTheme {

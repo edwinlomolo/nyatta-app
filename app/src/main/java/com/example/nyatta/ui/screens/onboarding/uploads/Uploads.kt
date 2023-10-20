@@ -85,7 +85,7 @@ fun FeatureImage(text: String, imageCount: Int, modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun UploadsPreview() {
     NyattaTheme {
