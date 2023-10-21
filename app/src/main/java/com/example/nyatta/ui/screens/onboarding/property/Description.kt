@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.screens.onboarding.apartments.description
+package com.example.nyatta.ui.screens.onboarding.property
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.screens.payment
+package com.example.nyatta.ui.screens.onboarding.payment
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

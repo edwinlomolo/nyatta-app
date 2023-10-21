@@ -1,5 +1,6 @@
 package com.example.nyatta.ui.screens.onboarding.apartment
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
@@ -7,6 +8,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -65,7 +67,9 @@ fun Location(
                     expanded = expanded,
                     onDismissRequest = {
                         expanded = false
-                    }
+                    },
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background)
                 ) {
                     options.forEach {
                         DropdownMenuItem(

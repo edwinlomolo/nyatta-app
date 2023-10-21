@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,38 +21,42 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.nyatta.R
+import com.example.nyatta.ui.components.onboarding.Description
+import com.example.nyatta.ui.components.onboarding.Title
 import com.example.nyatta.ui.screens.onboarding.Onboarding
-import com.example.nyatta.ui.screens.onboarding.baths.pad
 import com.example.nyatta.ui.theme.NyattaTheme
 
 @Composable
 fun Uploads(modifier: Modifier = Modifier) {
-    Onboarding(modifier = modifier) {
-        Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-        ) {
-            FeatureImage(text = stringResource(R.string.living_room), imageCount = 4)
-            FeatureImage(text = stringResource(R.string.baths), imageCount = 2)
-            // TODO if has bedroom count
-            FeatureImage(text = stringResource(R.string.bedrooms), imageCount = 3)
-            // TODO if has balcony/front porch
-            FeatureImage(text = stringResource(R.string.balcony), imageCount = 1)
-            FeatureImage(text = stringResource(R.string.front_porch), imageCount = 1)
-            FeatureImage(text = stringResource(R.string.kitchen), imageCount = 2)
-            // TODO if has parking
-            FeatureImage(text = stringResource(R.string.parking), imageCount = 2)
-        }
+    Onboarding(
+        modifier = modifier,
+        actionButtonText = "Save",
+        onActionButtonClick = {}
+    ) {
+        Title("Uploads")
+        Description("Describe unit in visual form")
+        FeatureImage(text = stringResource(R.string.living_room), imageCount = 4)
+        FeatureImage(text = stringResource(R.string.baths), imageCount = 2)
+        // TODO if has bedroom count
+        FeatureImage(text = stringResource(R.string.bedrooms), imageCount = 3)
+        // TODO if has balcony/front porch
+        FeatureImage(text = stringResource(R.string.balcony), imageCount = 1)
+        FeatureImage(text = stringResource(R.string.front_porch), imageCount = 1)
+        FeatureImage(text = stringResource(R.string.kitchen), imageCount = 2)
+        // TODO if has parking
+        FeatureImage(text = stringResource(R.string.parking), imageCount = 2)
     }
 }
 
 @Composable
 fun FeatureImage(text: String, imageCount: Int, modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier
+            .padding(8.dp)
+    ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.then(pad)
+            style = MaterialTheme.typography.titleMedium,
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,

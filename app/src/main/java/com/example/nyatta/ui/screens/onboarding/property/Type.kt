@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.screens.onboarding.type
+package com.example.nyatta.ui.screens.onboarding.property
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

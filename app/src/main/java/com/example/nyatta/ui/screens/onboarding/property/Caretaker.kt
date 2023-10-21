@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.screens.onboarding.apartments.caretaker
+package com.example.nyatta.ui.screens.onboarding.property
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
