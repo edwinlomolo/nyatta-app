@@ -54,4 +54,11 @@
     <string name="kes">KES</string>
     <string name="monthly_fee">1,500</string>
     <string name="_254">+254</string>
+    <string name="apartment_name_example">e.g Harambee</string>
+    <string name="apartment_description">This is what your apartment will be referred to as on the platform.</string>
+    <string name="unit_name">Unit name</string>
+    <string name="associate_unit_property">Associate to one of your listed properties.</string>
+    <string name="select_property">Select property</string>
+    <string name="apartment_property_save">Save</string>
+    <string name="apartment_location_save">Save</string>
 </resources>

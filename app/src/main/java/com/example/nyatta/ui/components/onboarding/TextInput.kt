@@ -20,6 +20,8 @@ fun TextInput(
     prefix: (@Composable () -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
     readOnly: Boolean = false,
     enabled: Boolean = true
 ) {
@@ -30,8 +32,11 @@ fun TextInput(
         prefix = prefix,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.background,
-            unfocusedContainerColor = MaterialTheme.colorScheme.background
+            unfocusedContainerColor = MaterialTheme.colorScheme.background,
+            unfocusedIndicatorColor = MaterialTheme.colorScheme.primary
         ),
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
         value = value,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
