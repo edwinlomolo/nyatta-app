@@ -28,11 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavDestination
 import com.example.nyatta.R
 import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.screens.home.BottomBar
-import com.example.nyatta.ui.screens.home.TopAppBar
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 

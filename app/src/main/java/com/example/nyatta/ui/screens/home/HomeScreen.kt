@@ -11,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -102,7 +101,10 @@ fun BottomBar(
     val items = listOf("Home", "Add", "Account")
     val icons = listOf(Icons.Outlined.Home, Icons.Outlined.Add, Icons.Outlined.AccountCircle)
 
-    NavigationBar(modifier = modifier) {
+    NavigationBar(
+        modifier = modifier,
+        containerColor = MaterialTheme.colorScheme.inverseOnSurface
+    ) {
         items.forEachIndexed { index, item ->
             NavigationBarItem(
                 selected = currentRoute == item.lowercase(),

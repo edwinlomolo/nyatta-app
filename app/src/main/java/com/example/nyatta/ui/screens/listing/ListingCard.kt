@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -39,10 +42,11 @@ fun Listing(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         ),
+        shape = RoundedCornerShape(0.dp),
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .clickable {}
-            .padding(8.dp)
+            .padding(top = 8.dp, bottom = 8.dp)
     ) {
         Box {
             Image(
@@ -50,16 +54,17 @@ fun Listing(
                 contentDescription = "Apartment",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .padding(8.dp)
+                    .height(400.dp)
+                    .fillMaxWidth()
+
             )
             Column(
                 modifier = Modifier
                     .padding(18.dp)
+                    .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
             ) {
-                Row(
-                    modifier = Modifier
-                ) {
+                Row {
                     Text(
                         text = "2 bedroom",
                         style = TextStyle(
