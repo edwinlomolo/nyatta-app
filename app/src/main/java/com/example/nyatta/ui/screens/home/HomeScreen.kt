@@ -99,8 +99,8 @@ fun BottomBar(
     onNavigateTo: (route: String) -> Unit = {},
     currentRoute: String? = null
 ) {
-    val items = listOf("Home", "Favorite", "Add", "Account")
-    val icons = listOf(Icons.Outlined.Home, Icons.Outlined.FavoriteBorder, Icons.Outlined.Add, Icons.Outlined.AccountCircle)
+    val items = listOf("Home", "Add", "Account")
+    val icons = listOf(Icons.Outlined.Home, Icons.Outlined.Add, Icons.Outlined.AccountCircle)
 
     NavigationBar(modifier = modifier) {
         items.forEachIndexed { index, item ->
