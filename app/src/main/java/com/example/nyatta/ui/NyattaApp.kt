@@ -29,7 +29,6 @@ import com.example.nyatta.ui.screens.home.HomeUiState
 import com.example.nyatta.ui.screens.home.HomeViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
 
-
 @Composable
 fun NyattaApp() {
     var selectedItem by remember { mutableIntStateOf(0) }
