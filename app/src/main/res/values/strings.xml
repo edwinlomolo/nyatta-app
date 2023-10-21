@@ -35,7 +35,7 @@
     <string name="vacant_homes">Vacant Homes</string>
     <string name="filter_menu">Filter menu</string>
     <string name="personal_details">Personal details</string>
-    <string name="account_info">Account info</string>
+    <string name="account_info">Account</string>
     <string name="name">Name</string>
     <string name="phone">Phone</string>
     <string name="email">Email</string>
@@ -72,4 +72,6 @@
     <string name="occupied">Occupied</string>
     <string name="tell_unit_state">Tell the state of this unit</string>
     <string name="unit_state">State</string>
+    <string name="listings_in_your_area">%1$s listings in your area</string>
+    <string name="back">Back</string>
 </resources>
