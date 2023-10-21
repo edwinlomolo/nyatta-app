@@ -1,7 +1,8 @@
 package com.example.nyatta.ui.screens.onboarding.apartment
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -12,10 +13,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.nyatta.R
 import com.example.nyatta.ui.components.onboarding.Description
 import com.example.nyatta.ui.components.onboarding.TextInput
@@ -37,9 +38,13 @@ fun Location(
         actionButtonText = stringResource(R.string.apartment_location_save),
         onActionButtonClick = {}
     ) {
-        Title("Location")
-        Description("Select building that shares a location with this unit.")
-        Column {
+        Title(stringResource(R.string.location))
+        Description(stringResource(R.string.location_building_share))
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .wrapContentSize(Alignment.TopStart)
+        ) {
             ExposedDropdownMenuBox(
                 expanded = expanded,
                 onExpandedChange = {
@@ -54,7 +59,6 @@ fun Location(
                     },
                     onValueChange = { /*TODO*/ },
                     modifier = Modifier
-                        .padding(8.dp)
                         .menuAnchor()
                 )
                 ExposedDropdownMenu(
@@ -69,7 +73,8 @@ fun Location(
                             onClick = {
                                 building = it
                                 expanded = false
-                            }
+                            },
+                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
                         )
                     }
                 }
