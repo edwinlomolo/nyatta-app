@@ -51,6 +51,8 @@ fun Type(
         modifier = modifier
             .fillMaxSize()
             .selectableGroup(),
+        actionButtonText = "Save",
+        onActionButtonClick = {},
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
