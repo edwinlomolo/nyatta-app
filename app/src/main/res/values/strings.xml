@@ -63,8 +63,8 @@
     <string name="apartment_location_save">Save</string>
     <string name="location_building_share">Select building that shares a location with this unit.</string>
     <string name="select_amenities_offered">Select amenities offered by this unit</string>
-    <string name="master">Master</string>
-    <string name="ensuite">En-suite</string>
+    <string name="master_en_suite">Master En-suite</string>
+    <string name="en_suite">En-suite</string>
     <string name="describe_bedrooms">How can you describe your bedrooms</string>
     <string name="bedroom_title">Bedrooms</string>
     <string name="tell_baths">Tell number of bathrooms this units offers</string>

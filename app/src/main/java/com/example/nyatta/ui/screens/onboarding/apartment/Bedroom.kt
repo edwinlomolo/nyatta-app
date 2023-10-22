@@ -52,7 +52,7 @@ fun Bedroom(modifier: Modifier = Modifier) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(R.string.master)
+                    text = stringResource(R.string.master_en_suite)
                 )
                 Checkbox(
                     checked = master,
@@ -69,7 +69,7 @@ fun Bedroom(modifier: Modifier = Modifier) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text (
-                    text = stringResource(R.string.ensuite)
+                    text = stringResource(R.string.en_suite)
                 )
                 Checkbox(
                     checked = enSuite,

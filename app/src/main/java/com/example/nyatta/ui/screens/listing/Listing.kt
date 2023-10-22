@@ -8,6 +8,8 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,12 +19,12 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FavoriteBorder
@@ -43,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,6 +69,7 @@ val amenities = listOf(
 ).groupBy { it.category }
 
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ListingView(
     modifier: Modifier = Modifier,
@@ -97,17 +101,20 @@ fun ListingView(
                        contentScale = ContentScale.Crop,
                        modifier = Modifier
                            .fillMaxWidth()
-                           .height(500.dp),
+                           .height(280.dp),
                        contentDescription = null,
                        alpha = 0.8f
                    )
-                   Row(
+                   FlowRow(
                        modifier = Modifier
-                           .padding(16.dp)
+                           .fillMaxWidth(1f)
+                           .wrapContentHeight(align = Alignment.Top)
+                           .padding(8.dp),
+                       horizontalArrangement = Arrangement.spacedBy(10.dp),
+                       verticalArrangement = Arrangement.spacedBy(10.dp),
                    ) {
-                       Tag(text= "master")
-                       Spacer(modifier = Modifier.size(18.dp))
-                       Tag(text = "en-suite")
+                       Tag(text= stringResource(R.string.master_en_suite))
+                       Tag(text= stringResource(R.string.en_suite))
                    }
                }
                Row(
@@ -277,15 +284,13 @@ fun Tag(
 ) {
     Box(
         modifier = modifier
-            .background(
-                color = MaterialTheme.colorScheme.background,
-                shape = RoundedCornerShape(16.dp)
-            )
-            .padding(start = 16.dp, end = 16.dp, bottom = 4.dp, top = 4.dp)
+            .background(color = MaterialTheme.colorScheme.background)
+            .padding(start = 12.dp, end = 12.dp, bottom = 4.dp, top = 4.dp)
     ) {
         Text(
             text = text,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.surfaceTint
         )
     }
 }
