@@ -27,14 +27,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.NyattaViewModelProvider
 import com.example.nyatta.R
+import com.example.nyatta.ui.components.onboarding.Description
+import com.example.nyatta.ui.components.onboarding.Title
 import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.screens.onboarding.Onboarding
 import com.example.nyatta.ui.screens.home.BottomBar
@@ -90,31 +94,14 @@ fun Type(
                     } else {
                         navigateToNext(ApartmentDestination.route)
                     }
-                },
-                horizontalAlignment = Alignment.CenterHorizontally
+                }
             ) {
-                Text(
-                    text = "Let's start with how you will organize your listings",
-                    style = TextStyle(
-                        fontFamily = MabryFont,
-                        fontSize = 26.sp
-                    ),
-                    modifier = Modifier
-                        .padding(start = 16.dp, top = 18.dp)
-                )
-                Text(
-                    text = "This will make it easier for you to group/add your listings independently or under one building.",
-                    style = TextStyle(
-                        fontFamily = MabryFont,
-                        fontSize = 16.sp
-                    ),
-                    modifier = Modifier
-                        .padding(start = 16.dp)
-                )
+                Title(stringResource(R.string.start_your_setup))
+                Description(stringResource(R.string.what_to_add))
                 propertyOptions.forEachIndexed { index, option ->
                     Row(
                         modifier = Modifier
-                            .padding(18.dp)
+                            .padding(8.dp)
                             .fillMaxWidth()
                             .selectable(
                                 selected = (option == onboardingUiState.type),
@@ -162,7 +149,8 @@ fun Type(
                                             .padding(start = 12.dp),
                                         style = TextStyle(
                                             fontFamily = MabryFont,
-                                            fontSize = 18.sp
+                                            fontSize = 16.sp,
+                                            fontWeight = FontWeight.SemiBold
                                         )
                                     )
                                     Text(
@@ -171,7 +159,7 @@ fun Type(
                                         text = typeDefinition[index],
                                         style = TextStyle(
                                             fontFamily = MabryFont,
-                                            fontSize = 16.sp
+                                            fontSize = 14.sp
                                         )
                                     )
                                 }

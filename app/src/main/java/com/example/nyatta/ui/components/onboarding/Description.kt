@@ -20,8 +20,8 @@ fun Description(
         modifier = modifier.padding(8.dp),
         style = TextStyle(
             fontFamily = MabryFont,
-            fontSize = 21.sp,
-            lineHeight = 32.sp,
+            fontSize = 18.sp,
+            lineHeight = 24.sp,
             fontWeight = FontWeight.ExtraLight
         )
     )

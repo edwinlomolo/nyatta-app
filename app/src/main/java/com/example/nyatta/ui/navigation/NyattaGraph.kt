@@ -85,7 +85,9 @@ fun NyattaNavHost(
             )
         }
         composable(route = LocationDestination.route) {
-            Location()
+            Location(
+                navigateUp = { navController.navigateUp() }
+            )
         }
     }
 }
