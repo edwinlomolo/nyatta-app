@@ -16,7 +16,7 @@ fun TextInput(
     modifier: Modifier = Modifier,
     value: String = "",
     placeholder: (@Composable () -> Unit)? = null,
-    onValueChange: () -> Unit,
+    onValueChange: (String) -> Unit,
     prefix: (@Composable () -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -43,6 +43,6 @@ fun TextInput(
         placeholder = placeholder,
         enabled = enabled,
         readOnly = readOnly,
-        onValueChange = { onValueChange() }
+        onValueChange = { onValueChange(it) }
     )
 }

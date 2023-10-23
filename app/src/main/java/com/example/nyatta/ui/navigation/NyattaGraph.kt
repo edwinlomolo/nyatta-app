@@ -13,6 +13,14 @@ import com.example.nyatta.ui.screens.home.Home
 import com.example.nyatta.ui.screens.home.HomeDestination
 import com.example.nyatta.ui.screens.listing.ListingDetailsDestination
 import com.example.nyatta.ui.screens.listing.Listing
+import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentDescription
+import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentDestination
+import com.example.nyatta.ui.screens.onboarding.location.Location
+import com.example.nyatta.ui.screens.onboarding.location.LocationDestination
+import com.example.nyatta.ui.screens.onboarding.property.Caretaker
+import com.example.nyatta.ui.screens.onboarding.property.CaretakerDestination
+import com.example.nyatta.ui.screens.onboarding.property.PropertyDescription
+import com.example.nyatta.ui.screens.onboarding.property.PropertyDestination
 import com.example.nyatta.ui.screens.onboarding.property.StartOnboardingDestination
 import com.example.nyatta.ui.screens.onboarding.property.Type
 
@@ -54,8 +62,29 @@ fun NyattaNavHost(
         composable(route = StartOnboardingDestination.route) {
             Type(
                 onNavigateTo = { navController.navigate(it) },
-                currentRoute = navController.currentBackStackEntry?.destination?.route
+                currentRoute = navController.currentBackStackEntry?.destination?.route,
+                navigateToNext = { navController.navigate(it) }
             )
+        }
+        composable(route = ApartmentDestination.route) {
+            ApartmentDescription(
+                navigateUp = { navController.navigateUp() },
+                navigateNext = { navController.navigate(it) }
+            )
+        }
+        composable(route = PropertyDestination.route) {
+            PropertyDescription(
+                navigateUp = { navController.navigateUp() },
+                navigateNext = { navController.navigate(it) }
+            )
+        }
+        composable(route = CaretakerDestination.route) {
+            Caretaker(
+                navigateNext = { navController.navigate(it) }
+            )
+        }
+        composable(route = LocationDestination.route) {
+            Location()
         }
     }
 }

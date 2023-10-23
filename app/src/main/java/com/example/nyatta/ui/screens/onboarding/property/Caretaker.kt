@@ -42,20 +42,28 @@ import com.example.nyatta.R
 import com.example.nyatta.ui.components.onboarding.Description
 import com.example.nyatta.ui.components.onboarding.TextInput
 import com.example.nyatta.ui.components.onboarding.Title
+import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.screens.onboarding.Onboarding
+import com.example.nyatta.ui.screens.onboarding.location.LocationDestination
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 
+object CaretakerDestination: Navigation {
+    override val route = "property/caretaker"
+    override val title = "Caretaker"
+}
+
 @Composable
 fun Caretaker(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateNext: (String) -> Unit = {}
 ) {
     var state by remember { mutableStateOf(true) }
 
     Onboarding(
         modifier = modifier,
         actionButtonText = stringResource(R.string.save_caretaker),
-        onActionButtonClick = {}
+        onActionButtonClick = { navigateNext(LocationDestination.route) }
     ) {
         Title("Caretaker")
         Description("This is someone that can be reached to schedule a visit or allow access to your property.")

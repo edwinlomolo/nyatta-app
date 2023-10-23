@@ -11,11 +11,19 @@ import androidx.compose.ui.unit.dp
 import com.example.nyatta.R
 import com.example.nyatta.ui.components.onboarding.Description
 import com.example.nyatta.ui.components.onboarding.Title
+import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.screens.onboarding.Onboarding
 import com.example.nyatta.ui.theme.NyattaTheme
 
+object LocationDestination: Navigation {
+    override val route = "location"
+    override val title = "Location"
+}
+
 @Composable
-fun Location(modifier: Modifier = Modifier) {
+fun Location(
+    modifier: Modifier = Modifier
+) {
     Onboarding (
         modifier = modifier.fillMaxSize(),
         actionButtonText = stringResource(R.string.enable_location),

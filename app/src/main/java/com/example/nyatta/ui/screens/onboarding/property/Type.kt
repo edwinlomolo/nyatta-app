@@ -20,8 +20,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,10 +32,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.nyatta.NyattaViewModelProvider
 import com.example.nyatta.R
 import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.screens.onboarding.Onboarding
 import com.example.nyatta.ui.screens.home.BottomBar
+import com.example.nyatta.ui.screens.onboarding.OnboardingViewModel
+import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentDestination
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 
@@ -44,7 +48,7 @@ object StartOnboardingDestination: Navigation {
     override val title = null
 }
 
-val propertyOptions = listOf("Apartments Building", "Apartment", "Bungalow")
+
 val optionImages = listOf(R.drawable.apartments, R.drawable.apartment, R.drawable.bungalow)
 val typeDefinition = listOf(
     "Large building divided into separate residential apartments on different floors",
@@ -55,9 +59,12 @@ val typeDefinition = listOf(
 fun Type(
     modifier: Modifier = Modifier,
     onNavigateTo: (route: String) -> Unit = {},
-    currentRoute: String? = null
+    currentRoute: String? = null,
+    viewModel: OnboardingViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
+    navigateToNext: (route: String) -> Unit = {}
 ) {
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(propertyOptions[0]) }
+    val onboardingUiState by viewModel.uiState.collectAsState()
+    val propertyOptions = viewModel.propertyOptions
 
     Scaffold(
         bottomBar = {
@@ -76,14 +83,21 @@ fun Type(
                 modifier = modifier
                     .selectableGroup(),
                 actionButtonText = "Start",
-                onActionButtonClick = {},
+                onActionButtonClick = {
+                    val type = onboardingUiState.type
+                    if (type == "Apartments Building") {
+                        navigateToNext(PropertyDestination.route)
+                    } else {
+                        navigateToNext(ApartmentDestination.route)
+                    }
+                },
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = "Let's start with how you will organize your listings",
                     style = TextStyle(
                         fontFamily = MabryFont,
-                        fontSize = 36.sp
+                        fontSize = 26.sp
                     ),
                     modifier = Modifier
                         .padding(start = 16.dp, top = 18.dp)
@@ -92,7 +106,7 @@ fun Type(
                     text = "This will make it easier for you to group/add your listings independently or under one building.",
                     style = TextStyle(
                         fontFamily = MabryFont,
-                        fontSize = 18.sp
+                        fontSize = 16.sp
                     ),
                     modifier = Modifier
                         .padding(start = 16.dp)
@@ -103,8 +117,8 @@ fun Type(
                             .padding(18.dp)
                             .fillMaxWidth()
                             .selectable(
-                                selected = (option == selectedOption),
-                                onClick = { onOptionSelected(option) },
+                                selected = (option == onboardingUiState.type),
+                                onClick = { viewModel.setType(option) },
                                 role = Role.RadioButton
                             )
                     ) {
@@ -112,13 +126,13 @@ fun Type(
                             modifier = Modifier
                                 .fillMaxWidth(),
                             colors = CardDefaults.cardColors(
-                                containerColor = if (option == selectedOption)
+                                containerColor = if (option == onboardingUiState.type)
                                     MaterialTheme.colorScheme.surface
                                 else Color.Transparent
                             ),
                             border = BorderStroke(
                                 1.dp,
-                                color = if (option == selectedOption)
+                                color = if (option == onboardingUiState.type)
                                     MaterialTheme.colorScheme.primary
                                 else MaterialTheme.colorScheme.onSurfaceVariant
                             ),
@@ -130,8 +144,8 @@ fun Type(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 RadioButton(
-                                    selected = (option == selectedOption),
-                                    onClick = null
+                                    selected = (option == onboardingUiState.type),
+                                    onClick = { viewModel.setType(option) }
                                 )
                                 Spacer(modifier = Modifier.size(28.dp))
                                 Image(

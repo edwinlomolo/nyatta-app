@@ -1,10 +1,16 @@
 package com.example.nyatta.ui.components.onboarding
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -14,44 +20,66 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.nyatta.R
 import com.example.nyatta.ui.screens.onboarding.Onboarding
+import com.example.nyatta.ui.screens.home.TopAppBar
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun PropertyDescription(
+fun Description(
     modifier: Modifier = Modifier,
     title: String,
     description: String,
-    onValueChange: () -> Unit = {},
+    onValueChange: (String) -> Unit = {},
+    value: String,
     onActionButtonClick: () -> Unit = {},
     actionButtonText: String = stringResource(R.string.save_description),
-    placeholder: @Composable (() -> Unit)? = null
+    placeholder: @Composable (() -> Unit)? = null,
+    navigateUp: () -> Unit = {},
+    appBarTitle: String
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
-    Onboarding(
-        modifier = modifier,
-        onActionButtonClick = { onActionButtonClick() },
-        actionButtonText = actionButtonText
-    ) {
-        Column {
-            Title(title)
-            Description(description)
-            TextInput(
-                value = "",
-                onValueChange = { onValueChange() },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        keyboardController?.hide()
-                    }
-                ),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Done
-                ),
-                placeholder = placeholder
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = appBarTitle,
+                scrollBehavior = scrollBehavior,
+                canNavigateBack = true,
+                navigateUp = navigateUp
             )
+        }
+    ) {innerPadding ->
+        Surface(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            Onboarding(
+                modifier = modifier,
+                onActionButtonClick = onActionButtonClick,
+                actionButtonText = actionButtonText
+            ) {
+                Column {
+                    Title(title)
+                    Description(description)
+                    TextInput(
+                        value = value,
+                        onValueChange = { onValueChange(it) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                keyboardController?.hide()
+                            }
+                        ),
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Done
+                        ),
+                        placeholder = placeholder
+                    )
+                }
+            }
         }
     }
 }

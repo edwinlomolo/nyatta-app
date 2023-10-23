@@ -49,7 +49,7 @@ fun Onboarding(
                 Text(
                     modifier = Modifier.padding(8.dp),
                     text = actionButtonText,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleSmall
                 )
             }
         }
