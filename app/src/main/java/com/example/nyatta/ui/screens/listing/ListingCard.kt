@@ -2,7 +2,6 @@ package com.example.nyatta.ui.screens.listing
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,7 +29,7 @@ import com.example.nyatta.ui.theme.MabryFont
 
 
 @Composable
-fun Listing(
+fun ListingCard(
     modifier: Modifier = Modifier,
 ) {
     val image =
@@ -45,7 +44,6 @@ fun Listing(
         shape = RoundedCornerShape(0.dp),
         modifier = modifier
             .fillMaxSize()
-            .clickable {}
             .padding(top = 8.dp, bottom = 8.dp)
     ) {
         Box {

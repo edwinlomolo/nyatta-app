@@ -26,19 +26,15 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,13 +48,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nyatta.R
+import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
+import com.example.nyatta.ui.screens.home.TopAppBar
 
 data class Amenity(
     val category: String,
     val name: String
 )
+
+object ListingDetailsDestination: Navigation {
+    override val route = "listing_details"
+    override val title = null
+    const val listingIdArg = "listingId"
+    val routeWithArgs = "${route}/{$listingIdArg}"
+}
 
 val amenities = listOf(
     Amenity("Internet", "Safaricom home fibre"),
@@ -69,19 +74,23 @@ val amenities = listOf(
 ).groupBy { it.category }
 
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun ListingView(
+fun Listing(
     modifier: Modifier = Modifier,
+    navigateUp: () -> Unit = {}
 ) {
     val image = painterResource(
         R.drawable.apartment_sunset_in_the_background_in_africa_and_person_c4dadd13_9720_4c7f_ad7b_86e197bfd86c
     )
-    val itemList = (0..50).toList()
 
     Scaffold(
         topBar = {
-            ListingTopBar()
+            TopAppBar(
+                canNavigateBack = true,
+                title = "Unit name",
+                navigateUp = navigateUp
+            )
         },
         bottomBar = {
             ListingBottomBar()
@@ -295,30 +304,6 @@ fun Tag(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ListingTopBar(
-    modifier: Modifier = Modifier
-) {
-    TopAppBar(
-        modifier = modifier,
-        title = {
-            Text(
-                text = "Unit name"
-            )
-        },
-        actions = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    Icons.Outlined.FavoriteBorder,
-                    contentDescription = "Save",
-                    modifier = Modifier.size(32.dp)
-                )
-            }
-        }
-    )
-}
-
 @Composable
 fun ListingBottomBar(
     modifier: Modifier = Modifier
@@ -348,6 +333,6 @@ fun ListingBottomBar(
 @Composable
 fun ListingPreview() {
     NyattaTheme {
-        ListingView()
+        Listing()
     }
 }

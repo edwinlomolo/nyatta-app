@@ -1,7 +1,9 @@
 package com.example.nyatta.ui.screens.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -37,7 +39,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
 import com.example.nyatta.ui.components.Loading
 import com.example.nyatta.ui.navigation.Navigation
-import com.example.nyatta.ui.screens.listing.Listing
+import com.example.nyatta.ui.screens.listing.ListingCard
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 
@@ -51,12 +53,13 @@ object HomeDestination: Navigation {
 fun Home(
     modifier: Modifier = Modifier,
     onNavigateTo: (route: String) -> Unit = {},
-    currentRoute: String? = null
+    currentRoute: String? = null,
+    onNavigateToListing: (Int) -> Unit = {}
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
     val s = homeViewModel.homeUiState
-    val showBars = !(s is HomeUiState.Loading)
+    val showBars = s !is HomeUiState.Loading
     val errored = (s is HomeUiState.ApolloError || s is HomeUiState.ApplicationError)
 
     Scaffold(
@@ -70,7 +73,7 @@ fun Home(
                 currentRoute = currentRoute
             )
         }
-    ) {
+    ) { it ->
         Surface(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.background)
@@ -84,7 +87,10 @@ fun Home(
                 is HomeUiState.ApplicationError -> Text(text = "${s.error}")
                 is HomeUiState.Success -> Column(modifier = modifier.verticalScroll(rememberScrollState())) {
                     repeat(5) {
-                        Listing()
+                        ListingCard(
+                            modifier = Modifier
+                                .clickable{ onNavigateToListing(it) }
+                        )
                     }
                 }
             }
@@ -125,11 +131,13 @@ fun TopAppBar(
     listingsCount: Int = 0,
     canNavigateBack: Boolean = false,
     navigateUp: () -> Unit = {},
-    scrollBehavior: TopAppBarScrollBehavior? = null
+    scrollBehavior: TopAppBarScrollBehavior? = null,
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(
         modifier = modifier,
         scrollBehavior = scrollBehavior,
+        actions = actions,
         title = {
             if (title != null || listingsCount > 0) {
                 Column {
