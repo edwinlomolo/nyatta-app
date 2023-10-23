@@ -80,7 +80,8 @@ fun NyattaNavHost(
         }
         composable(route = CaretakerDestination.route) {
             Caretaker(
-                navigateNext = { navController.navigate(it) }
+                navigateNext = { navController.navigate(it) },
+                navigateUp = { navController.navigateUp() }
             )
         }
         composable(route = LocationDestination.route) {

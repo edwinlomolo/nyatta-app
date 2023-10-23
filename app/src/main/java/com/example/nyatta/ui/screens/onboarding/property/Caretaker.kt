@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -12,8 +13,11 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -43,6 +47,7 @@ import com.example.nyatta.ui.components.onboarding.Description
 import com.example.nyatta.ui.components.onboarding.TextInput
 import com.example.nyatta.ui.components.onboarding.Title
 import com.example.nyatta.ui.navigation.Navigation
+import com.example.nyatta.ui.screens.home.TopAppBar
 import com.example.nyatta.ui.screens.onboarding.Onboarding
 import com.example.nyatta.ui.screens.onboarding.location.LocationDestination
 import com.example.nyatta.ui.theme.MabryFont
@@ -53,67 +58,85 @@ object CaretakerDestination: Navigation {
     override val title = "Caretaker"
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Caretaker(
     modifier: Modifier = Modifier,
+    navigateUp: () -> Unit = {},
     navigateNext: (String) -> Unit = {}
 ) {
     var state by remember { mutableStateOf(true) }
 
-    Onboarding(
-        modifier = modifier,
-        actionButtonText = stringResource(R.string.save_caretaker),
-        onActionButtonClick = { navigateNext(LocationDestination.route) }
-    ) {
-        Title("Caretaker")
-        Description("This is someone that can be reached to schedule a visit or allow access to your property.")
-        Column {
-            Text(
-                text = "Are you the caretaker?",
-                style = TextStyle(
-                    fontFamily = MabryFont,
-                    fontSize = 21.sp,
-                    fontWeight = FontWeight.SemiBold
-                ),
-                modifier = Modifier.padding(8.dp)
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                canNavigateBack = true,
+                navigateUp = navigateUp,
+                title = CaretakerDestination.title
             )
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .selectableGroup()
+        }
+    ) { innerPadding ->
+        Surface(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            Onboarding(
+                modifier = modifier,
+                actionButtonText = stringResource(R.string.save_caretaker),
+                onActionButtonClick = { navigateNext(LocationDestination.route) }
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    RadioButton(
-                        selected = state,
-                        onClick = { state = true },
-                        modifier = Modifier
-                            .semantics {
-                                contentDescription = "Yes radio button"
-                            }
-                    )
+                Title("Caretaker")
+                Description("This is someone that can be reached to schedule a visit or allow access to your property.")
+                Column {
                     Text(
-                        text = stringResource(R.string.yes_caretaker)
+                        text = "Are you the caretaker?",
+                        style = TextStyle(
+                            fontFamily = MabryFont,
+                            fontSize = 21.sp,
+                            fontWeight = FontWeight.SemiBold
+                        ),
+                        modifier = Modifier.padding(8.dp)
                     )
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .selectableGroup()
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            RadioButton(
+                                selected = state,
+                                onClick = { state = true },
+                                modifier = Modifier
+                                    .semantics {
+                                        contentDescription = "Yes radio button"
+                                    }
+                            )
+                            Text(
+                                text = stringResource(R.string.yes_caretaker)
+                            )
+                        }
+                        Spacer(modifier = Modifier.size(32.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            RadioButton(
+                                selected = !state,
+                                onClick = { state = false },
+                                modifier = Modifier
+                                    .semantics {
+                                        contentDescription = "No radio button"
+                                    }
+                            )
+                            Text(
+                                text = stringResource(R.string.no_caretaker)
+                            )
+                        }
+                    }
                 }
-                Spacer(modifier = Modifier.size(32.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    RadioButton(
-                        selected = !state,
-                        onClick = { state = false },
-                        modifier = Modifier
-                            .semantics {
-                                contentDescription = "No radio button"
-                            }
-                    )
-                    Text(
-                        text = stringResource(R.string.no_caretaker)
-                    )
+                // TODO Image upload
+                if (!state) {
+                    CaretakerDetails()
                 }
             }
-        }
-        // TODO Image upload
-        if (!state) {
-            CaretakerDetails()
         }
     }
 }
