@@ -1,6 +1,7 @@
 package com.example.nyatta
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -10,6 +11,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -33,12 +35,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.ui.NyattaApp
+import com.example.nyatta.ui.screens.account.AccountViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationToken
+import com.google.android.gms.tasks.CancellationTokenSource
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val accViewModel by viewModels<AccountViewModel>()
 
+    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -71,6 +82,17 @@ class MainActivity : ComponentActivity() {
                 ) { permissions ->
                     hasLocationPermissions = permissions.values.reduce { acc, isPermissionGranted ->
                         acc && isPermissionGranted
+                    }
+                    if (hasLocationPermissions) {
+                        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+                        fusedLocationClient.lastLocation
+                            .addOnSuccessListener { location ->
+                                accViewModel.setLocation(location.latitude, location.longitude)
+                            }
+                            .addOnFailureListener { exception ->
+                                exception.printStackTrace()
+                            }
+
                     }
 
                     if (!hasLocationPermissions) {
@@ -147,6 +169,18 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onResume() {
+        super.onResume()
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                accViewModel.setLocation(location.latitude, location.latitude)
+            }
+            .addOnFailureListener { exception ->
+                exception.printStackTrace()
+            }
     }
 
     private fun openApplicationSettings() {

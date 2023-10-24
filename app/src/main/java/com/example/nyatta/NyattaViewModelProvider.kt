@@ -4,6 +4,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.example.nyatta.ui.screens.account.AccountViewModel
 import com.example.nyatta.ui.screens.onboarding.OnboardingViewModel
 import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentViewModel
 import com.example.nyatta.ui.screens.onboarding.property.PropertyViewModel
@@ -22,6 +23,10 @@ object NyattaViewModelProvider {
         // Initializer for PropertyViewModel
         initializer {
             PropertyViewModel()
+        }
+        // Initializer for AccountViewModel
+        initializer {
+            AccountViewModel()
         }
     }
 }
