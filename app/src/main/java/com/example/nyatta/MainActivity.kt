@@ -35,14 +35,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.ui.NyattaApp
 import com.example.nyatta.ui.screens.account.AccountViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.CancellationToken
-import com.google.android.gms.tasks.CancellationTokenSource
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -169,18 +166,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    @SuppressLint("MissingPermission")
-    override fun onResume() {
-        super.onResume()
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                accViewModel.setLocation(location.latitude, location.latitude)
-            }
-            .addOnFailureListener { exception ->
-                exception.printStackTrace()
-            }
     }
 
     private fun openApplicationSettings() {
