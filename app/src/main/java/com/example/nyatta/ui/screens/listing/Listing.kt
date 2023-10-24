@@ -122,7 +122,7 @@ fun Listing(
                        horizontalArrangement = Arrangement.spacedBy(10.dp),
                        verticalArrangement = Arrangement.spacedBy(10.dp),
                    ) {
-                       Tag(text= stringResource(R.string.master_en_suite))
+                       Tag(text= stringResource(R.string.master))
                        Tag(text= stringResource(R.string.en_suite))
                    }
                }

@@ -43,7 +43,7 @@ import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.screens.onboarding.Onboarding
 import com.example.nyatta.ui.screens.home.BottomBar
 import com.example.nyatta.ui.screens.onboarding.OnboardingViewModel
-import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentDestination
+import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentDescriptionDestination
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 
@@ -92,7 +92,7 @@ fun Type(
                     if (type == "Apartments Building") {
                         navigateToNext(PropertyDestination.route)
                     } else {
-                        navigateToNext(ApartmentDestination.route)
+                        navigateToNext(ApartmentDescriptionDestination.route)
                     }
                 }
             ) {

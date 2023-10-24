@@ -55,7 +55,7 @@ fun Description(
                 .padding(innerPadding)
         ) {
             Onboarding(
-                modifier = modifier,
+                modifier = Modifier.padding(12.dp),
                 onActionButtonClick = onActionButtonClick,
                 actionButtonText = actionButtonText,
                 alignBottomCenter = false

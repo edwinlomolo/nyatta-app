@@ -52,7 +52,7 @@ fun ListingCard(
                 contentDescription = "Apartment",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .height(400.dp)
+                    .height(280.dp)
                     .fillMaxWidth()
 
             )

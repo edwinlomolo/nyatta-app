@@ -13,8 +13,24 @@ import com.example.nyatta.ui.screens.home.Home
 import com.example.nyatta.ui.screens.home.HomeDestination
 import com.example.nyatta.ui.screens.listing.ListingDetailsDestination
 import com.example.nyatta.ui.screens.listing.Listing
+import com.example.nyatta.ui.screens.onboarding.apartment.Amenities
+import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentAmenitiesDestination
+import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentBathsDestination
+import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentBedroomsDestination
 import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentDescription
-import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentDestination
+import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentDescriptionDestination
+import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentLocationDestination
+import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentPriceDestination
+import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentStateDestination
+import com.example.nyatta.ui.screens.onboarding.apartment.Bath
+import com.example.nyatta.ui.screens.onboarding.apartment.Bedroom
+import com.example.nyatta.ui.screens.onboarding.apartment.Price
+import com.example.nyatta.ui.screens.onboarding.apartment.SelectProperty
+import com.example.nyatta.ui.screens.onboarding.apartment.SelectPropertyDestination
+import com.example.nyatta.ui.screens.onboarding.apartment.UnitTypeDestination
+import com.example.nyatta.ui.screens.onboarding.apartment.Unit
+import com.example.nyatta.ui.screens.onboarding.apartment.UnitState
+import com.example.nyatta.ui.screens.onboarding.apartment.Location as ApartmentLocation
 import com.example.nyatta.ui.screens.onboarding.location.Location
 import com.example.nyatta.ui.screens.onboarding.location.LocationDestination
 import com.example.nyatta.ui.screens.onboarding.location.TownDestination
@@ -27,6 +43,8 @@ import com.example.nyatta.ui.screens.onboarding.property.PropertyDescription
 import com.example.nyatta.ui.screens.onboarding.property.PropertyDestination
 import com.example.nyatta.ui.screens.onboarding.property.StartOnboardingDestination
 import com.example.nyatta.ui.screens.onboarding.property.Type
+import com.example.nyatta.ui.screens.onboarding.uploads.Uploads
+import com.example.nyatta.ui.screens.onboarding.uploads.UploadsDestination
 
 @Composable
 fun NyattaNavHost(
@@ -70,7 +88,7 @@ fun NyattaNavHost(
                 navigateToNext = { navController.navigate(it) }
             )
         }
-        composable(route = ApartmentDestination.route) {
+        composable(route = ApartmentDescriptionDestination.route) {
             ApartmentDescription(
                 navigateUp = { navController.navigateUp() },
                 navigateNext = { navController.navigate(it) }
@@ -103,6 +121,65 @@ fun NyattaNavHost(
         }
         composable(route = PayDestination.route) {
             Mpesa(
+                navigateUp = { navController.navigateUp() }
+            )
+        }
+        composable(route = ApartmentDescriptionDestination.route) {
+            ApartmentDescription(
+                navigateUp = { navController.navigateUp() },
+                navigateNext = { navController.navigate(it) }
+            )
+        }
+        composable(route = SelectPropertyDestination.route) {
+            SelectProperty(
+                navigateUp = { navController.navigateUp() },
+                navigateNext = { navController.navigate(it) }
+            )
+        }
+        composable(route = ApartmentLocationDestination.route) {
+            ApartmentLocation(
+                navigateUp = { navController.navigateUp() },
+                navigateNext = { navController.navigate(it) }
+            )
+        }
+        composable(route = UnitTypeDestination.route) {
+            Unit(
+                navigateUp = { navController.navigateUp() },
+                navigateNext = { navController.navigate(it) }
+            )
+        }
+        composable(route = ApartmentAmenitiesDestination.route) {
+            Amenities(
+                navigateUp = { navController.navigateUp() },
+                navigateNext = { navController.navigate(it) }
+            )
+        }
+        composable(route = ApartmentBedroomsDestination.route) {
+            Bedroom(
+                navigateUp = { navController.navigateUp() },
+                navigateNext = { navController.navigate(it) }
+            )
+        }
+        composable(route = ApartmentBathsDestination.route) {
+            Bath(
+                navigateUp = { navController.navigateUp() },
+                navigateNext = { navController.navigate(it) }
+            )
+        }
+        composable(route = UploadsDestination.route) {
+            Uploads(
+                navigateUp = { navController.navigateUp() },
+                navigateNext = { navController.navigate(it) }
+            )
+        }
+        composable(route = ApartmentStateDestination.route) {
+            UnitState(
+                navigateUp = { navController.navigateUp() },
+                navigateNext = { navController.navigate(it) }
+            )
+        }
+        composable(route = ApartmentPriceDestination.route) {
+            Price(
                 navigateUp = { navController.navigateUp() }
             )
         }
