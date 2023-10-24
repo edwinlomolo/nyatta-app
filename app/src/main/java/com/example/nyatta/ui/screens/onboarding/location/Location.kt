@@ -28,7 +28,8 @@ object LocationDestination: Navigation {
 @Composable
 fun Location(
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit = {}
+    navigateUp: () -> Unit = {},
+    navigateToNext: (String) -> Unit = {}
 ) {
     Scaffold(
         topBar = {
@@ -47,7 +48,10 @@ fun Location(
             Onboarding (
                 modifier = modifier.fillMaxSize(),
                 actionButtonText = stringResource(R.string.enable_location),
-                onActionButtonClick = {}
+                onActionButtonClick = {
+                    navigateToNext(TownDestination.route)
+                },
+                alignBottomCenter = false
             ) {
                 Column(
                     modifier = Modifier.padding(8.dp)

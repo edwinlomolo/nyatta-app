@@ -24,6 +24,7 @@ fun Onboarding(
     onActionButtonClick: () -> Unit = {},
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+    alignBottomCenter: Boolean = true,
     content: @Composable () -> Unit
 ) {
     Column(
@@ -34,7 +35,7 @@ fun Onboarding(
         horizontalAlignment = horizontalAlignment
     ) {
         content()
-        Spacer(modifier = Modifier.weight(1f))
+        if (alignBottomCenter) Spacer(modifier = Modifier.weight(1f))
         Row(
             modifier = Modifier
                 .fillMaxWidth()

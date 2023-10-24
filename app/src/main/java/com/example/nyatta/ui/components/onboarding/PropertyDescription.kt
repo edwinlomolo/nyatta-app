@@ -57,7 +57,8 @@ fun Description(
             Onboarding(
                 modifier = modifier,
                 onActionButtonClick = onActionButtonClick,
-                actionButtonText = actionButtonText
+                actionButtonText = actionButtonText,
+                alignBottomCenter = false
             ) {
                 Column {
                     Title(title)

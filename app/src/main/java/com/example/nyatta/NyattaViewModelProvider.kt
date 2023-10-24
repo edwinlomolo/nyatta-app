@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.nyatta.ui.screens.account.AccountViewModel
 import com.example.nyatta.ui.screens.onboarding.OnboardingViewModel
 import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentViewModel
+import com.example.nyatta.ui.screens.onboarding.location.TownsViewModel
 import com.example.nyatta.ui.screens.onboarding.property.PropertyViewModel
 
 // Factory for entire app view models
@@ -27,6 +28,10 @@ object NyattaViewModelProvider {
         // Initializer for AccountViewModel
         initializer {
             AccountViewModel()
+        }
+        // Initializer for TownsViewModel
+        initializer {
+            TownsViewModel(nyattaApplication().container.townsRepository)
         }
     }
 }

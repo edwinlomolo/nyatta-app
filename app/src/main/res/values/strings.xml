@@ -42,13 +42,13 @@
     <string name="property_name">Property name</string>
     <string name="property_name_description">You can name this property only once and can\'t be changed later. This name will be tied to all units added under this property</string>
     <string name="location">Location</string>
-    <string name="enable_location">Enable location</string>
+    <string name="enable_location">Select location</string>
     <string name="save_description">Save</string>
     <string name="location_description">Improve vacant units discoverability with accurate property location. Property units will share this location. Vacant units will be discovered independently.</string>
     <string name="save_caretaker">Save</string>
     <string name="no_caretaker">No</string>
     <string name="yes_caretaker">Yes</string>
-    <string name="pay_monthly">Pay monthly</string>
+    <string name="pay_monthly">Subscribe monthly</string>
     <string name="pay_monthly_description">Get your 30 days of unlimited access to the number of units/properties/listings you can add to start managing on Nyatta.</string>
     <string name="pay">Pay</string>
     <string name="kes">KES</string>

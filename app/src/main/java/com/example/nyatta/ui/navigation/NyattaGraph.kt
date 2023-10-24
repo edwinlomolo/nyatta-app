@@ -17,6 +17,10 @@ import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentDescription
 import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentDestination
 import com.example.nyatta.ui.screens.onboarding.location.Location
 import com.example.nyatta.ui.screens.onboarding.location.LocationDestination
+import com.example.nyatta.ui.screens.onboarding.location.TownDestination
+import com.example.nyatta.ui.screens.onboarding.location.Towns
+import com.example.nyatta.ui.screens.onboarding.payment.Mpesa
+import com.example.nyatta.ui.screens.onboarding.payment.PayDestination
 import com.example.nyatta.ui.screens.onboarding.property.Caretaker
 import com.example.nyatta.ui.screens.onboarding.property.CaretakerDestination
 import com.example.nyatta.ui.screens.onboarding.property.PropertyDescription
@@ -86,6 +90,19 @@ fun NyattaNavHost(
         }
         composable(route = LocationDestination.route) {
             Location(
+                navigateToNext = { navController.navigate(it) },
+                navigateUp = { navController.navigateUp() }
+            )
+        }
+        composable(route = TownDestination.route) {
+            Towns(
+                navigateUp = { navController.navigateUp() },
+                navigateBack = { navController.popBackStack() },
+                navigateNext = { navController.navigate(it) }
+            )
+        }
+        composable(route = PayDestination.route) {
+            Mpesa(
                 navigateUp = { navController.navigateUp() }
             )
         }

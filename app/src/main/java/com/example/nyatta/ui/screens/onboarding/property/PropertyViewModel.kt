@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.update
 
 data class PropertyData(
     val description: String = "",
-    val caretaker: CaretakerData = CaretakerData()
+    val caretaker: CaretakerData = CaretakerData(),
 )
 
 data class CaretakerData(

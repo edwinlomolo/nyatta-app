@@ -8,7 +8,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ListItem
@@ -29,16 +33,31 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.GetTownsQuery
+import com.example.nyatta.NyattaViewModelProvider
+import com.example.nyatta.ui.components.Loading
+import com.example.nyatta.ui.components.onboarding.ActionButton
+import com.example.nyatta.ui.navigation.Navigation
+import com.example.nyatta.ui.screens.onboarding.payment.PayDestination
 import com.example.nyatta.ui.theme.NyattaTheme
 
+object TownDestination: Navigation {
+    override val route = "property/town"
+    override val title = null
+}
+
 @Composable
-fun Towns(modifier: Modifier = Modifier) {
-    val townsViewModel: TownsViewModel = viewModel(factory = TownsViewModel.Factory)
+fun Towns(
+    modifier: Modifier = Modifier,
+    navigateUp: () -> Unit = {},
+    navigateNext: (String) -> Unit = {},
+    navigateBack: () -> Unit = {}
+) {
+    val townsViewModel: TownsViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
     val towns = townsViewModel.townSuggestions()
 
     when(val s = townsViewModel.townsUiState) {
-        TownsUiState.Loading -> Text(text = "Loading", style = MaterialTheme.typography.titleMedium)
-        is TownsUiState.Success -> Town(townsViewModel, towns!!, modifier)
+        TownsUiState.Loading -> Loading()
+        is TownsUiState.Success -> Town(towns = towns!!, navigateNext = navigateNext, navigateBack = navigateBack, navigateUp = navigateUp, modifier = modifier)
         is TownsUiState.ApolloError -> Text(text = s.errors[0].message)
         is TownsUiState.ApplicationError -> Text(text = "${s.error}")
     }
@@ -46,26 +65,48 @@ fun Towns(modifier: Modifier = Modifier) {
 
 
 @Composable
-fun Town(townsViewModel: TownsViewModel, towns: List<GetTownsQuery.GetTown>, modifier: Modifier = Modifier) {
+fun Town(
+    modifier: Modifier = Modifier,
+    navigateUp: () -> Unit = {},
+    navigateNext: (String) -> Unit = {},
+    navigateBack: () -> Unit = {},
+    towns: List<GetTownsQuery.GetTown>
+) {
     Scaffold(
         topBar = {
-            TownsTopBar(townsViewModel, towns)
+            TownsTopBar(
+                towns = towns,
+                navigateBack = navigateBack,
+                navigateUp = navigateUp,
+                navigateNext = navigateNext
+            )
         }
     ) {
-        Surface(modifier = modifier.padding(it)) {}
+        Surface(modifier = modifier
+            .fillMaxSize()
+            .padding(it)) {}
     }
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TownsTopBar(townsViewModel: TownsViewModel, towns: List<GetTownsQuery.GetTown>, modifier: Modifier = Modifier) {
+fun TownsTopBar(
+    modifier: Modifier = Modifier,
+    navigateBack: () -> Unit = {},
+    towns: List<GetTownsQuery.GetTown>,
+    navigateNext: (String) -> Unit = {},
+    navigateUp: () -> Unit = {}
+) {
     var active by rememberSaveable {
         mutableStateOf(false)
     }
+    val townsViewModel: TownsViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
 
     Box(
-        modifier = modifier.fillMaxSize().semantics { isTraversalGroup = true }
+        modifier = modifier
+            .fillMaxSize()
+            .semantics { isTraversalGroup = true }
     ) {
         SearchBar(
             placeholder = { Text("Search town") },
@@ -77,6 +118,16 @@ fun TownsTopBar(townsViewModel: TownsViewModel, towns: List<GetTownsQuery.GetTow
             onQueryChange = { townsViewModel.updateSearchQuery(it) },
             onSearch = { townsViewModel.updateSearchQuery(it) },
             active = true,
+            leadingIcon = {
+                IconButton(
+                    onClick = navigateUp
+                ) {
+                    Icon(
+                        Icons.Outlined.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+            },
             onActiveChange = { active = it }
         ) {
             LazyColumn {
@@ -95,6 +146,7 @@ fun TownsTopBar(townsViewModel: TownsViewModel, towns: List<GetTownsQuery.GetTow
                 }
                 if (towns.isEmpty()) item { Text("Can't find town", style = MaterialTheme.typography.titleSmall, modifier = Modifier.padding(8.dp)) }
             }
+            if (!towns.isEmpty()) ActionButton(onClick = { navigateNext(PayDestination.route) }, modifier = Modifier.padding(4.dp), text = "Proceed")
         }
     }
 }
