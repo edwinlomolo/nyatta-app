@@ -14,7 +14,7 @@ import com.example.nyatta.ui.components.onboarding.Description
 import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.theme.NyattaTheme
 
-object PropertyDestination: Navigation {
+object PropertyDescriptionDestination: Navigation {
     override val route = "property/description"
     override val title = "Property Description"
 }
@@ -39,7 +39,7 @@ fun PropertyDescription(
             )
         },
         navigateUp = navigateUp,
-        appBarTitle = PropertyDestination.title,
+        appBarTitle = PropertyDescriptionDestination.title,
         onValueChange = { viewModel.setName(it) },
         value = uiState.description
     )

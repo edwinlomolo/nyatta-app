@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.screens.onboarding.property
+package com.example.nyatta.ui.screens.onboarding.start
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -39,11 +39,11 @@ import com.example.nyatta.NyattaViewModelProvider
 import com.example.nyatta.R
 import com.example.nyatta.ui.components.onboarding.Description
 import com.example.nyatta.ui.components.onboarding.Title
+import com.example.nyatta.ui.navigation.ApartmentOnboardingGraph
 import com.example.nyatta.ui.navigation.Navigation
+import com.example.nyatta.ui.navigation.PropertyOnboardingGraph
 import com.example.nyatta.ui.screens.onboarding.Onboarding
-import com.example.nyatta.ui.screens.home.BottomBar
 import com.example.nyatta.ui.screens.onboarding.OnboardingViewModel
-import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentDescriptionDestination
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 
@@ -63,6 +63,7 @@ val typeDefinition = listOf(
 fun Type(
     modifier: Modifier = Modifier,
     onNavigateTo: (route: String) -> Unit = {},
+    navigateUp: () -> Unit = {},
     currentRoute: String? = null,
     viewModel: OnboardingViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     navigateToNext: (route: String) -> Unit = {}
@@ -70,14 +71,7 @@ fun Type(
     val onboardingUiState by viewModel.uiState.collectAsState()
     val propertyOptions = viewModel.propertyOptions
 
-    Scaffold(
-        bottomBar = {
-            BottomBar(
-                onNavigateTo = onNavigateTo,
-                currentRoute = currentRoute
-            )
-        }
-    ) {
+    Scaffold {
         Surface(
             modifier = modifier
                 .fillMaxSize()
@@ -90,9 +84,9 @@ fun Type(
                 onActionButtonClick = {
                     val type = onboardingUiState.type
                     if (type == "Apartments Building") {
-                        navigateToNext(PropertyDestination.route)
+                        navigateToNext(PropertyOnboardingGraph.route)
                     } else {
-                        navigateToNext(ApartmentDescriptionDestination.route)
+                        navigateToNext(ApartmentOnboardingGraph.route)
                     }
                 }
             ) {

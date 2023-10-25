@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nyatta.R
 import com.example.nyatta.ui.navigation.Navigation
-import com.example.nyatta.ui.screens.home.BottomBar
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 
@@ -41,9 +40,7 @@ object AccountDestination: Navigation {
 
 @Composable
 fun Account(
-    modifier: Modifier = Modifier,
-    onNavigateTo: (route: String) -> Unit = {},
-    currentRoute: String? = null
+    modifier: Modifier = Modifier
 ) {
     val extraPadding = Modifier
         .padding(top = 12.dp, bottom = 12.dp)
@@ -51,14 +48,7 @@ fun Account(
         R.drawable.apartment_sunset_in_the_background_in_africa_and_person_c4dadd13_9720_4c7f_ad7b_86e197bfd86c
     )
 
-    Scaffold(
-        bottomBar = {
-            BottomBar(
-                onNavigateTo = onNavigateTo,
-                currentRoute = currentRoute
-            )
-        }
-    ) {
+    Scaffold {
         Surface(
             modifier = modifier
                 .verticalScroll(rememberScrollState())
