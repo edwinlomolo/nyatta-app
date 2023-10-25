@@ -31,7 +31,8 @@ object UserOnboardingPhoneVerifyDestination: Navigation {
 @Composable
 fun Verify(
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit = {}
+    navigateUp: () -> Unit = {},
+    navigateNext: (String) -> Unit = {}
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     Scaffold(
@@ -53,7 +54,9 @@ fun Verify(
                     .padding(12.dp),
                 alignBottomCenter = false,
                 actionButtonText = "Verify phone",
-                onActionButtonClick = {}
+                onActionButtonClick = {
+                    navigateNext(UserOnboardingNameDestination.route)
+                }
             ) {
                 TextInput(
                     onValueChange = { /*TODO*/ },

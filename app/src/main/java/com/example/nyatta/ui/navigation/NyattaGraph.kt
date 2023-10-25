@@ -205,13 +205,15 @@ fun NyattaNavHost(
         }
         composable(route = UserOnboardingPhoneVerifyDestination.route) {
             Verify(
-                navigateUp = { navController.navigateUp() }
+                navigateUp = { navController.navigateUp() },
+                navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = UserSignUpDestination.route) {
             SignUp(
                 navigateUp = { navController.navigateUp() },
-                navigateNext = { navController.navigate(it) }
+                navigateNext = { navController.navigate(it) },
+                currentRoute = navController.currentBackStackEntry?.destination?.route
             )
         }
     }

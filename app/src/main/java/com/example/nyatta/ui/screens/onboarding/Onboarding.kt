@@ -46,6 +46,7 @@ fun Onboarding(
             Button(
                 onClick = { onActionButtonClick() },
                 modifier = Modifier
+                    .padding(4.dp)
                     .fillMaxWidth(),
                 shape = MaterialTheme.shapes.small
             ) {

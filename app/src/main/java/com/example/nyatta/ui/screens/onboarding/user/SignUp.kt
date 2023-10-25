@@ -11,6 +11,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.nyatta.ui.navigation.Navigation
+import com.example.nyatta.ui.screens.home.BottomBar
 import com.example.nyatta.ui.screens.home.TopAppBar
 import com.example.nyatta.ui.screens.onboarding.Onboarding
 import com.example.nyatta.ui.theme.NyattaTheme
@@ -24,7 +25,8 @@ object UserSignUpDestination: Navigation {
 fun SignUp(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
-    navigateNext: (String) -> Unit = {}
+    navigateNext: (String) -> Unit = {},
+    currentRoute: String? = null
 ) {
     Scaffold(
         topBar = {
@@ -32,6 +34,12 @@ fun SignUp(
                 title = UserSignUpDestination.title,
                 canNavigateBack = true,
                 navigateUp = navigateUp
+            )
+        },
+        bottomBar = {
+            BottomBar(
+                onNavigateTo = navigateNext,
+                currentRoute = currentRoute
             )
         }
     ) { innerPadding ->

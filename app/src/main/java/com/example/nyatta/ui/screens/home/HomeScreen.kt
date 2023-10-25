@@ -42,6 +42,8 @@ import com.example.nyatta.R
 import com.example.nyatta.ui.components.Loading
 import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.screens.listing.ListingCard
+import com.example.nyatta.ui.screens.onboarding.property.StartOnboardingDestination
+import com.example.nyatta.ui.screens.onboarding.user.UserSignUpDestination
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 
@@ -111,8 +113,8 @@ fun BottomBar(
         containerColor = MaterialTheme.colorScheme.inverseOnSurface
     ) {
         NavigationBarItem(
-            selected = currentRoute == "home",
-            onClick = { onNavigateTo("home") },
+            selected = currentRoute == HomeDestination.route,
+            onClick = { onNavigateTo(HomeDestination.route) },
             icon = {
                 Icon(
                     Icons.Outlined.Home,
@@ -123,8 +125,8 @@ fun BottomBar(
             label = { Text("Home") }
         )
         NavigationBarItem(
-            selected = currentRoute == "add",
-            onClick = { onNavigateTo("add") },
+            selected = currentRoute == StartOnboardingDestination.route,
+            onClick = { onNavigateTo(StartOnboardingDestination.route) },
             icon = {
                 Icon(
                     painterResource(R.drawable.plus),
@@ -134,8 +136,9 @@ fun BottomBar(
             },
         )
         NavigationBarItem(
-            selected = currentRoute == "account",
-            onClick = { onNavigateTo("account") },
+            selected = currentRoute == UserSignUpDestination.route,
+            // TODO auth flow here
+            onClick = { onNavigateTo(UserSignUpDestination.route) },
             icon = {
                 Icon(
                     Icons.Outlined.AccountCircle,
