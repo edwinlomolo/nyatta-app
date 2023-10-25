@@ -62,9 +62,6 @@ val typeDefinition = listOf(
 @Composable
 fun Type(
     modifier: Modifier = Modifier,
-    onNavigateTo: (route: String) -> Unit = {},
-    navigateUp: () -> Unit = {},
-    currentRoute: String? = null,
     viewModel: OnboardingViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     navigateToNext: (route: String) -> Unit = {}
 ) {
