@@ -67,7 +67,7 @@ fun ListingCard(
                         text = "2 bedroom",
                         style = TextStyle(
                             fontFamily = MabryFont,
-                            fontSize = 18.sp,
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold
                         ),
                         modifier = Modifier.padding(8.dp)
@@ -77,7 +77,7 @@ fun ListingCard(
                         text = "KES 10,000",
                         style = TextStyle(
                             fontFamily = MabryFont,
-                            fontSize = 18.sp,
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold
                         ),
                         modifier = Modifier.padding(8.dp)
@@ -87,14 +87,14 @@ fun ListingCard(
                     text = "3 KM away",
                     style = TextStyle(
                         fontFamily = MabryFont,
-                        fontSize = 16.sp,
+                        fontSize = 12.sp,
                         fontStyle = FontStyle.Italic
                     ),
                     modifier = Modifier.padding(start = 8.dp, bottom = 2.dp)
                 )
                 Text(
                     text = "2 days ago",
-                    style = TextStyle(fontFamily = MabryFont, fontSize = 16.sp),
+                    style = TextStyle(fontFamily = MabryFont, fontSize = 12.sp),
                     modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
                 )
             }

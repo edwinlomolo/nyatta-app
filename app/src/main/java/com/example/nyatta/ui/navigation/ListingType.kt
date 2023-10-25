@@ -19,10 +19,7 @@ fun NavGraphBuilder.listingTypeGraph(navController: NavHostController) {
     ) {
         composable(route = StartOnboardingDestination.route) {
             Type(
-                onNavigateTo = { navController.navigate(it) },
-                currentRoute = navController.currentBackStackEntry?.destination?.route,
-                navigateToNext = { navController.navigate(it) },
-                navigateUp = { navController.popBackStack() }
+                navigateToNext = { navController.navigate(it) }
             )
         }
     }
