@@ -45,6 +45,14 @@ import com.example.nyatta.ui.screens.onboarding.property.StartOnboardingDestinat
 import com.example.nyatta.ui.screens.onboarding.property.Type
 import com.example.nyatta.ui.screens.onboarding.uploads.Uploads
 import com.example.nyatta.ui.screens.onboarding.uploads.UploadsDestination
+import com.example.nyatta.ui.screens.onboarding.user.Names
+import com.example.nyatta.ui.screens.onboarding.user.Phone
+import com.example.nyatta.ui.screens.onboarding.user.SignUp
+import com.example.nyatta.ui.screens.onboarding.user.UserOnboardingNameDestination
+import com.example.nyatta.ui.screens.onboarding.user.UserOnboardingPhoneDestination
+import com.example.nyatta.ui.screens.onboarding.user.UserOnboardingPhoneVerifyDestination
+import com.example.nyatta.ui.screens.onboarding.user.UserSignUpDestination
+import com.example.nyatta.ui.screens.onboarding.user.Verify
 
 @Composable
 fun NyattaNavHost(
@@ -181,6 +189,29 @@ fun NyattaNavHost(
         composable(route = ApartmentPriceDestination.route) {
             Price(
                 navigateUp = { navController.navigateUp() }
+            )
+        }
+        composable(route = UserOnboardingNameDestination.route) {
+            Names(
+                navigateUp = { navController.navigateUp() },
+                navigateNext = { navController.navigate(it) }
+            )
+        }
+        composable(route = UserOnboardingPhoneDestination.route) {
+            Phone(
+                navigateUp = { navController.navigateUp() },
+                navigateNext = { navController.navigate(it) }
+            )
+        }
+        composable(route = UserOnboardingPhoneVerifyDestination.route) {
+            Verify(
+                navigateUp = { navController.navigateUp() }
+            )
+        }
+        composable(route = UserSignUpDestination.route) {
+            SignUp(
+                navigateUp = { navController.navigateUp() },
+                navigateNext = { navController.navigate(it) }
             )
         }
     }

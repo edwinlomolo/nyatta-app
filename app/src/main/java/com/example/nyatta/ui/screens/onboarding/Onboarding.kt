@@ -35,11 +35,13 @@ fun Onboarding(
         horizontalAlignment = horizontalAlignment
     ) {
         content()
+        // TODO fix this hack for button hidden in keyboard view
         if (alignBottomCenter) Spacer(modifier = Modifier.weight(1f))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(top = 8.dp),
+            verticalAlignment = Alignment.Bottom
         ) {
             Button(
                 onClick = { onActionButtonClick() },

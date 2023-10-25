@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,10 +30,12 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
@@ -104,21 +106,45 @@ fun BottomBar(
     onNavigateTo: (route: String) -> Unit = {},
     currentRoute: String? = null
 ) {
-    val items = listOf("Home", "Add", "Account")
-    val icons = listOf(Icons.Outlined.Home, Icons.Outlined.Add, Icons.Outlined.AccountCircle)
-
     NavigationBar(
         modifier = modifier,
         containerColor = MaterialTheme.colorScheme.inverseOnSurface
     ) {
-        items.forEachIndexed { index, item ->
-            NavigationBarItem(
-                selected = currentRoute == item.lowercase(),
-                onClick = { onNavigateTo(item.lowercase()) },
-                label = { Text(text = item) },
-                icon = { Icon(icons[index], contentDescription = item) }
-            )
-        }
+        NavigationBarItem(
+            selected = currentRoute == "home",
+            onClick = { onNavigateTo("home") },
+            icon = {
+                Icon(
+                    Icons.Outlined.Home,
+                    modifier = Modifier.size(28.dp),
+                    contentDescription = null
+                )
+            },
+            label = { Text("Home") }
+        )
+        NavigationBarItem(
+            selected = currentRoute == "add",
+            onClick = { onNavigateTo("add") },
+            icon = {
+                Icon(
+                    painterResource(R.drawable.plus),
+                    modifier = Modifier.size(40.dp),
+                    contentDescription = null
+                )
+            },
+        )
+        NavigationBarItem(
+            selected = currentRoute == "account",
+            onClick = { onNavigateTo("account") },
+            icon = {
+                Icon(
+                    Icons.Outlined.AccountCircle,
+                    modifier = Modifier.size(28.dp),
+                    contentDescription = null
+                )
+            },
+            label = { Text("Account") }
+        )
     }
 }
 
