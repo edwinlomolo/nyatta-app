@@ -52,7 +52,7 @@ fun Names(
                     .padding(12.dp),
                 alignBottomCenter = false,
                 actionButtonText = "Save",
-                onActionButtonClick = {)}
+                onActionButtonClick = {}
             ) {
                 TextInput(
                     value = "",
