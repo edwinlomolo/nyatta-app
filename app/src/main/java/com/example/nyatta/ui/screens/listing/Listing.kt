@@ -78,7 +78,8 @@ val amenities = listOf(
 @Composable
 fun Listing(
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit = {}
+    navigateUp: () -> Unit = {},
+    onNavigateToPhotos: (String) -> Unit = {}
 ) {
     val image = painterResource(
         R.drawable.apartment_sunset_in_the_background_in_africa_and_person_c4dadd13_9720_4c7f_ad7b_86e197bfd86c
@@ -133,7 +134,7 @@ fun Listing(
                    horizontalArrangement = Arrangement.End
                ) {
                    Button(
-                       onClick = { /*TODO*/ },
+                       onClick = { onNavigateToPhotos(ListingPhotosDestination.route) },
                        modifier = Modifier
                            .padding(start = 16.dp, end = 16.dp),
                        shape = MaterialTheme.shapes.small

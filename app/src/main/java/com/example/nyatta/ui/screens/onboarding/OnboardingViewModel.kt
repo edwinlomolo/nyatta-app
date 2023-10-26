@@ -4,10 +4,9 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 
 data class OnboardingUiState(
-    val type: String = "",
+    var type: String = "",
 )
 
 class OnboardingViewModel: ViewModel() {
@@ -16,9 +15,7 @@ class OnboardingViewModel: ViewModel() {
     val uiState: StateFlow<OnboardingUiState> = _uiState.asStateFlow()
 
     fun setType(type: String) {
-        _uiState.update { state ->
-            state.copy(type = type)
-        }
+        _uiState.value.type = type
     }
 
     fun resetState() {

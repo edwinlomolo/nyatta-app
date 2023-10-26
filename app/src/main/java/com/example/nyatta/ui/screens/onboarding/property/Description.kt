@@ -24,9 +24,9 @@ fun PropertyDescription(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
     navigateNext: (String) -> Unit = {},
-    viewModel: PropertyViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
+    propertyViewModel: PropertyViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by propertyViewModel.uiState.collectAsState()
 
     Description(
         modifier = modifier,
@@ -40,7 +40,7 @@ fun PropertyDescription(
         },
         navigateUp = navigateUp,
         appBarTitle = PropertyDescriptionDestination.title,
-        onValueChange = { viewModel.setName(it) },
+        onValueChange = { propertyViewModel.setName(it) },
         value = uiState.description
     )
 }

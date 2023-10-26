@@ -1,5 +1,6 @@
 package com.example.nyatta.ui.screens.onboarding.start
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -62,30 +63,25 @@ val typeDefinition = listOf(
 @Composable
 fun Type(
     modifier: Modifier = Modifier,
-    viewModel: OnboardingViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
+    onboardingViewModel: OnboardingViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     navigateToNext: (route: String) -> Unit = {}
 ) {
-    val onboardingUiState by viewModel.uiState.collectAsState()
-    val propertyOptions = viewModel.propertyOptions
+    val onboardingUiState by onboardingViewModel.uiState.collectAsState()
+    val propertyOptions = onboardingViewModel.propertyOptions
 
+    BackHandler {
+        onboardingViewModel.resetState()
+    }
     Scaffold {
         Surface(
             modifier = modifier
                 .fillMaxSize()
                 .padding(it)
         ) {
-            Onboarding(
+            Column(
                 modifier = modifier
-                    .selectableGroup(),
-                actionButtonText = "Start",
-                onActionButtonClick = {
-                    val type = onboardingUiState.type
-                    if (type == "Apartments Building") {
-                        navigateToNext(PropertyOnboardingGraph.route)
-                    } else {
-                        navigateToNext(ApartmentOnboardingGraph.route)
-                    }
-                }
+                    .padding(12.dp)
+                    .selectableGroup()
             ) {
                 Title(stringResource(R.string.start_your_setup))
                 Description(stringResource(R.string.what_to_add))
@@ -96,7 +92,16 @@ fun Type(
                             .fillMaxWidth()
                             .selectable(
                                 selected = (option == onboardingUiState.type),
-                                onClick = { viewModel.setType(option) },
+                                onClick = {
+                                    onboardingViewModel.setType(option)
+                                    when (onboardingUiState.type) {
+                                        "Apartments Building" -> navigateToNext(
+                                            PropertyOnboardingGraph.route
+                                        )
+
+                                        else -> navigateToNext(ApartmentOnboardingGraph.route)
+                                    }
+                                },
                                 role = Role.RadioButton
                             )
                     ) {
@@ -123,7 +128,7 @@ fun Type(
                             ) {
                                 RadioButton(
                                     selected = (option == onboardingUiState.type),
-                                    onClick = { viewModel.setType(option) }
+                                    onClick = null
                                 )
                                 Spacer(modifier = Modifier.size(28.dp))
                                 Image(

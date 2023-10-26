@@ -8,6 +8,8 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.nyatta.ui.screens.listing.Listing
 import com.example.nyatta.ui.screens.listing.ListingDetailsDestination
+import com.example.nyatta.ui.screens.listing.ListingPhoto
+import com.example.nyatta.ui.screens.listing.ListingPhotosDestination
 
 object ListingDetailsGraph: Navigation {
     override val route = "listing/details"
@@ -26,6 +28,12 @@ fun NavGraphBuilder.listingDetailsGraph(navController: NavHostController) {
             })
         ) {
             Listing(
+                navigateUp = { navController.navigateUp() },
+                onNavigateToPhotos = { navController.navigate(it) }
+            )
+        }
+        composable(route = ListingPhotosDestination.route) {
+            ListingPhoto(
                 navigateUp = { navController.navigateUp() }
             )
         }
