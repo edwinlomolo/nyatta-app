@@ -67,6 +67,7 @@ dependencies {
     implementation("com.apollographql.apollo3:apollo-runtime:4.0.0-alpha.3")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation("io.coil-kt:coil-compose:2.4.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.navigation:navigation-testing:$nav_version") // Testing Navigation
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -80,5 +81,6 @@ dependencies {
 apollo {
     service("nyatta") {
         packageName.set("com.example.nyatta")
+        mapScalarToUpload("Upload")
     }
 }

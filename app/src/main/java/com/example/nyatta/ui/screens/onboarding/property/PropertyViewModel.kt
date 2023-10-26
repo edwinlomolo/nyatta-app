@@ -1,5 +1,6 @@
 package com.example.nyatta.ui.screens.onboarding.property
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -8,10 +9,12 @@ import kotlinx.coroutines.flow.update
 
 data class PropertyData(
     val description: String = "",
+    val isCaretaker: Boolean = false,
     val caretaker: CaretakerData = CaretakerData(),
 )
 
 data class CaretakerData(
+    val image: String = "",
     val firstName: String = "",
     val lastName: String = "",
     val phone: String = ""
@@ -22,15 +25,42 @@ class PropertyViewModel: ViewModel() {
     val uiState: StateFlow<PropertyData> = _uiState.asStateFlow()
 
     fun setName(name: String) {
-        _uiState.update { state ->
-            state.copy(description = name)
+        _uiState.update {
+            it.copy(description = name)
         }
     }
-    fun resetState() {
-        _uiState.value = PropertyData()
+
+    fun setIsCaretaker(isCaretaker: Boolean) {
+        _uiState.update {
+            it.copy(isCaretaker = isCaretaker)
+        }
     }
 
-    init {
-        resetState()
+    fun setCaretakerFirstname(name: String) {
+        _uiState.update {
+            val caretaker = it.caretaker.copy(firstName = name)
+            it.copy(caretaker = caretaker)
+        }
+    }
+
+    fun setCaretakerLastname(name: String) {
+        _uiState.update {
+            val caretaker = it.caretaker.copy(lastName = name)
+            it.copy(caretaker = caretaker)
+        }
+    }
+
+    fun setCaretakerPhone(phone: String) {
+        _uiState.update {
+            val caretaker = it.caretaker.copy(phone = phone)
+            it.copy(caretaker = caretaker)
+        }
+    }
+
+    fun setCaretakerImage(image: String) {
+        _uiState.update {
+            val caretaker = it.caretaker.copy(image = image)
+            it.copy(caretaker = caretaker)
+        }
     }
 }

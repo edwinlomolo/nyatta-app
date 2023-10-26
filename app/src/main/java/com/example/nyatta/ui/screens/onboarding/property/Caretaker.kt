@@ -1,7 +1,12 @@
 package com.example.nyatta.ui.screens.onboarding.property
 
-import androidx.compose.foundation.Image
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,18 +25,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -42,6 +45,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.example.nyatta.NyattaViewModelProvider
 import com.example.nyatta.R
 import com.example.nyatta.ui.components.onboarding.Description
 import com.example.nyatta.ui.components.onboarding.TextInput
@@ -52,6 +59,7 @@ import com.example.nyatta.ui.screens.onboarding.Onboarding
 import com.example.nyatta.ui.screens.onboarding.location.LocationDestination
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
+import kotlinx.coroutines.launch
 
 object CaretakerDestination: Navigation {
     override val route = "property/caretaker"
@@ -63,9 +71,10 @@ object CaretakerDestination: Navigation {
 fun Caretaker(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
-    navigateNext: (String) -> Unit = {}
+    navigateNext: (String) -> Unit = {},
+    propertyViewModel: PropertyViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
 ) {
-    var state by remember { mutableStateOf(true) }
+    val propertyUiState by propertyViewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -82,7 +91,7 @@ fun Caretaker(
                 .padding(innerPadding)
         ) {
             Onboarding(
-                modifier = modifier,
+                modifier = modifier.padding(12.dp),
                 actionButtonText = stringResource(R.string.save_caretaker),
                 onActionButtonClick = { navigateNext(LocationDestination.route) }
             ) {
@@ -90,7 +99,7 @@ fun Caretaker(
                 Description("This is someone that can be reached to schedule a visit or allow access to your property.")
                 Column {
                     Text(
-                        text = "Are you the caretaker?",
+                        text = stringResource(R.string.is_caretaker),
                         style = TextStyle(
                             fontFamily = MabryFont,
                             fontSize = 21.sp,
@@ -105,11 +114,11 @@ fun Caretaker(
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             RadioButton(
-                                selected = state,
-                                onClick = { state = true },
+                                selected = propertyUiState.isCaretaker,
+                                onClick = { propertyViewModel.setIsCaretaker(true) },
                                 modifier = Modifier
                                     .semantics {
-                                        contentDescription = "Yes radio button"
+                                        contentDescription = "Yes"
                                     }
                             )
                             Text(
@@ -119,11 +128,11 @@ fun Caretaker(
                         Spacer(modifier = Modifier.size(32.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             RadioButton(
-                                selected = !state,
-                                onClick = { state = false },
+                                selected = !propertyUiState.isCaretaker,
+                                onClick = { propertyViewModel.setIsCaretaker(false) },
                                 modifier = Modifier
                                     .semantics {
-                                        contentDescription = "No radio button"
+                                        contentDescription = "No"
                                     }
                             )
                             Text(
@@ -133,8 +142,10 @@ fun Caretaker(
                     }
                 }
                 // TODO Image upload
-                if (!state) {
-                    CaretakerDetails()
+                if (!propertyUiState.isCaretaker) {
+                    CaretakerDetails(
+                         propertyViewModel = propertyViewModel
+                    )
                 }
             }
         }
@@ -144,9 +155,19 @@ fun Caretaker(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CaretakerDetails(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    propertyViewModel: PropertyViewModel
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    val propertyData by propertyViewModel.uiState.collectAsState()
+    val scope = rememberCoroutineScope()
+    val pickMedia = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) {
+        if (it != null) {
+            propertyViewModel.setCaretakerImage(it.toString())
+        }
+    }
 
     Column(
         modifier = modifier
@@ -154,20 +175,37 @@ fun CaretakerDetails(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(8.dp)
+                .fillMaxWidth()
+                .border(
+                    BorderStroke(1.dp, color = MaterialTheme.colorScheme.primary),
+                    shape = MaterialTheme.shapes.small
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
-            Image(
-                painterResource(R.drawable.user),
-                contentDescription = "User image",
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(
+                        propertyData.caretaker.image.ifBlank { R.drawable.user }
+                    )
+                    .crossfade(true)
+                    .build(),
+                contentDescription = "Image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .align(Alignment.Top)
                     .padding(12.dp)
                     .size(120.dp)
                     .clip(CircleShape)
-                    .clickable {},
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                    .clickable {
+                        scope.launch {
+                            pickMedia.launch(
+                                PickVisualMediaRequest(
+                                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                                )
+                            )
+                        }
+                    }
             )
             Column {
                 TextInput(
@@ -175,7 +213,8 @@ fun CaretakerDetails(
                     placeholder = {
                         Text("First name")
                     },
-                    onValueChange = { /*TODO*/ },
+                    value = propertyData.caretaker.firstName,
+                    onValueChange = { propertyViewModel.setCaretakerFirstname(it) },
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next
                     )
@@ -185,14 +224,16 @@ fun CaretakerDetails(
                     placeholder = {
                         Text("Last name")
                     },
-                    onValueChange = { /*TODO*/ },
+                    value = propertyData.caretaker.lastName,
+                    onValueChange = { propertyViewModel.setCaretakerLastname(it) },
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next
                     )
                 )
                 TextInput(
                     modifier = Modifier.padding(8.dp),
-                    onValueChange = { /*TODO*/ },
+                    value = propertyData.caretaker.phone,
+                    onValueChange = { propertyViewModel.setCaretakerPhone(it) },
                     prefix = {
                         Text(
                             text = "+254",
