@@ -27,7 +27,6 @@ fun TextInput(
 ) {
     TextField(
         modifier = modifier
-            .padding(top = 12.dp, bottom = 12.dp)
             .fillMaxWidth(),
         prefix = prefix,
         colors = TextFieldDefaults.colors(

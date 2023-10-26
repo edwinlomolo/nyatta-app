@@ -3,10 +3,7 @@ package com.example.nyatta.ui.screens.onboarding.property
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -95,8 +92,8 @@ fun Caretaker(
                 actionButtonText = stringResource(R.string.save_caretaker),
                 onActionButtonClick = { navigateNext(LocationDestination.route) }
             ) {
-                Title("Caretaker")
-                Description("This is someone that can be reached to schedule a visit or allow access to your property.")
+                Title(stringResource(R.string.caretaker))
+                Description(stringResource(R.string.caretaker_description))
                 Column {
                     Text(
                         text = stringResource(R.string.is_caretaker),
@@ -171,86 +168,73 @@ fun CaretakerDetails(
 
     Column(
         modifier = modifier
+            .padding(8.dp)
             .fillMaxWidth()
     ) {
-        Row(
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(
+                    propertyData.caretaker.image.ifBlank { R.drawable.user }
+                )
+                .crossfade(true)
+                .build(),
+            contentDescription = "Image",
+            contentScale = ContentScale.Crop,
             modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth()
-                .border(
-                    BorderStroke(1.dp, color = MaterialTheme.colorScheme.primary),
-                    shape = MaterialTheme.shapes.small
-                ),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(
-                        propertyData.caretaker.image.ifBlank { R.drawable.user }
-                    )
-                    .crossfade(true)
-                    .build(),
-                contentDescription = "Image",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(12.dp)
-                    .size(120.dp)
-                    .clip(CircleShape)
-                    .clickable {
-                        scope.launch {
-                            pickMedia.launch(
-                                PickVisualMediaRequest(
-                                    ActivityResultContracts.PickVisualMedia.ImageOnly
-                                )
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 4.dp)
+                .size(120.dp)
+                .clip(CircleShape)
+                .clickable {
+                    scope.launch {
+                        pickMedia.launch(
+                            PickVisualMediaRequest(
+                                ActivityResultContracts.PickVisualMedia.ImageOnly
                             )
-                        }
-                    }
-            )
-            Column {
-                TextInput(
-                    modifier = Modifier.padding(8.dp),
-                    placeholder = {
-                        Text("First name")
-                    },
-                    value = propertyData.caretaker.firstName,
-                    onValueChange = { propertyViewModel.setCaretakerFirstname(it) },
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Next
-                    )
-                )
-                TextInput(
-                    modifier = Modifier.padding(8.dp),
-                    placeholder = {
-                        Text("Last name")
-                    },
-                    value = propertyData.caretaker.lastName,
-                    onValueChange = { propertyViewModel.setCaretakerLastname(it) },
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Next
-                    )
-                )
-                TextInput(
-                    modifier = Modifier.padding(8.dp),
-                    value = propertyData.caretaker.phone,
-                    onValueChange = { propertyViewModel.setCaretakerPhone(it) },
-                    prefix = {
-                        Text(
-                            text = "+254",
-                            color = MaterialTheme.colorScheme.primary
                         )
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Done,
-                        keyboardType = KeyboardType.Number
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            keyboardController?.hide()
-                        }
-                    )
+                    }
+                }
+        )
+        Column {
+            TextInput(
+                placeholder = {
+                    Text("First name")
+                },
+                value = propertyData.caretaker.firstName,
+                onValueChange = { propertyViewModel.setCaretakerFirstname(it) },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
                 )
-            }
+            )
+            TextInput(
+                placeholder = {
+                    Text("Last name")
+                },
+                value = propertyData.caretaker.lastName,
+                onValueChange = { propertyViewModel.setCaretakerLastname(it) },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                )
+            )
+            TextInput(
+                value = propertyData.caretaker.phone,
+                onValueChange = { propertyViewModel.setCaretakerPhone(it) },
+                prefix = {
+                    Text(
+                        text = "+254",
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done,
+                    keyboardType = KeyboardType.Number
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        keyboardController?.hide()
+                    }
+                )
+            )
         }
     }
 }

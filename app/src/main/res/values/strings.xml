@@ -82,4 +82,6 @@
     <string name="home">Home</string>
     <string name="add">Add</string>
     <string name="is_caretaker">Are you the caretaker?</string>
+    <string name="caretaker">Caretaker</string>
+    <string name="caretaker_description">This is someone that can be reached to schedule a visit or allow access to your property.</string>
 </resources>
