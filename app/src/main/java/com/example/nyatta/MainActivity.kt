@@ -11,7 +11,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -37,14 +36,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.ui.NyattaApp
-import com.example.nyatta.ui.screens.account.AccountViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private val accViewModel by viewModels<AccountViewModel>()
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,7 +81,6 @@ class MainActivity : ComponentActivity() {
                         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
                         fusedLocationClient.lastLocation
                             .addOnSuccessListener { location ->
-                                accViewModel.setLocation(location.latitude, location.longitude)
                             }
                             .addOnFailureListener { exception ->
                                 exception.printStackTrace()

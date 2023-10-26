@@ -27,7 +27,7 @@ object NyattaViewModelProvider {
         }
         // Initializer for AccountViewModel
         initializer {
-            AccountViewModel()
+            AccountViewModel(nyattaApplication().container.authRepository)
         }
         // Initializer for TownsViewModel
         initializer {

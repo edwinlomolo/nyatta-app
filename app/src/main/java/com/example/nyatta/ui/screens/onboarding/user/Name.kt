@@ -30,8 +30,7 @@ object UserOnboardingNameDestination: Navigation {
 @Composable
 fun Names(
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit = {},
-    navigateNext: (String) -> Unit = {}
+    navigateUp: () -> Unit = {}
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     Scaffold(
@@ -53,9 +52,7 @@ fun Names(
                     .padding(12.dp),
                 alignBottomCenter = false,
                 actionButtonText = "Save",
-                onActionButtonClick = {
-                    navigateNext(UserOnboardingPhoneDestination.route)
-                }
+                onActionButtonClick = {)}
             ) {
                 TextInput(
                     value = "",

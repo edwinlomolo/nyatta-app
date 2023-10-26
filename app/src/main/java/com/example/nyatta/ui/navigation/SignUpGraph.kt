@@ -44,8 +44,7 @@ fun NavGraphBuilder.loginGraph(navController: NavHostController) {
         }
         composable(UserOnboardingNameDestination.route) {
             Names(
-                navigateUp = { navController.navigateUp() },
-                navigateNext = { navController.navigate(it) }
+                navigateUp = { navController.navigateUp() }
             )
         }
     }

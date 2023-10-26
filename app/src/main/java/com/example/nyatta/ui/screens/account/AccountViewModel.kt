@@ -4,37 +4,58 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.apollographql.apollo3.api.Error
+import com.apollographql.apollo3.exception.ApolloException
+import com.example.nyatta.CreateUserMutation
+import com.example.nyatta.NyattaApp
+import com.example.nyatta.data.auth.AuthRepository
+import com.example.nyatta.model.AuthRequest
+import kotlinx.coroutines.launch
 
-data class Location(
-    val lat: Double = 0.0,
-    val lon: Double = 0.0
-)
-
-data class User(
-    val firstName: String = "",
-    val lastName: String = "",
-    val email: String = "",
-    val phone: String = ""
-)
-
-data class AccountUiState(
-    var location: Location = Location(),
-    var user: User = User()
-)
-class AccountViewModel: ViewModel() {
-    var accUiState by mutableStateOf(AccountUiState())
+interface AccountUiState {
+    data class Auth(val token: CreateUserMutation.CreateUser?): AccountUiState
+    object Loading: AccountUiState
+    data class ApolloError(val errors: List<Error>): AccountUiState
+    data class ApplicationError(val error: ApolloException): AccountUiState
+}
+class AccountViewModel(
+    private val authRepository: AuthRepository
+): ViewModel() {
+    var accUiState: AccountUiState by mutableStateOf(AccountUiState.Loading)
         private set
 
-    fun setLocation(lat: Double, lon: Double) {
-        accUiState.location = Location(lat, lon)
+    fun signUser(request: AuthRequest) {
+        viewModelScope.launch {
+            accUiState = try {
+                val response = authRepository.signUser(request)
+                if (response.hasErrors()) {
+                    AccountUiState.ApolloError(errors = response.errors!!)
+                } else {
+                    AccountUiState.Auth(response.data?.createUser)
+                }
+            } catch (e: ApolloException) {
+                AccountUiState.ApplicationError(e)
+            }
+        }
     }
 
-    fun isValidUser(user: User = accUiState.user) {
-        return with(user) {
-            firstName.isNotBlank() &&
-                    lastName.isNotBlank() &&
-                    email.isNotBlank() &&
-                    phone.isNotBlank()
+    fun checkAuth(accState: AccountUiState = accUiState): Boolean {
+        return accState is AccountUiState.Auth
+    }
+
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[APPLICATION_KEY] as NyattaApp)
+                val authRepository = application.container.authRepository
+                AccountViewModel(authRepository = authRepository)
+            }
         }
     }
 }

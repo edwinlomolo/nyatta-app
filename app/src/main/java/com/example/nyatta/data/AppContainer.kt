@@ -1,6 +1,8 @@
 package com.example.nyatta.data
 
 import com.apollographql.apollo3.ApolloClient
+import com.example.nyatta.data.auth.AuthRepository
+import com.example.nyatta.data.auth.GqlAuthRepository
 import com.example.nyatta.data.hello.GqlHelloRepository
 import com.example.nyatta.data.hello.HelloRepository
 import com.example.nyatta.data.listings.GqlListingsRepository
@@ -12,6 +14,7 @@ interface AppContainer {
     val helloRepository: HelloRepository
     val listingsRepository: ListingsRepository
     val townsRepository: TownsRepository
+    val authRepository: AuthRepository
 }
 
 // TODO: Sample intercept: can refactor it to handle authentication?
@@ -44,5 +47,9 @@ class DefaultContainer: AppContainer {
 
     override val townsRepository: TownsRepository by lazy {
         GqlTownsRepository(client)
+    }
+
+    override val authRepository: AuthRepository by lazy {
+        GqlAuthRepository(client)
     }
 }

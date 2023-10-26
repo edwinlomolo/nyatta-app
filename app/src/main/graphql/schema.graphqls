@@ -99,7 +99,7 @@ type ListingOverview {
 }
 
 type Mutation {
-  createUser(input: NewUser!): User!
+  createUser(input: NewUser!): Token!
 
   createProperty(input: NewProperty!): Property!
 
@@ -149,7 +149,7 @@ input NewUser {
 
   last_name: String!
 
-  avatar: String!
+  avatar: String
 
   phone: String!
 }
