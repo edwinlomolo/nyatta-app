@@ -4,7 +4,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.nyatta.ui.screens.account.AccountViewModel
+import com.example.nyatta.ui.screens.user.AccountViewModel
 import com.example.nyatta.ui.screens.OnboardingViewModel
 import com.example.nyatta.ui.screens.apartment.ApartmentViewModel
 import com.example.nyatta.ui.screens.home.HomeViewModel

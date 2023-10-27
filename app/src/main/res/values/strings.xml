@@ -91,4 +91,7 @@
     <string name="continue_with_phone">Continue with Phone</string>
     <string name="create_account">Create account</string>
     <string name="create_account_to_proceed">Create account to proceed</string>
+    <string name="apartments_building_definition">Large building divided into separate residential apartments on different floors</string>
+    <string name="apartment_definition">A private self-contained unit in an apartments building</string>
+    <string name="start">Start</string>
 </resources>

@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.nyatta.ui.screens.account.AccountViewModel
+import com.example.nyatta.ui.screens.user.AccountViewModel
 import com.example.nyatta.ui.screens.user.Phone
 import com.example.nyatta.ui.screens.user.SignUp
 import com.example.nyatta.ui.screens.user.UserOnboardingPhoneDestination

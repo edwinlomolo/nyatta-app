@@ -3,7 +3,6 @@ package com.example.nyatta.ui.navigation
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.twotone.AccountBox
 import androidx.compose.material.icons.twotone.AddCircle
 import androidx.compose.material.icons.twotone.Home
 import androidx.compose.material3.Icon
@@ -26,7 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.nyatta.NyattaViewModelProvider
 import com.example.nyatta.R
 import com.example.nyatta.ui.screens.OnboardingViewModel
-import com.example.nyatta.ui.screens.account.AccountViewModel
+import com.example.nyatta.ui.screens.user.AccountViewModel
 import com.example.nyatta.ui.screens.apartment.ApartmentViewModel
 import com.example.nyatta.ui.screens.home.Home
 import com.example.nyatta.ui.screens.home.HomeDestination
@@ -34,8 +33,6 @@ import com.example.nyatta.ui.screens.home.HomeViewModel
 import com.example.nyatta.ui.screens.listing.ListingDetailsDestination
 import com.example.nyatta.ui.screens.location.TownsViewModel
 import com.example.nyatta.ui.screens.property.PropertyViewModel
-import com.example.nyatta.ui.screens.startpropertyonboarding.StartOnboardingDestination
-import com.example.nyatta.ui.screens.startpropertyonboarding.Type
 
 sealed class Screen(
     val route: String,
@@ -124,7 +121,6 @@ fun NyattaNavHost(
                 navController = navController,
                 onboardingViewModel = onboardingViewModel
             )
-            accountGraph(navController)
             paymentGraph(navController)
             locationGraph(
                 navController = navController,

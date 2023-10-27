@@ -35,7 +35,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.nyatta.NyattaViewModelProvider
 import com.example.nyatta.R
 import com.example.nyatta.ui.components.Description
 import com.example.nyatta.ui.components.Onboarding
@@ -55,9 +54,9 @@ object StartOnboardingDestination: Navigation {
 
 val optionImages = listOf(R.drawable.apartments, R.drawable.apartment, R.drawable.bungalow)
 val typeDefinition = listOf(
-    "Large building divided into separate residential apartments on different floors",
-    "A private self-contained unit in an apartments building",
-    "House or home that is typically either a single story, or one and a half stories tall"
+    R.string.apartments_building_definition,
+    R.string.apartment_definition,
+    //"House or home that is typically either a single story, or one and a half stories tall"
 )
 @Composable
 fun Type(
@@ -77,9 +76,9 @@ fun Type(
             Onboarding(
                 modifier = modifier
                     .selectableGroup(),
-                actionButtonText = "Start",
+                actionButtonText = stringResource(R.string.start),
                 onActionButtonClick = {
-                    when (onboardingUiState) {
+                    when (onboardingUiState.type) {
                         "Apartments Building" -> navigateToNext(
                             PropertyOnboarding.route
                         )
@@ -96,7 +95,7 @@ fun Type(
                             .padding(8.dp)
                             .fillMaxWidth()
                             .selectable(
-                                selected = (option == onboardingUiState),
+                                selected = (option == onboardingUiState.type),
                                 onClick = {
                                     onboardingViewModel.setType(option)
                                 },
@@ -107,13 +106,13 @@ fun Type(
                             modifier = Modifier
                                 .fillMaxWidth(),
                             colors = CardDefaults.cardColors(
-                                containerColor = if (option == onboardingUiState)
+                                containerColor = if (option == onboardingUiState.type)
                                     MaterialTheme.colorScheme.surface
                                 else Color.Transparent
                             ),
                             border = BorderStroke(
                                 1.dp,
-                                color = if (option == onboardingUiState)
+                                color = if (option == onboardingUiState.type)
                                     MaterialTheme.colorScheme.primary
                                 else MaterialTheme.colorScheme.onSurfaceVariant
                             ),
@@ -125,7 +124,7 @@ fun Type(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 RadioButton(
-                                    selected = (option == onboardingUiState),
+                                    selected = (option == onboardingUiState.type),
                                     onClick = { onboardingViewModel.setType(option) }
                                 )
                                 Spacer(modifier = Modifier.size(28.dp))
@@ -150,7 +149,7 @@ fun Type(
                                     Text(
                                         modifier = Modifier
                                             .padding(start = 12.dp, top = 4.dp),
-                                        text = typeDefinition[index],
+                                        text = stringResource(typeDefinition[index]),
                                         style = TextStyle(
                                             fontFamily = MabryFont,
                                             fontSize = 14.sp

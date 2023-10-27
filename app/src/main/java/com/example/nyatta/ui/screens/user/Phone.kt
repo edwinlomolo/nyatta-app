@@ -24,7 +24,6 @@ import com.example.nyatta.ui.components.TextInput
 import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.screens.home.TopAppBar
 import com.example.nyatta.ui.components.Onboarding
-import com.example.nyatta.ui.screens.account.AccountViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
 
 object UserOnboardingPhoneDestination: Navigation {

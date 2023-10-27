@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.screens.account
+package com.example.nyatta.ui.screens.user
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

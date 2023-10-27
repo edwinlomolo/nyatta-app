@@ -65,7 +65,7 @@ fun Location(
                     modifier = Modifier.padding(8.dp)
                 ) {
                     Title(stringResource(R.string.location))
-                    if (onboardingUiState == "Apartments Building") {
+                    if (onboardingUiState.type == "Apartments Building") {
                         Description(stringResource(R.string.location_description_property))
                     } else {
                         Description(stringResource(R.string.location_description_apartment))
