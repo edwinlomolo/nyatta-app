@@ -4,15 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.apollographql.apollo3.api.Error
 import com.apollographql.apollo3.exception.ApolloException
 import com.example.nyatta.CreateUserMutation
-import com.example.nyatta.NyattaApp
 import com.example.nyatta.data.auth.AuthRepository
 import com.example.nyatta.model.AuthRequest
 import kotlinx.coroutines.launch
@@ -46,16 +41,5 @@ class AccountViewModel(
 
     fun checkAuth(accState: AccountUiState = accUiState): Boolean {
         return accState is AccountUiState.Auth
-    }
-
-
-    companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application = (this[APPLICATION_KEY] as NyattaApp)
-                val authRepository = application.container.authRepository
-                AccountViewModel(authRepository = authRepository)
-            }
-        }
     }
 }

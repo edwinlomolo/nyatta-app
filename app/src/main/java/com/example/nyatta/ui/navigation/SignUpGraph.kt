@@ -4,14 +4,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.nyatta.ui.screens.onboarding.user.Names
-import com.example.nyatta.ui.screens.onboarding.user.Phone
-import com.example.nyatta.ui.screens.onboarding.user.SignUp
-import com.example.nyatta.ui.screens.onboarding.user.UserOnboardingNameDestination
-import com.example.nyatta.ui.screens.onboarding.user.UserOnboardingPhoneDestination
-import com.example.nyatta.ui.screens.onboarding.user.UserOnboardingPhoneVerifyDestination
-import com.example.nyatta.ui.screens.onboarding.user.UserSignUpDestination
-import com.example.nyatta.ui.screens.onboarding.user.Verify
+import com.example.nyatta.ui.screens.user.Phone
+import com.example.nyatta.ui.screens.user.SignUp
+import com.example.nyatta.ui.screens.user.UserOnboardingPhoneDestination
+import com.example.nyatta.ui.screens.user.UserOnboardingPhoneVerifyDestination
+import com.example.nyatta.ui.screens.user.UserSignUpDestination
+import com.example.nyatta.ui.screens.user.Verify
 
 object SignUpDestination: Navigation {
     override val route = "signup_graph"
@@ -26,8 +24,7 @@ fun NavGraphBuilder.loginGraph(navController: NavHostController) {
         composable(UserSignUpDestination.route) {
             SignUp(
                 navigateUp = { navController.popBackStack() },
-                navigateNext = { navController.navigate(it) },
-                currentRoute = navController.currentBackStackEntry?.destination?.route
+                navigateNext = { navController.navigate(it) }
             )
         }
         composable(UserOnboardingPhoneDestination.route) {
@@ -38,12 +35,6 @@ fun NavGraphBuilder.loginGraph(navController: NavHostController) {
         }
         composable(UserOnboardingPhoneVerifyDestination.route) {
             Verify(
-                navigateUp = { navController.navigateUp() },
-                navigateNext = { navController.navigate(it) }
-            )
-        }
-        composable(UserOnboardingNameDestination.route) {
-            Names(
                 navigateUp = { navController.navigateUp() }
             )
         }

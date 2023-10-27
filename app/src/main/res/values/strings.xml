@@ -44,7 +44,8 @@
     <string name="location">Location</string>
     <string name="enable_location">Select location</string>
     <string name="save_description">Save</string>
-    <string name="location_description">Improve vacant units discoverability with accurate property location. Property units will share this location. Vacant units will be discovered independently.</string>
+    <string name="location_description_property">Improve vacancy discoverability with property location. Property units will share this location. Vacant units will be discovered independently.</string>
+    <string name="location_description_apartment">Improve vacancy discoverability with property location.</string>
     <string name="save_caretaker">Save</string>
     <string name="no_caretaker">No</string>
     <string name="yes_caretaker">Yes</string>
@@ -84,4 +85,5 @@
     <string name="is_caretaker">Are you the caretaker?</string>
     <string name="caretaker">Caretaker</string>
     <string name="caretaker_description">This is someone that can be reached to schedule a visit or allow access to your property.</string>
+    <string name="proceed">Proceed</string>
 </resources>

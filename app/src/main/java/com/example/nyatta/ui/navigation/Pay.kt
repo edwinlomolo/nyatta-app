@@ -4,8 +4,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.nyatta.ui.screens.onboarding.payment.Mpesa
-import com.example.nyatta.ui.screens.onboarding.payment.PayDestination
+import com.example.nyatta.ui.screens.payment.Mpesa
+import com.example.nyatta.ui.screens.payment.PayDestination
 
 object PaymentGraph: Navigation {
     override val route = "pay_graph"

@@ -4,26 +4,26 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.nyatta.ui.screens.onboarding.apartment.Amenities
-import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentAmenitiesDestination
-import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentBathsDestination
-import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentBedroomsDestination
-import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentDescription
-import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentDescriptionDestination
-import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentLocationDestination
-import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentPriceDestination
-import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentStateDestination
-import com.example.nyatta.ui.screens.onboarding.apartment.Bath
-import com.example.nyatta.ui.screens.onboarding.apartment.Bedroom
-import com.example.nyatta.ui.screens.onboarding.apartment.Location
-import com.example.nyatta.ui.screens.onboarding.apartment.Price
-import com.example.nyatta.ui.screens.onboarding.apartment.SelectProperty
-import com.example.nyatta.ui.screens.onboarding.apartment.SelectPropertyDestination
-import com.example.nyatta.ui.screens.onboarding.apartment.Unit
-import com.example.nyatta.ui.screens.onboarding.apartment.UnitState
-import com.example.nyatta.ui.screens.onboarding.apartment.UnitTypeDestination
-import com.example.nyatta.ui.screens.onboarding.uploads.Uploads
-import com.example.nyatta.ui.screens.onboarding.uploads.UploadsDestination
+import com.example.nyatta.ui.screens.apartment.Amenities
+import com.example.nyatta.ui.screens.apartment.ApartmentAmenitiesDestination
+import com.example.nyatta.ui.screens.apartment.ApartmentBathsDestination
+import com.example.nyatta.ui.screens.apartment.ApartmentBedroomsDestination
+import com.example.nyatta.ui.screens.apartment.ApartmentDescription
+import com.example.nyatta.ui.screens.apartment.ApartmentDescriptionDestination
+import com.example.nyatta.ui.screens.apartment.ApartmentLocationDestination
+import com.example.nyatta.ui.screens.apartment.ApartmentPriceDestination
+import com.example.nyatta.ui.screens.apartment.ApartmentStateDestination
+import com.example.nyatta.ui.screens.apartment.Bath
+import com.example.nyatta.ui.screens.apartment.Bedroom
+import com.example.nyatta.ui.screens.apartment.Location
+import com.example.nyatta.ui.screens.apartment.Price
+import com.example.nyatta.ui.screens.apartment.SelectProperty
+import com.example.nyatta.ui.screens.apartment.SelectPropertyDestination
+import com.example.nyatta.ui.screens.apartment.Unit
+import com.example.nyatta.ui.screens.apartment.UnitState
+import com.example.nyatta.ui.screens.apartment.UnitTypeDestination
+import com.example.nyatta.ui.screens.uploads.Uploads
+import com.example.nyatta.ui.screens.uploads.UploadsDestination
 
 object ApartmentOnboardingGraph: Navigation {
     override val route = "onboarding/apartment"
@@ -43,12 +43,6 @@ fun NavGraphBuilder.apartmentGraph(navController: NavHostController) {
         }
         composable(route = SelectPropertyDestination.route) {
             SelectProperty(
-                navigateUp = { navController.navigateUp() },
-                navigateNext = { navController.navigate(it) }
-            )
-        }
-        composable(route = ApartmentLocationDestination.route) {
-            Location(
                 navigateUp = { navController.navigateUp() },
                 navigateNext = { navController.navigate(it) }
             )

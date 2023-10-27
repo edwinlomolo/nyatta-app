@@ -4,10 +4,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.nyatta.ui.screens.onboarding.location.Location
-import com.example.nyatta.ui.screens.onboarding.location.LocationDestination
-import com.example.nyatta.ui.screens.onboarding.location.TownDestination
-import com.example.nyatta.ui.screens.onboarding.location.Towns
+import com.example.nyatta.ui.screens.location.Location
+import com.example.nyatta.ui.screens.location.LocationDestination
+import com.example.nyatta.ui.screens.location.TownDestination
+import com.example.nyatta.ui.screens.location.Towns
 
 object LocationGraph: Navigation {
     override val route = "location_graph"

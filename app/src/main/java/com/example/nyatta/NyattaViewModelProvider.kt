@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.nyatta.ui.screens.account.AccountViewModel
-import com.example.nyatta.ui.screens.onboarding.OnboardingViewModel
-import com.example.nyatta.ui.screens.onboarding.apartment.ApartmentViewModel
-import com.example.nyatta.ui.screens.onboarding.location.TownsViewModel
-import com.example.nyatta.ui.screens.onboarding.property.PropertyViewModel
+import com.example.nyatta.ui.screens.OnboardingViewModel
+import com.example.nyatta.ui.screens.apartment.ApartmentViewModel
+import com.example.nyatta.ui.screens.location.TownsViewModel
+import com.example.nyatta.ui.screens.property.PropertyViewModel
 
 // Factory for entire app view models
 object NyattaViewModelProvider {

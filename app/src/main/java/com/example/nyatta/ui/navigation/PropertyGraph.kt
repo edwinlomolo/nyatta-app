@@ -4,10 +4,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.nyatta.ui.screens.onboarding.property.Caretaker
-import com.example.nyatta.ui.screens.onboarding.property.CaretakerDestination
-import com.example.nyatta.ui.screens.onboarding.property.PropertyDescription
-import com.example.nyatta.ui.screens.onboarding.property.PropertyDescriptionDestination
+import com.example.nyatta.ui.screens.property.Caretaker
+import com.example.nyatta.ui.screens.property.CaretakerDestination
+import com.example.nyatta.ui.screens.property.PropertyDescription
+import com.example.nyatta.ui.screens.property.PropertyDescriptionDestination
 
 object PropertyOnboardingGraph: Navigation {
     override val route = "onboarding/property"
