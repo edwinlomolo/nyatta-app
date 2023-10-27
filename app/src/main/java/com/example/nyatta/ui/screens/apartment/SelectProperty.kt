@@ -52,7 +52,7 @@ fun SelectProperty(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
     navigateNext: (String) -> Unit = {},
-    apartmentViewModel: ApartmentViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
+    apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
     val apartmentUiState by apartmentViewModel.uiState.collectAsState()
 

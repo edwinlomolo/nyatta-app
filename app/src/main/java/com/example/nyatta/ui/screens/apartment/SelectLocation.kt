@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
 import com.example.nyatta.ui.components.Description
 import com.example.nyatta.ui.components.TextInput
@@ -43,7 +44,8 @@ val options = listOf("Beach House Properties", "Mwea Ventures")
 fun Location(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
-    navigateNext: (String) -> Unit = {}
+    navigateNext: (String) -> Unit = {},
+    apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
     var expanded by remember { mutableStateOf(false) }
     var building by remember { mutableStateOf(options[0]) }

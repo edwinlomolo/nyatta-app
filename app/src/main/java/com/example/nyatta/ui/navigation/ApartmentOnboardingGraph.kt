@@ -12,6 +12,7 @@ import com.example.nyatta.ui.screens.apartment.ApartmentDescription
 import com.example.nyatta.ui.screens.apartment.ApartmentDescriptionDestination
 import com.example.nyatta.ui.screens.apartment.ApartmentPriceDestination
 import com.example.nyatta.ui.screens.apartment.ApartmentStateDestination
+import com.example.nyatta.ui.screens.apartment.ApartmentViewModel
 import com.example.nyatta.ui.screens.apartment.Bath
 import com.example.nyatta.ui.screens.apartment.Bedroom
 import com.example.nyatta.ui.screens.apartment.Price
@@ -28,61 +29,73 @@ object ApartmentOnboarding: Navigation {
     override val title = "Setup apartment"
 }
 
-fun NavGraphBuilder.apartmentGraph(navController: NavHostController) {
+fun NavGraphBuilder.apartmentGraph(
+    navController: NavHostController,
+    apartmentViewModel: ApartmentViewModel
+) {
     navigation(
         startDestination = ApartmentDescriptionDestination.route,
         route = ApartmentOnboarding.route
     ) {
         composable(route = ApartmentDescriptionDestination.route) {
             ApartmentDescription(
+                apartmentViewModel = apartmentViewModel,
                 navigateUp = { navController.navigateUp() },
                 navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = SelectPropertyDestination.route) {
             SelectProperty(
+                apartmentViewModel = apartmentViewModel,
                 navigateUp = { navController.navigateUp() },
                 navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = UnitTypeDestination.route) {
             Unit(
+                apartmentViewModel = apartmentViewModel,
                 navigateUp = { navController.navigateUp() },
                 navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = ApartmentAmenitiesDestination.route) {
             Amenities(
+                apartmentViewModel = apartmentViewModel,
                 navigateUp = { navController.navigateUp() },
                 navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = ApartmentBedroomsDestination.route) {
             Bedroom(
+                apartmentViewModel = apartmentViewModel,
                 navigateUp = { navController.navigateUp() },
                 navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = ApartmentBathsDestination.route) {
             Bath(
+                apartmentViewModel = apartmentViewModel,
                 navigateUp = { navController.navigateUp() },
                 navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = UploadsDestination.route) {
             Uploads(
+                apartmentViewModel = apartmentViewModel,
                 navigateUp = { navController.navigateUp() },
                 navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = ApartmentStateDestination.route) {
             UnitState(
+                apartmentViewModel = apartmentViewModel,
                 navigateUp = { navController.navigateUp() },
                 navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = ApartmentPriceDestination.route) {
             Price(
+                apartmentViewModel = apartmentViewModel,
                 navigateUp = { navController.navigateUp() }
             )
         }

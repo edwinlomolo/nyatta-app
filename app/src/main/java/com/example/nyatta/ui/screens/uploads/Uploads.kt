@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
 import com.example.nyatta.ui.components.ActionButton
 import com.example.nyatta.ui.components.Description
@@ -36,6 +37,7 @@ import com.example.nyatta.ui.components.Title
 import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.screens.home.TopAppBar
 import com.example.nyatta.ui.screens.apartment.ApartmentStateDestination
+import com.example.nyatta.ui.screens.apartment.ApartmentViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
 
 object UploadsDestination: Navigation {
@@ -48,7 +50,8 @@ object UploadsDestination: Navigation {
 fun Uploads(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
-    navigateNext: (String) -> Unit = {}
+    navigateNext: (String) -> Unit = {},
+    apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
     Scaffold(
         topBar = {

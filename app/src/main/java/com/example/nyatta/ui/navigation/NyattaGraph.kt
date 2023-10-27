@@ -25,10 +25,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.nyatta.NyattaViewModelProvider
 import com.example.nyatta.R
+import com.example.nyatta.ui.screens.OnboardingViewModel
+import com.example.nyatta.ui.screens.apartment.ApartmentViewModel
 import com.example.nyatta.ui.screens.home.Home
 import com.example.nyatta.ui.screens.home.HomeDestination
 import com.example.nyatta.ui.screens.listing.ListingDetailsDestination
 import com.example.nyatta.ui.screens.property.PropertyViewModel
+import com.example.nyatta.ui.screens.startpropertyonboarding.StartOnboardingDestination
+import com.example.nyatta.ui.screens.startpropertyonboarding.Type
 
 sealed class Screen(
     val route: String,
@@ -56,7 +60,9 @@ sealed class Screen(
 fun NyattaNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    propertyViewModel: PropertyViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
+    propertyViewModel: PropertyViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
+    onboardingViewModel: OnboardingViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
+    apartmentViewModel: ApartmentViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
 ) {
     val navigationItems = listOf(
         Screen.Home,
@@ -107,8 +113,13 @@ fun NyattaNavHost(
                     }
                 )
             }
+            composable(route = StartOnboardingDestination.route) {
+                Type(
+                    onboardingViewModel = onboardingViewModel,
+                    navigateToNext = { navController.navigate(it) }
+                )
+            }
             accountGraph(navController)
-            //listingTypeGraph(navController)
             paymentGraph(navController)
             locationGraph(navController)
             listingDetailsGraph(navController)
@@ -116,7 +127,10 @@ fun NyattaNavHost(
                 propertyViewModel = propertyViewModel,
                 navController = navController
             )
-            apartmentGraph(navController)
+            apartmentGraph(
+                navController = navController,
+                apartmentViewModel = apartmentViewModel
+            )
             loginGraph(navController)
         }
     }

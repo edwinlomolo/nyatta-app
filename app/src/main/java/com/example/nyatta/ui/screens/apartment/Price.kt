@@ -17,6 +17,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.ui.components.Description
 import com.example.nyatta.ui.components.TextInput
 import com.example.nyatta.ui.components.Title
@@ -34,7 +35,8 @@ object ApartmentPriceDestination: Navigation {
 @Composable
 fun Price(
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit = {}
+    navigateUp: () -> Unit = {},
+    apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 

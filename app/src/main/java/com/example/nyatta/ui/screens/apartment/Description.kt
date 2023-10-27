@@ -24,9 +24,9 @@ fun ApartmentDescription(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
     navigateNext: (String) -> Unit = {},
-    viewModel: ApartmentViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
+    apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by apartmentViewModel.uiState.collectAsState()
 
     Description(
         modifier = modifier,
@@ -42,7 +42,7 @@ fun ApartmentDescription(
             )
         },
         appBarTitle = ApartmentDescriptionDestination.title,
-        onValueChange = { viewModel.setName(it) },
+        onValueChange = { apartmentViewModel.setName(it) },
         value = uiState.description
     )
 }
