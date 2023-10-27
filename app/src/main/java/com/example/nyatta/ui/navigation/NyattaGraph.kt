@@ -16,16 +16,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.nyatta.NyattaViewModelProvider
 import com.example.nyatta.R
 import com.example.nyatta.ui.screens.home.Home
 import com.example.nyatta.ui.screens.home.HomeDestination
 import com.example.nyatta.ui.screens.listing.ListingDetailsDestination
+import com.example.nyatta.ui.screens.property.PropertyViewModel
 
 sealed class Screen(
     val route: String,
@@ -52,7 +55,8 @@ sealed class Screen(
 @Composable
 fun NyattaNavHost(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    propertyViewModel: PropertyViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
 ) {
     val navigationItems = listOf(
         Screen.Home,
@@ -104,11 +108,14 @@ fun NyattaNavHost(
                 )
             }
             accountGraph(navController)
-            listingTypeGraph(navController)
+            //listingTypeGraph(navController)
             paymentGraph(navController)
             locationGraph(navController)
             listingDetailsGraph(navController)
-            propertyGraph(navController)
+            propertyGraph(
+                propertyViewModel = propertyViewModel,
+                navController = navController
+            )
             apartmentGraph(navController)
             loginGraph(navController)
         }

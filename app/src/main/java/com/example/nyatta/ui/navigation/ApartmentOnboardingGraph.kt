@@ -10,12 +10,10 @@ import com.example.nyatta.ui.screens.apartment.ApartmentBathsDestination
 import com.example.nyatta.ui.screens.apartment.ApartmentBedroomsDestination
 import com.example.nyatta.ui.screens.apartment.ApartmentDescription
 import com.example.nyatta.ui.screens.apartment.ApartmentDescriptionDestination
-import com.example.nyatta.ui.screens.apartment.ApartmentLocationDestination
 import com.example.nyatta.ui.screens.apartment.ApartmentPriceDestination
 import com.example.nyatta.ui.screens.apartment.ApartmentStateDestination
 import com.example.nyatta.ui.screens.apartment.Bath
 import com.example.nyatta.ui.screens.apartment.Bedroom
-import com.example.nyatta.ui.screens.apartment.Location
 import com.example.nyatta.ui.screens.apartment.Price
 import com.example.nyatta.ui.screens.apartment.SelectProperty
 import com.example.nyatta.ui.screens.apartment.SelectPropertyDestination
@@ -25,7 +23,7 @@ import com.example.nyatta.ui.screens.apartment.UnitTypeDestination
 import com.example.nyatta.ui.screens.uploads.Uploads
 import com.example.nyatta.ui.screens.uploads.UploadsDestination
 
-object ApartmentOnboardingGraph: Navigation {
+object ApartmentOnboarding: Navigation {
     override val route = "onboarding/apartment"
     override val title = "Setup apartment"
 }
@@ -33,7 +31,7 @@ object ApartmentOnboardingGraph: Navigation {
 fun NavGraphBuilder.apartmentGraph(navController: NavHostController) {
     navigation(
         startDestination = ApartmentDescriptionDestination.route,
-        route = ApartmentOnboardingGraph.route
+        route = ApartmentOnboarding.route
     ) {
         composable(route = ApartmentDescriptionDestination.route) {
             ApartmentDescription(

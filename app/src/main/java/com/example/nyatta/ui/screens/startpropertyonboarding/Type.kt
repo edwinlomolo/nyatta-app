@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.screens.propertyonboarding
+package com.example.nyatta.ui.screens.startpropertyonboarding
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -40,9 +40,9 @@ import com.example.nyatta.R
 import com.example.nyatta.ui.components.Description
 import com.example.nyatta.ui.components.Onboarding
 import com.example.nyatta.ui.components.Title
-import com.example.nyatta.ui.navigation.ApartmentOnboardingGraph
+import com.example.nyatta.ui.navigation.ApartmentOnboarding
 import com.example.nyatta.ui.navigation.Navigation
-import com.example.nyatta.ui.navigation.PropertyOnboardingGraph
+import com.example.nyatta.ui.navigation.PropertyOnboarding
 import com.example.nyatta.ui.screens.OnboardingViewModel
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
@@ -62,7 +62,7 @@ val typeDefinition = listOf(
 @Composable
 fun Type(
     modifier: Modifier = Modifier,
-    onboardingViewModel: OnboardingViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
+    onboardingViewModel: OnboardingViewModel,
     navigateToNext: (String) -> Unit = {}
 ) {
     val onboardingUiState by onboardingViewModel.uiState.collectAsState()
@@ -92,10 +92,10 @@ fun Type(
                                     onboardingViewModel.setType(option)
                                     when (onboardingUiState.type) {
                                         "Apartments Building" -> navigateToNext(
-                                            PropertyOnboardingGraph.route
+                                            PropertyOnboarding.route
                                         )
 
-                                        else -> navigateToNext(ApartmentOnboardingGraph.route)
+                                        else -> navigateToNext(ApartmentOnboarding.route)
                                     }
                                 },
                                 role = Role.RadioButton

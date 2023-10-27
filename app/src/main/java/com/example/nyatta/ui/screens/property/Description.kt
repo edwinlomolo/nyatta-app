@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.nyatta.NyattaViewModelProvider
 import com.example.nyatta.R
 import com.example.nyatta.ui.components.Description
 import com.example.nyatta.ui.navigation.Navigation
@@ -24,9 +23,9 @@ fun PropertyDescription(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
     navigateNext: (String) -> Unit = {},
-    propertyViewModel: PropertyViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
+    propertyViewModel: PropertyViewModel = viewModel()
 ) {
-    val uiState by propertyViewModel.uiState.collectAsState()
+    val propertyUiState by propertyViewModel.uiState.collectAsState()
 
     Description(
         modifier = modifier,
@@ -41,7 +40,7 @@ fun PropertyDescription(
         navigateUp = navigateUp,
         appBarTitle = PropertyDescriptionDestination.title,
         onValueChange = { propertyViewModel.setName(it) },
-        value = uiState.description
+        value = propertyUiState.description
     )
 }
 

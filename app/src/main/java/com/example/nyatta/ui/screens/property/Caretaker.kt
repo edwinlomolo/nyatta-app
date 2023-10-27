@@ -69,7 +69,7 @@ fun Caretaker(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
     navigateNext: (String) -> Unit = {},
-    propertyViewModel: PropertyViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
+    propertyViewModel: PropertyViewModel = viewModel(),
 ) {
     val propertyUiState by propertyViewModel.uiState.collectAsState()
 
