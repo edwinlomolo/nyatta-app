@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.nyatta.NyattaViewModelProvider
 import com.example.nyatta.R
 import com.example.nyatta.ui.components.Loading
 import com.example.nyatta.ui.navigation.Navigation
@@ -50,7 +51,7 @@ fun Home(
     onNavigateToListing: (Int) -> Unit = {},
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-    val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
+    val homeViewModel: HomeViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
     val s = homeViewModel.homeUiState
     val showBars = s !is HomeUiState.Loading
     val errored = (s is HomeUiState.ApolloError || s is HomeUiState.ApplicationError)
