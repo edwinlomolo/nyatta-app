@@ -35,7 +35,7 @@ fun Location(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
     navigateToNext: (String) -> Unit = {},
-    onboardingViewModel: OnboardingViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
+    onboardingViewModel: OnboardingViewModel = viewModel()
 ) {
     val onboardingUiState by onboardingViewModel.uiState.collectAsState()
 
@@ -65,7 +65,7 @@ fun Location(
                     modifier = Modifier.padding(8.dp)
                 ) {
                     Title(stringResource(R.string.location))
-                    if (onboardingUiState.type == "Apartments Building") {
+                    if (onboardingUiState == "Apartments Building") {
                         Description(stringResource(R.string.location_description_property))
                     } else {
                         Description(stringResource(R.string.location_description_apartment))

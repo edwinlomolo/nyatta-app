@@ -33,7 +33,8 @@ fun Description(
     actionButtonText: String = stringResource(R.string.save_description),
     placeholder: @Composable (() -> Unit)? = null,
     navigateUp: () -> Unit = {},
-    appBarTitle: String
+    appBarTitle: String,
+    actionButtonLeadingIcon: @Composable (() -> Unit)? = null
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
@@ -54,6 +55,7 @@ fun Description(
                 .padding(innerPadding)
         ) {
             Onboarding(
+                actionButtonLeadingIcon = actionButtonLeadingIcon,
                 modifier = Modifier.padding(12.dp),
                 onActionButtonClick = onActionButtonClick,
                 actionButtonText = actionButtonText,

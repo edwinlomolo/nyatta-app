@@ -13,19 +13,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.nyatta.R
 import com.example.nyatta.ui.components.TextInput
 import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.screens.home.TopAppBar
 import com.example.nyatta.ui.components.Onboarding
+import com.example.nyatta.ui.screens.account.AccountViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
 
 object UserOnboardingPhoneDestination: Navigation {
     override val route = "user/phone"
-    override val title = "Verify phone number"
+    override val title = "Phone number"
 }
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
@@ -33,7 +37,8 @@ object UserOnboardingPhoneDestination: Navigation {
 fun Phone(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
-    navigateNext: (String) -> Unit = {}
+    navigateNext: (String) -> Unit = {},
+    accountViewModel: AccountViewModel = viewModel()
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     Scaffold(
@@ -54,10 +59,8 @@ fun Phone(
                 modifier = Modifier
                     .padding(12.dp),
                 alignBottomCenter = false,
-                actionButtonText = "Send code",
-                onActionButtonClick = {
-                    navigateNext(UserOnboardingPhoneVerifyDestination.route)
-                }
+                actionButtonText = stringResource(R.string.create_account),
+                onActionButtonClick = {}
             ) {
                 TextInput(
                     onValueChange = {},

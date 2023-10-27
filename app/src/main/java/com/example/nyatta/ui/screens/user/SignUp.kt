@@ -7,7 +7,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.nyatta.R
 import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.screens.home.TopAppBar
 import com.example.nyatta.ui.components.Onboarding
@@ -21,6 +23,7 @@ object UserSignUpDestination: Navigation {
 @Composable
 fun SignUp(
     modifier: Modifier = Modifier,
+    text: @Composable (() -> Unit)? = null,
     navigateNext: (String) -> Unit = {}
 ) {
     Scaffold(
@@ -37,11 +40,13 @@ fun SignUp(
         ) {
             Onboarding(
                 alignBottomCenter = false,
-                actionButtonText = "Continue with Phone",
+                actionButtonText = stringResource(R.string.continue_with_phone),
                 onActionButtonClick = {
                     navigateNext(UserOnboardingPhoneDestination.route)
                 }
-            ) {}
+            ) {
+                if (text != null) text()
+            }
         }
     }
 }

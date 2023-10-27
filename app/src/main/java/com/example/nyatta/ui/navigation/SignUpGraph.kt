@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.nyatta.ui.screens.account.AccountViewModel
 import com.example.nyatta.ui.screens.user.Phone
 import com.example.nyatta.ui.screens.user.SignUp
 import com.example.nyatta.ui.screens.user.UserOnboardingPhoneDestination
@@ -16,7 +17,10 @@ object SignUpDestination: Navigation {
     override val title = UserSignUpDestination.title
 }
 
-fun NavGraphBuilder.loginGraph(navController: NavHostController) {
+fun NavGraphBuilder.loginGraph(
+    navController: NavHostController,
+    accountViewModel: AccountViewModel
+) {
     navigation(
         startDestination = UserSignUpDestination.route,
         route = SignUpDestination.route
@@ -28,6 +32,7 @@ fun NavGraphBuilder.loginGraph(navController: NavHostController) {
         }
         composable(UserOnboardingPhoneDestination.route) {
             Phone(
+                accountViewModel = accountViewModel,
                 navigateUp = { navController.navigateUp() },
                 navigateNext = { navController.navigate(it) }
             )

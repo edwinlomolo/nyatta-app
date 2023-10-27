@@ -4,16 +4,22 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.nyatta.ui.screens.OnboardingViewModel
 import com.example.nyatta.ui.screens.location.Location
 import com.example.nyatta.ui.screens.location.LocationDestination
 import com.example.nyatta.ui.screens.location.TownDestination
 import com.example.nyatta.ui.screens.location.Towns
+import com.example.nyatta.ui.screens.location.TownsViewModel
 
 object LocationGraph: Navigation {
     override val route = "location_graph"
     override val title = "Location"
 }
-fun NavGraphBuilder.locationGraph(navController: NavHostController) {
+fun NavGraphBuilder.locationGraph(
+    onboardingViewModel: OnboardingViewModel,
+    townsViewModel: TownsViewModel,
+    navController: NavHostController
+) {
     navigation(
         startDestination = LocationDestination.route,
         route = LocationGraph.route
@@ -21,13 +27,14 @@ fun NavGraphBuilder.locationGraph(navController: NavHostController) {
         composable(route = LocationDestination.route) {
             Location(
                 navigateToNext = { navController.navigate(it) },
-                navigateUp = { navController.navigateUp() }
+                navigateUp = { navController.navigateUp() },
+                onboardingViewModel = onboardingViewModel
             )
         }
         composable(route = TownDestination.route) {
             Towns(
+                townsViewModel = townsViewModel,
                 navigateUp = { navController.navigateUp() },
-                navigateBack = { navController.popBackStack() },
                 navigateNext = { navController.navigate(it) }
             )
         }

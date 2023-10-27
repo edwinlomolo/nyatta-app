@@ -24,6 +24,7 @@ fun Onboarding(
     modifier: Modifier = Modifier,
     actionButtonText: String = "",
     onActionButtonClick: () -> Unit = {},
+    actionButtonLeadingIcon: @Composable (() -> Unit)? = null,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
     alignBottomCenter: Boolean = true,
@@ -60,6 +61,7 @@ fun Onboarding(
                         text = actionButtonText,
                         style = MaterialTheme.typography.titleSmall
                     )
+                    if (actionButtonLeadingIcon != null) actionButtonLeadingIcon()
                 }
             }
         }

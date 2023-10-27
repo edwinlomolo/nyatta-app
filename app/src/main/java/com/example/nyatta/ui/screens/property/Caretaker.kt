@@ -15,7 +15,10 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.twotone.ArrowForward
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
@@ -45,7 +48,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.nyatta.NyattaViewModelProvider
 import com.example.nyatta.R
 import com.example.nyatta.ui.components.Description
 import com.example.nyatta.ui.components.TextInput
@@ -89,7 +91,13 @@ fun Caretaker(
         ) {
             Onboarding(
                 modifier = modifier.padding(12.dp),
-                actionButtonText = stringResource(R.string.save_caretaker),
+                actionButtonText = stringResource(R.string.set_location),
+                actionButtonLeadingIcon = {
+                    Icon(
+                        Icons.TwoTone.ArrowForward,
+                        contentDescription = stringResource(R.string.set_location)
+                    )
+                },
                 onActionButtonClick = { navigateNext(LocationGraph.route) }
             ) {
                 Title(stringResource(R.string.caretaker))

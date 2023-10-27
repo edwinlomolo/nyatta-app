@@ -14,7 +14,7 @@ fun ActionButton(
     modifier: Modifier = Modifier,
     text: String = "",
     onClick: () -> Unit = {},
-    content: (@Composable () -> Unit)? = null,
+    content: (@Composable () -> Unit)? = null
 ) {
     Button(
         modifier = modifier

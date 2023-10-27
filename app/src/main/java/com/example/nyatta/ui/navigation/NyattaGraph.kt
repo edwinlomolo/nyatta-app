@@ -26,11 +26,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.nyatta.NyattaViewModelProvider
 import com.example.nyatta.R
 import com.example.nyatta.ui.screens.OnboardingViewModel
+import com.example.nyatta.ui.screens.account.AccountViewModel
 import com.example.nyatta.ui.screens.apartment.ApartmentViewModel
 import com.example.nyatta.ui.screens.home.Home
 import com.example.nyatta.ui.screens.home.HomeDestination
 import com.example.nyatta.ui.screens.home.HomeViewModel
 import com.example.nyatta.ui.screens.listing.ListingDetailsDestination
+import com.example.nyatta.ui.screens.location.TownsViewModel
 import com.example.nyatta.ui.screens.property.PropertyViewModel
 import com.example.nyatta.ui.screens.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.ui.screens.startpropertyonboarding.Type
@@ -46,15 +48,15 @@ sealed class Screen(
         Icons.TwoTone.Home
     )
     object Add: Screen(
-        "add",
+        "onboarding/start",
         R.string.add,
         Icons.TwoTone.AddCircle
     )
-    object Account: Screen(
+    /*object Account: Screen(
         "signup_graph",
         R.string.account,
         Icons.TwoTone.AccountBox
-    )
+    )*/
 }
 
 @Composable
@@ -64,12 +66,14 @@ fun NyattaNavHost(
     propertyViewModel: PropertyViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     onboardingViewModel: OnboardingViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     apartmentViewModel: ApartmentViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
-    homeViewModel: HomeViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
+    homeViewModel: HomeViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
+    townsViewModel: TownsViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
+    accountViewModel: AccountViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
 ) {
     val navigationItems = listOf(
         Screen.Home,
         Screen.Add,
-        Screen.Account
+        //Screen.Account
     )
 
     Scaffold(
@@ -116,15 +120,17 @@ fun NyattaNavHost(
                     homeViewModel = homeViewModel
                 )
             }
-            composable(route = StartOnboardingDestination.route) {
-                Type(
-                    onboardingViewModel = onboardingViewModel,
-                    navigateToNext = { navController.navigate(it) }
-                )
-            }
+            startPropertyOnboarding(
+                navController = navController,
+                onboardingViewModel = onboardingViewModel
+            )
             accountGraph(navController)
             paymentGraph(navController)
-            locationGraph(navController)
+            locationGraph(
+                navController = navController,
+                townsViewModel = townsViewModel,
+                onboardingViewModel = onboardingViewModel
+            )
             listingDetailsGraph(navController)
             propertyGraph(
                 propertyViewModel = propertyViewModel,
@@ -134,7 +140,10 @@ fun NyattaNavHost(
                 navController = navController,
                 apartmentViewModel = apartmentViewModel
             )
-            loginGraph(navController)
+            loginGraph(
+                accountViewModel = accountViewModel,
+                navController = navController
+            )
         }
     }
 }

@@ -1,5 +1,8 @@
 package com.example.nyatta.ui.screens.property
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.twotone.ArrowForward
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -29,6 +32,13 @@ fun PropertyDescription(
 
     Description(
         modifier = modifier,
+        actionButtonLeadingIcon = {
+            Icon(
+                Icons.TwoTone.ArrowForward,
+                contentDescription = stringResource(R.string.declare_caretaker)
+            )
+        },
+        actionButtonText = stringResource(R.string.declare_caretaker),
         onActionButtonClick = { navigateNext(CaretakerDestination.route) },
         title = stringResource(R.string.property_name),
         description = stringResource(R.string.property_name_description),

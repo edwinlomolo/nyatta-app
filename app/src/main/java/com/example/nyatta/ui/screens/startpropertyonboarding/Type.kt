@@ -77,7 +77,16 @@ fun Type(
             Onboarding(
                 modifier = modifier
                     .selectableGroup(),
-                showProceedButton = false
+                actionButtonText = "Start",
+                onActionButtonClick = {
+                    when (onboardingUiState) {
+                        "Apartments Building" -> navigateToNext(
+                            PropertyOnboarding.route
+                        )
+
+                        else -> navigateToNext(ApartmentOnboarding.route)
+                    }
+                }
             ) {
                 Title(stringResource(R.string.start_your_setup))
                 Description(stringResource(R.string.what_to_add))
@@ -87,16 +96,9 @@ fun Type(
                             .padding(8.dp)
                             .fillMaxWidth()
                             .selectable(
-                                selected = (option == onboardingUiState.type),
+                                selected = (option == onboardingUiState),
                                 onClick = {
                                     onboardingViewModel.setType(option)
-                                    when (onboardingUiState.type) {
-                                        "Apartments Building" -> navigateToNext(
-                                            PropertyOnboarding.route
-                                        )
-
-                                        else -> navigateToNext(ApartmentOnboarding.route)
-                                    }
                                 },
                                 role = Role.RadioButton
                             )
@@ -105,13 +107,13 @@ fun Type(
                             modifier = Modifier
                                 .fillMaxWidth(),
                             colors = CardDefaults.cardColors(
-                                containerColor = if (option == onboardingUiState.type)
+                                containerColor = if (option == onboardingUiState)
                                     MaterialTheme.colorScheme.surface
                                 else Color.Transparent
                             ),
                             border = BorderStroke(
                                 1.dp,
-                                color = if (option == onboardingUiState.type)
+                                color = if (option == onboardingUiState)
                                     MaterialTheme.colorScheme.primary
                                 else MaterialTheme.colorScheme.onSurfaceVariant
                             ),
@@ -123,8 +125,8 @@ fun Type(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 RadioButton(
-                                    selected = (option == onboardingUiState.type),
-                                    onClick = null
+                                    selected = (option == onboardingUiState),
+                                    onClick = { onboardingViewModel.setType(option) }
                                 )
                                 Spacer(modifier = Modifier.size(28.dp))
                                 Image(

@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.twotone.ArrowForward
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,7 +34,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.GetTownsQuery
-import com.example.nyatta.NyattaViewModelProvider
 import com.example.nyatta.ui.components.Loading
 import com.example.nyatta.ui.components.ActionButton
 import com.example.nyatta.ui.navigation.Navigation
@@ -50,14 +50,13 @@ fun Towns(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
     navigateNext: (String) -> Unit = {},
-    navigateBack: () -> Unit = {}
+    townsViewModel: TownsViewModel = viewModel()
 ) {
-    val townsViewModel: TownsViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
     val towns = townsViewModel.townSuggestions()
 
     when(val s = townsViewModel.townsUiState) {
         TownsUiState.Loading -> Loading()
-        is TownsUiState.Success -> Town(towns = towns!!, navigateNext = navigateNext, navigateBack = navigateBack, navigateUp = navigateUp, modifier = modifier)
+        is TownsUiState.Success -> Town(townsViewModel = townsViewModel, towns = towns!!, navigateNext = navigateNext, navigateUp = navigateUp, modifier = modifier)
         is TownsUiState.ApolloError -> Text(text = s.errors[0].message)
         is TownsUiState.ApplicationError -> Text(text = "${s.error}")
     }
@@ -69,14 +68,14 @@ fun Town(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
     navigateNext: (String) -> Unit = {},
-    navigateBack: () -> Unit = {},
-    towns: List<GetTownsQuery.GetTown>
+    towns: List<GetTownsQuery.GetTown>,
+    townsViewModel: TownsViewModel
 ) {
     Scaffold(
         topBar = {
             TownsTopBar(
+                townsViewModel = townsViewModel,
                 towns = towns,
-                navigateBack = navigateBack,
                 navigateUp = navigateUp,
                 navigateNext = navigateNext
             )
@@ -93,15 +92,14 @@ fun Town(
 @Composable
 fun TownsTopBar(
     modifier: Modifier = Modifier,
-    navigateBack: () -> Unit = {},
     towns: List<GetTownsQuery.GetTown>,
     navigateNext: (String) -> Unit = {},
-    navigateUp: () -> Unit = {}
+    navigateUp: () -> Unit = {},
+    townsViewModel: TownsViewModel
 ) {
     var active by rememberSaveable {
         mutableStateOf(false)
     }
-    val townsViewModel: TownsViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
 
     Box(
         modifier = modifier
@@ -146,7 +144,17 @@ fun TownsTopBar(
                 }
                 if (towns.isEmpty()) item { Text("Can't find town", style = MaterialTheme.typography.titleSmall, modifier = Modifier.padding(8.dp)) }
             }
-            if (!towns.isEmpty()) ActionButton(onClick = { navigateNext(PayDestination.route) }, modifier = Modifier.padding(4.dp), text = "Proceed")
+            if (towns.isNotEmpty())
+                ActionButton(
+                    onClick = { navigateNext(PayDestination.route) },
+                    modifier = Modifier.padding(4.dp),
+                    text = "Proceed"
+                ) {
+                    Icon(
+                        Icons.TwoTone.ArrowForward,
+                        contentDescription = "Proceed"
+                    )
+                }
         }
     }
 }
