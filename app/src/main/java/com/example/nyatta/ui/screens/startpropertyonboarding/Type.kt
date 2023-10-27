@@ -62,7 +62,7 @@ val typeDefinition = listOf(
 @Composable
 fun Type(
     modifier: Modifier = Modifier,
-    onboardingViewModel: OnboardingViewModel,
+    onboardingViewModel: OnboardingViewModel = viewModel(),
     navigateToNext: (String) -> Unit = {}
 ) {
     val onboardingUiState by onboardingViewModel.uiState.collectAsState()
