@@ -49,9 +49,9 @@ object HomeDestination: Navigation {
 fun Home(
     modifier: Modifier = Modifier,
     onNavigateToListing: (Int) -> Unit = {},
+    homeViewModel: HomeViewModel = viewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-    val homeViewModel: HomeViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
     val s = homeViewModel.homeUiState
     val showBars = s !is HomeUiState.Loading
     val errored = (s is HomeUiState.ApolloError || s is HomeUiState.ApplicationError)

@@ -29,6 +29,7 @@ import com.example.nyatta.ui.screens.OnboardingViewModel
 import com.example.nyatta.ui.screens.apartment.ApartmentViewModel
 import com.example.nyatta.ui.screens.home.Home
 import com.example.nyatta.ui.screens.home.HomeDestination
+import com.example.nyatta.ui.screens.home.HomeViewModel
 import com.example.nyatta.ui.screens.listing.ListingDetailsDestination
 import com.example.nyatta.ui.screens.property.PropertyViewModel
 import com.example.nyatta.ui.screens.startpropertyonboarding.StartOnboardingDestination
@@ -62,7 +63,8 @@ fun NyattaNavHost(
     modifier: Modifier = Modifier,
     propertyViewModel: PropertyViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     onboardingViewModel: OnboardingViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
-    apartmentViewModel: ApartmentViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
+    apartmentViewModel: ApartmentViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
+    homeViewModel: HomeViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
 ) {
     val navigationItems = listOf(
         Screen.Home,
@@ -110,7 +112,8 @@ fun NyattaNavHost(
                 Home(
                     onNavigateToListing = {
                         navController.navigate("${ListingDetailsDestination.route}/${it}")
-                    }
+                    },
+                    homeViewModel = homeViewModel
                 )
             }
             composable(route = StartOnboardingDestination.route) {
