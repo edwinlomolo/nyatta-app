@@ -23,7 +23,6 @@ fun NavGraphBuilder.loginGraph(navController: NavHostController) {
     ) {
         composable(UserSignUpDestination.route) {
             SignUp(
-                navigateUp = { navController.popBackStack() },
                 navigateNext = { navController.navigate(it) }
             )
         }

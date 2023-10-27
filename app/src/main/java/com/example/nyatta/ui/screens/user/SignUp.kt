@@ -9,7 +9,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.screens.home.TopAppBar
 import com.example.nyatta.ui.components.Onboarding
@@ -23,12 +22,8 @@ object UserSignUpDestination: Navigation {
 @Composable
 fun SignUp(
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit = {},
     navigateNext: (String) -> Unit = {}
 ) {
-    BackHandler {
-        navigateUp()
-    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -42,7 +37,6 @@ fun SignUp(
                 .padding(innerPadding)
         ) {
             Onboarding(
-                modifier = Modifier.padding(12.dp),
                 alignBottomCenter = false,
                 actionButtonText = "Continue with Phone",
                 onActionButtonClick = {
