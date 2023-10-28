@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 class AuthViewModel(
     private val authRepository: OfflineAuthRepository
 ): ViewModel() {
-    val authUiState: StateFlow<AuthUiState> = authRepository
+    var authUiState: StateFlow<AuthUiState> = authRepository
         .getUser()
         .filterNotNull()
         .map {
@@ -25,6 +25,7 @@ class AuthViewModel(
             started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
             initialValue = AuthUiState()
         )
+        private set
 
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L

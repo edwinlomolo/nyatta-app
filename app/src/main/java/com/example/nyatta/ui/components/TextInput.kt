@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,6 +25,7 @@ fun TextInput(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     readOnly: Boolean = false,
+    isError: Boolean = false,
     enabled: Boolean = true
 ) {
     TextField(
@@ -30,10 +33,14 @@ fun TextInput(
             .fillMaxWidth(),
         prefix = prefix,
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.background,
-            unfocusedContainerColor = MaterialTheme.colorScheme.background,
+            focusedContainerColor = if (isError) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.background,
+            unfocusedContainerColor = if (isError) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.background,
             unfocusedIndicatorColor = MaterialTheme.colorScheme.primary
         ),
+        isError = isError,
+        supportingText = {
+            if (isError) Text(text = "Invalid", color = MaterialTheme.colorScheme.error)
+        },
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         value = value,

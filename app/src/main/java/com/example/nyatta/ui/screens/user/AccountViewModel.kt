@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.google.i18n.phonenumbers.Phonenumber
 
 interface AccountUiState {
     data class Auth(val user: User? = null): AccountUiState
@@ -25,49 +27,71 @@ interface AccountUiState {
 class AccountViewModel(
     private val authRepository: AuthRepository
 ): ViewModel() {
+    private val countryCode = "+254"
+    private val phonenumberUtil = PhoneNumberUtil.getInstance()
     private val _userDetails = MutableStateFlow(UserDetails())
     val userUiDetails: StateFlow<UserDetails> = _userDetails.asStateFlow()
 
     var accUiState: AccountUiState by mutableStateOf(AccountUiState.Auth())
         private set
 
-    fun signIn() {
-        accUiState = AccountUiState.Loading
-        viewModelScope.launch {
-            accUiState = try {
-                val response = authRepository.signUp(userUiDetails.value.phone)
-                if (response.hasErrors()) {
-                    AccountUiState.ApolloError(response.errors!!)
-                } else {
-                    val res = response.data?.signIn
-                    authRepository.signUser(
-                        user = User(
-                            isLandlord = res!!.user.is_landlord,
-                            token = res!!.Token,
-                            phone = res!!.user.phone
+    fun signIn(cb: () -> Unit = {}) {
+        if (userUiDetails.value.phone.isNotEmpty() && userUiDetails.value.validDetails) {
+            accUiState = AccountUiState.Loading
+            viewModelScope.launch {
+                accUiState = try {
+                    val response = authRepository.signUp(userUiDetails.value.phone)
+                    if (response.hasErrors()) {
+                        AccountUiState.ApolloError(response.errors!!)
+                    } else {
+                        val res = response.data?.signIn
+                        authRepository.signUser(
+                            user = User(
+                                isLandlord = res!!.user.is_landlord,
+                                token = res.Token,
+                                phone = res.user.phone
+                            )
                         )
-                    )
-                    AccountUiState.Auth(
-                        user = User(
-                            phone = res!!.user.phone,
-                            isLandlord = res!!.user.is_landlord,
-                            token = res!!.Token
+                        AccountUiState.Auth(
+                            user = User(
+                                phone = res.user.phone,
+                                isLandlord = res.user.is_landlord,
+                                token = res.Token
+                            )
                         )
-                    )
+                    }
+                } catch (e: ApolloException) {
+                    AccountUiState.ApplicationError(e)
                 }
-            } catch(e: ApolloException) {
-                AccountUiState.ApplicationError(e)
+                cb()
             }
+        }
+    }
+
+    private fun validatePhone(phoneNumber: String): Boolean {
+        return try {
+            if (phoneNumber.isNotEmpty()) {
+                val phone = Phonenumber.PhoneNumber()
+                phone.countryCode = countryCode.toInt()
+                phone.nationalNumber = phoneNumber.toLong()
+                phonenumberUtil.isValidNumber(phone)
+            } else false
+        } catch(e: Throwable) {
+            false
         }
     }
 
     fun setPhone(phone: String) {
         _userDetails.update {
-            it.copy(phone = phone)
+            it.copy(
+                phone = phone,
+                validDetails = validatePhone(phone)
+            )
         }
     }
 }
 
 data class UserDetails(
-    val phone: String = ""
+    val phone: String = "",
+    val validDetails: Boolean = true
 )
