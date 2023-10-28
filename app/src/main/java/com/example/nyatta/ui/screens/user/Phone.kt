@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -28,6 +29,7 @@ import com.example.nyatta.ui.screens.home.TopAppBar
 import com.example.nyatta.ui.components.Onboarding
 import com.example.nyatta.ui.screens.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.ui.theme.NyattaTheme
+import kotlinx.coroutines.launch
 
 object UserOnboardingPhoneDestination: Navigation {
     override val route = "user/phone"
@@ -42,6 +44,7 @@ fun Phone(
     navigateNext: (String) -> Unit = {},
     accountViewModel: AccountViewModel = viewModel()
 ) {
+    val scope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
     val accUiState = accountViewModel.accUiState
     val userDetail by accountViewModel.userUiDetails.collectAsState()
@@ -67,8 +70,10 @@ fun Phone(
                 isActionButtonLoading = accUiState is AccountUiState.Loading,
                 actionButtonText = stringResource(R.string.create_account),
                 onActionButtonClick = {
-                    accountViewModel.signIn()
-                    navigateNext(StartOnboardingDestination.route)
+                    scope.launch {
+                        accountViewModel.signIn()
+                        navigateNext(StartOnboardingDestination.route)
+                    }
                 }
             ) {
                 TextInput(

@@ -62,6 +62,7 @@ dependencies {
     // To use Kotlin Symbol Processing (KSP)
     ksp("androidx.room:room-compiler:$roomVersion")
 
+    implementation("com.googlecode.libphonenumber:libphonenumber:8.2.0")
     implementation("androidx.room:room-ktx:$roomVersion")
     implementation("androidx.navigation:navigation-compose:$navVersion") // Jetpack Compose Navigation
     implementation("androidx.core:core-ktx:1.12.0")
