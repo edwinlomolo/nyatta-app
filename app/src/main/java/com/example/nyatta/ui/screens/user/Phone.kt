@@ -1,6 +1,5 @@
 package com.example.nyatta.ui.screens.user
 
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
@@ -49,7 +48,6 @@ fun Phone(
     val keyboardController = LocalSoftwareKeyboardController.current
     val accUiState = accountViewModel.accUiState
     val userDetail by accountViewModel.userUiDetails.collectAsState()
-    Log.d("Valid", "${userDetail.validDetails}")
 
     Scaffold(
         topBar = {

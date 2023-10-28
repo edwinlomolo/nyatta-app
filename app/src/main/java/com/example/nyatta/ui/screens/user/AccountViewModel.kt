@@ -70,12 +70,10 @@ class AccountViewModel(
 
     private fun validatePhone(phoneNumber: String): Boolean {
         return try {
-            if (phoneNumber.isNotEmpty()) {
                 val phone = Phonenumber.PhoneNumber()
                 phone.countryCode = countryCode.toInt()
                 phone.nationalNumber = phoneNumber.toLong()
-                phonenumberUtil.isValidNumber(phone)
-            } else false
+                return phonenumberUtil.isValidNumber(phone)
         } catch(e: Throwable) {
             false
         }
