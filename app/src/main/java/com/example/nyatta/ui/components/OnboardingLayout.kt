@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +31,7 @@ fun Onboarding(
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
     alignBottomCenter: Boolean = true,
     showProceedButton: Boolean = true,
+    isActionButtonLoading: Boolean = false,
     content: @Composable () -> Unit
 ) {
     Column(
@@ -47,21 +50,28 @@ fun Onboarding(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp),
-                verticalAlignment = Alignment.Bottom
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.Center
             ) {
-                Button(
-                    onClick = { onActionButtonClick() },
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .fillMaxWidth(),
-                    shape = MaterialTheme.shapes.small
-                ) {
-                    Text(
-                        modifier = Modifier.padding(8.dp),
-                        text = actionButtonText,
-                        style = MaterialTheme.typography.titleSmall
+                if (!isActionButtonLoading) {
+                    Button(
+                        onClick = { onActionButtonClick() },
+                        modifier = Modifier
+                            .padding(top = 4.dp)
+                            .fillMaxWidth(),
+                        shape = MaterialTheme.shapes.small
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(8.dp),
+                            text = actionButtonText,
+                            style = MaterialTheme.typography.titleSmall
+                        )
+                        if (actionButtonLeadingIcon != null) actionButtonLeadingIcon()
+                    }
+                } else {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(18.dp)
                     )
-                    if (actionButtonLeadingIcon != null) actionButtonLeadingIcon()
                 }
             }
         }

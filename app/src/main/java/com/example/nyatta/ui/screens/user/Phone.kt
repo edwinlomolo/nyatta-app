@@ -10,6 +10,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -24,6 +26,7 @@ import com.example.nyatta.ui.components.TextInput
 import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.screens.home.TopAppBar
 import com.example.nyatta.ui.components.Onboarding
+import com.example.nyatta.ui.screens.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.ui.theme.NyattaTheme
 
 object UserOnboardingPhoneDestination: Navigation {
@@ -40,6 +43,9 @@ fun Phone(
     accountViewModel: AccountViewModel = viewModel()
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    val accUiState = accountViewModel.accUiState
+    val userDetail by accountViewModel.userUiDetails.collectAsState()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -58,11 +64,18 @@ fun Phone(
                 modifier = Modifier
                     .padding(12.dp),
                 alignBottomCenter = false,
+                isActionButtonLoading = accUiState is AccountUiState.Loading,
                 actionButtonText = stringResource(R.string.create_account),
-                onActionButtonClick = {}
+                onActionButtonClick = {
+                    accountViewModel.signIn()
+                    navigateNext(StartOnboardingDestination.route)
+                }
             ) {
                 TextInput(
-                    onValueChange = {},
+                    value = userDetail.phone,
+                    onValueChange = {
+                        accountViewModel.setPhone(it)
+                    },
                     prefix = {
                         Text(
                             "+254",

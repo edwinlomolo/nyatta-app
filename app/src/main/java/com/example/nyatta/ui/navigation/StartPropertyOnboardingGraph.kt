@@ -9,6 +9,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.nyatta.AuthUiState
 import com.example.nyatta.R
 import com.example.nyatta.ui.screens.OnboardingViewModel
 import com.example.nyatta.ui.screens.startpropertyonboarding.StartOnboardingDestination
@@ -23,10 +24,13 @@ object StartPropertyOnboardingGraph: Navigation {
 
 fun NavGraphBuilder.startPropertyOnboarding(
     navController: NavHostController,
-    onboardingViewModel: OnboardingViewModel
+    onboardingViewModel: OnboardingViewModel,
+    authUiState: AuthUiState
 ) {
+    val sendToSignup = authUiState.user.isEmpty()
+
     navigation(
-        startDestination = UserSignUpDestination.route,
+        startDestination = if (sendToSignup) UserSignUpDestination.route else StartOnboardingDestination.route,
         route = StartPropertyOnboardingGraph.route
     ) {
         composable(UserSignUpDestination.route) {

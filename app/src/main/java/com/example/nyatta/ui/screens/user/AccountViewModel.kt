@@ -7,39 +7,67 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.api.Error
 import com.apollographql.apollo3.exception.ApolloException
-import com.example.nyatta.CreateUserMutation
 import com.example.nyatta.data.auth.AuthRepository
-import com.example.nyatta.model.AuthRequest
+import com.example.nyatta.data.model.User
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 interface AccountUiState {
-    data class Auth(val token: CreateUserMutation.CreateUser?): AccountUiState
+    data class Auth(val user: User? = null): AccountUiState
     object Loading: AccountUiState
+    object NotLoading: AccountUiState
     data class ApolloError(val errors: List<Error>): AccountUiState
     data class ApplicationError(val error: ApolloException): AccountUiState
 }
 class AccountViewModel(
     private val authRepository: AuthRepository
 ): ViewModel() {
-    var accUiState: AccountUiState by mutableStateOf(AccountUiState.Loading)
+    private val _userDetails = MutableStateFlow(UserDetails())
+    val userUiDetails: StateFlow<UserDetails> = _userDetails.asStateFlow()
+
+    var accUiState: AccountUiState by mutableStateOf(AccountUiState.Auth())
         private set
 
-    fun signUser(request: AuthRequest) {
+    fun signIn() {
+        accUiState = AccountUiState.Loading
         viewModelScope.launch {
             accUiState = try {
-                val response = authRepository.signUser(request)
+                val response = authRepository.signUp(userUiDetails.value.phone)
                 if (response.hasErrors()) {
-                    AccountUiState.ApolloError(errors = response.errors!!)
+                    AccountUiState.ApolloError(response.errors!!)
                 } else {
-                    AccountUiState.Auth(response.data?.createUser)
+                    val res = response.data?.signIn
+                    authRepository.signUser(
+                        user = User(
+                            isLandlord = res!!.user.is_landlord,
+                            token = res!!.Token,
+                            phone = res!!.user.phone
+                        )
+                    )
+                    AccountUiState.Auth(
+                        user = User(
+                            phone = res!!.user.phone,
+                            isLandlord = res!!.user.is_landlord,
+                            token = res!!.Token
+                        )
+                    )
                 }
-            } catch (e: ApolloException) {
+            } catch(e: ApolloException) {
                 AccountUiState.ApplicationError(e)
             }
         }
     }
 
-    fun checkAuth(accState: AccountUiState = accUiState): Boolean {
-        return accState is AccountUiState.Auth
+    fun setPhone(phone: String) {
+        _userDetails.update {
+            it.copy(phone = phone)
+        }
     }
 }
+
+data class UserDetails(
+    val phone: String = ""
+)

@@ -1,0 +1,15 @@
+mutation SignUp(
+    $phone: String!
+) {
+    signIn(input: {
+        phone: $phone
+    }) {
+        user {
+            is_landlord
+            id
+            createdAt
+            phone
+        }
+        Token
+    }
+}

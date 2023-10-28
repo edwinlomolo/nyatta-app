@@ -1,8 +1,9 @@
 package com.example.nyatta.data
 
+import android.content.Context
 import com.apollographql.apollo3.ApolloClient
 import com.example.nyatta.data.auth.AuthRepository
-import com.example.nyatta.data.auth.GqlAuthRepository
+import com.example.nyatta.data.auth.OfflineAuthRepository
 import com.example.nyatta.data.hello.GqlHelloRepository
 import com.example.nyatta.data.hello.HelloRepository
 import com.example.nyatta.data.listings.GqlListingsRepository
@@ -14,7 +15,7 @@ interface AppContainer {
     val helloRepository: HelloRepository
     val listingsRepository: ListingsRepository
     val townsRepository: TownsRepository
-    val authRepository: AuthRepository
+    val authRepository: OfflineAuthRepository
 }
 
 // TODO: Sample intercept: can refactor it to handle authentication?
@@ -28,7 +29,7 @@ interface AppContainer {
  * }
  */
 
-class DefaultContainer: AppContainer {
+class DefaultContainer(private val context: Context): AppContainer {
     private val baseUrl =
         "https://stagingapi.nyatta.app/api"
 
@@ -49,7 +50,10 @@ class DefaultContainer: AppContainer {
         GqlTownsRepository(client)
     }
 
-    override val authRepository: AuthRepository by lazy {
-        GqlAuthRepository(client)
+    override val authRepository: OfflineAuthRepository by lazy {
+        OfflineAuthRepository(
+            userDao = NyattaDatabase.getDatabase(context).userDao(),
+            client = client
+        )
     }
 }

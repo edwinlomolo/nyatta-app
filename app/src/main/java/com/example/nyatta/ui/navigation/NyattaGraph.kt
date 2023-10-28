@@ -11,6 +11,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -22,6 +23,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.nyatta.AuthViewModel
 import com.example.nyatta.NyattaViewModelProvider
 import com.example.nyatta.R
 import com.example.nyatta.ui.screens.OnboardingViewModel
@@ -39,12 +41,12 @@ sealed class Screen(
     @StringRes val nameResourceId: Int,
     val icon: ImageVector
 ) {
-    object Home: Screen(
+    data object Home: Screen(
         "home",
         R.string.home,
         Icons.TwoTone.Home
     )
-    object Add: Screen(
+    data object Add: Screen(
         "onboarding/start",
         R.string.add,
         Icons.TwoTone.AddCircle
@@ -65,8 +67,10 @@ fun NyattaNavHost(
     apartmentViewModel: ApartmentViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     homeViewModel: HomeViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     townsViewModel: TownsViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
-    accountViewModel: AccountViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
+    accountViewModel: AccountViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
+    authViewModel: AuthViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
 ) {
+    val authUiState by authViewModel.authUiState.collectAsState()
     val navigationItems = listOf(
         Screen.Home,
         Screen.Add,
@@ -119,7 +123,8 @@ fun NyattaNavHost(
             }
             startPropertyOnboarding(
                 navController = navController,
-                onboardingViewModel = onboardingViewModel
+                onboardingViewModel = onboardingViewModel,
+                authUiState = authUiState
             )
             paymentGraph(navController)
             locationGraph(
