@@ -1,4 +1,4 @@
-package com.example.nyatta
+package com.example.nyatta.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.nyatta.NyattaApp
 import com.example.nyatta.data.auth.OfflineAuthRepository
 import com.example.nyatta.data.model.User
 import kotlinx.coroutines.flow.SharingStarted

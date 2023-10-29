@@ -12,6 +12,7 @@ import com.example.nyatta.R
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.ui.components.Description
 import com.example.nyatta.ui.navigation.Navigation
+import com.example.nyatta.viewmodels.ApartmentViewModel
 
 object ApartmentDescriptionDestination: Navigation {
     override val route = "apartment/description"

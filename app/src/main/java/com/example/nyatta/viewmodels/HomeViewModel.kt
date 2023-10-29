@@ -1,4 +1,4 @@
-package com.example.nyatta.compose.home
+package com.example.nyatta.viewmodels
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue

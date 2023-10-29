@@ -1,4 +1,4 @@
-package com.example.nyatta.compose.user
+package com.example.nyatta.viewmodels
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

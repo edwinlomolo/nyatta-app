@@ -1,4 +1,4 @@
-package com.example.nyatta.compose.apartment
+package com.example.nyatta.viewmodels
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

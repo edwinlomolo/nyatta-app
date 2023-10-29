@@ -39,6 +39,8 @@ import com.example.nyatta.ui.components.ActionButton
 import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.screens.payment.PayDestination
 import com.example.nyatta.ui.theme.NyattaTheme
+import com.example.nyatta.viewmodels.TownsUiState
+import com.example.nyatta.viewmodels.TownsViewModel
 
 object TownDestination: Navigation {
     override val route = "property/town"

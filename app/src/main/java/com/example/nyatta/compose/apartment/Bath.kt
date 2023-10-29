@@ -27,6 +27,7 @@ import com.example.nyatta.ui.screens.home.TopAppBar
 import com.example.nyatta.ui.components.Onboarding
 import com.example.nyatta.ui.screens.uploads.UploadsDestination
 import com.example.nyatta.ui.theme.NyattaTheme
+import com.example.nyatta.viewmodels.ApartmentViewModel
 
 object ApartmentBathsDestination: Navigation {
     override val route = "apartment/baths"

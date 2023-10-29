@@ -31,6 +31,7 @@ import com.example.nyatta.ui.components.Description
 import com.example.nyatta.ui.components.Title
 import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.screens.home.TopAppBar
+import com.example.nyatta.viewmodels.ApartmentViewModel
 
 object ApartmentAmenitiesDestination: Navigation {
     override val route = "apartment/amenities"

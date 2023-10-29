@@ -1,22 +1,17 @@
-package com.example.nyatta
+package com.example.nyatta.viewmodels
 
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.nyatta.ui.screens.user.AccountViewModel
-import com.example.nyatta.compose.screens.OnboardingViewModel
-import com.example.nyatta.ui.screens.apartment.ApartmentViewModel
-import com.example.nyatta.ui.screens.home.HomeViewModel
-import com.example.nyatta.ui.screens.location.TownsViewModel
-import com.example.nyatta.ui.screens.property.PropertyViewModel
+import com.example.nyatta.NyattaApp
 
 // Factory for entire app view models
 object NyattaViewModelProvider {
     val Factory = viewModelFactory {
         // Initializer for OnboardingViewModel
         initializer {
-            com.example.nyatta.compose.screens.OnboardingViewModel()
+            OnboardingViewModel()
         }
         // Initializer for ApartmentViewModel
         initializer {

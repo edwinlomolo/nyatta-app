@@ -23,8 +23,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.nyatta.AuthViewModel
-import com.example.nyatta.NyattaViewModelProvider
+import com.example.nyatta.viewmodels.AuthViewModel
+import com.example.nyatta.viewmodels.NyattaViewModelProvider
 import com.example.nyatta.R
 import com.example.nyatta.compose.screens.OnboardingViewModel
 import com.example.nyatta.ui.screens.user.AccountViewModel

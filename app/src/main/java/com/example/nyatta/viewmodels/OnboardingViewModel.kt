@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.screens
+package com.example.nyatta.viewmodels
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

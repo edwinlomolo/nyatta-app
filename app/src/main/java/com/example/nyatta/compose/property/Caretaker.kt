@@ -58,6 +58,7 @@ import com.example.nyatta.ui.screens.home.TopAppBar
 import com.example.nyatta.ui.components.Onboarding
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
+import com.example.nyatta.viewmodels.PropertyViewModel
 import kotlinx.coroutines.launch
 
 object CaretakerDestination: Navigation {

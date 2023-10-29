@@ -31,13 +31,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.nyatta.NyattaViewModelProvider
 import com.example.nyatta.R
 import com.example.nyatta.ui.components.Loading
 import com.example.nyatta.ui.navigation.Navigation
 import com.example.nyatta.ui.screens.listing.ListingCard
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
+import com.example.nyatta.viewmodels.HomeUiState
+import com.example.nyatta.viewmodels.HomeViewModel
 
 object HomeDestination: Navigation {
     override val route = "home"

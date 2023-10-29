@@ -29,6 +29,8 @@ import com.example.nyatta.ui.screens.home.TopAppBar
 import com.example.nyatta.ui.components.Onboarding
 import com.example.nyatta.ui.screens.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.ui.theme.NyattaTheme
+import com.example.nyatta.viewmodels.AccountUiState
+import com.example.nyatta.viewmodels.AccountViewModel
 import kotlinx.coroutines.launch
 
 object UserOnboardingPhoneDestination: Navigation {

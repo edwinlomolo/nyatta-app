@@ -9,7 +9,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.nyatta.AuthUiState
+import com.example.nyatta.viewmodels.AuthUiState
 import com.example.nyatta.R
 import com.example.nyatta.compose.screens.OnboardingViewModel
 import com.example.nyatta.ui.screens.startpropertyonboarding.StartOnboardingDestination
