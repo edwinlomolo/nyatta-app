@@ -26,7 +26,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.nyatta.AuthViewModel
 import com.example.nyatta.NyattaViewModelProvider
 import com.example.nyatta.R
-import com.example.nyatta.ui.screens.OnboardingViewModel
+import com.example.nyatta.compose.screens.OnboardingViewModel
 import com.example.nyatta.ui.screens.user.AccountViewModel
 import com.example.nyatta.ui.screens.apartment.ApartmentViewModel
 import com.example.nyatta.ui.screens.home.Home
@@ -63,7 +63,7 @@ fun NyattaNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     propertyViewModel: PropertyViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
-    onboardingViewModel: OnboardingViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
+    onboardingViewModel: com.example.nyatta.compose.screens.OnboardingViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     apartmentViewModel: ApartmentViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     homeViewModel: HomeViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     townsViewModel: TownsViewModel = viewModel(factory = NyattaViewModelProvider.Factory),

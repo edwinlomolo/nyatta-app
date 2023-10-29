@@ -11,7 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.nyatta.AuthUiState
 import com.example.nyatta.R
-import com.example.nyatta.ui.screens.OnboardingViewModel
+import com.example.nyatta.compose.screens.OnboardingViewModel
 import com.example.nyatta.ui.screens.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.ui.screens.startpropertyonboarding.Type
 import com.example.nyatta.ui.screens.user.SignUp
@@ -24,7 +24,7 @@ object StartPropertyOnboardingGraph: Navigation {
 
 fun NavGraphBuilder.startPropertyOnboarding(
     navController: NavHostController,
-    onboardingViewModel: OnboardingViewModel,
+    onboardingViewModel: com.example.nyatta.compose.screens.OnboardingViewModel,
     authUiState: AuthUiState
 ) {
     val sendToSignup = authUiState.user.isEmpty()

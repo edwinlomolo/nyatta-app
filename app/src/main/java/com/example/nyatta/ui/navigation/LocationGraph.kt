@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.nyatta.ui.screens.OnboardingViewModel
+import com.example.nyatta.compose.screens.OnboardingViewModel
 import com.example.nyatta.ui.screens.location.Location
 import com.example.nyatta.ui.screens.location.LocationDestination
 import com.example.nyatta.ui.screens.location.TownDestination
@@ -16,7 +16,7 @@ object LocationGraph: Navigation {
     override val title = "Location"
 }
 fun NavGraphBuilder.locationGraph(
-    onboardingViewModel: OnboardingViewModel,
+    onboardingViewModel: com.example.nyatta.compose.screens.OnboardingViewModel,
     townsViewModel: TownsViewModel,
     navController: NavHostController
 ) {
