@@ -1,7 +1,7 @@
 package com.example.nyatta.compose.navigation
 
+import android.util.Log
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -79,7 +79,8 @@ fun NyattaNavHost(
     accountViewModel: AccountViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     authViewModel: AuthViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
 ) {
-    val authUiState by authViewModel.authUiState.collectAsState()
+    val auth by authViewModel.auth.collectAsState()
+    val isAuthenticated = auth.isAuthed
 
     NavHost(
         modifier = modifier,
@@ -135,7 +136,7 @@ fun NyattaNavHost(
         startPropertyOnboarding(
             navController = navController,
             onboardingViewModel = onboardingViewModel,
-            authUiState = authUiState
+            isAuthenticated = isAuthenticated,
         )
         paymentGraph(navController)
         locationGraph(

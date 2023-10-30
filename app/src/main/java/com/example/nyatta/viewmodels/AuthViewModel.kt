@@ -1,48 +1,44 @@
 package com.example.nyatta.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.nyatta.NyattaApp
 import com.example.nyatta.data.auth.OfflineAuthRepository
-import com.example.nyatta.data.model.User
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class AuthViewModel(
     private val authRepository: OfflineAuthRepository
 ): ViewModel() {
-    var authUiState: StateFlow<AuthUiState> = authRepository
-        .getUser()
-        .filterNotNull()
-        .map {
-            AuthUiState(
-                user = it
-            )
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
-            initialValue = AuthUiState()
-        )
-        private set
+    private val _auth = MutableStateFlow(AuthState())
+    val auth: StateFlow<AuthState> = _auth.asStateFlow()
 
-    companion object {
-        private const val TIMEOUT_MILLIS = 5_000L
-
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application = (this[APPLICATION_KEY] as NyattaApp)
-                val authRepository = application.container.authRepository
-                AuthViewModel(authRepository)
+    init {
+        viewModelScope.launch {
+            authRepository.getUser().shareIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000L),
+            ).collect { user ->
+                Log.d("User", "$user")
+                if (user.isNotEmpty()) {
+                    _auth.update {
+                        it.copy(
+                            token = user[0].token,
+                            isAuthed = true
+                        )
+                    }
+                }
             }
         }
     }
 }
 
-data class AuthUiState(val user: List<User> = listOf())
+data class AuthState(
+    val isAuthed: Boolean = false,
+    val token: String = ""
+)
