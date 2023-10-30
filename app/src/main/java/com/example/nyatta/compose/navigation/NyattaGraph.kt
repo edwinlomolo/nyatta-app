@@ -1,10 +1,11 @@
 package com.example.nyatta.compose.navigation
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.AddCircle
-import androidx.compose.material.icons.twotone.Home
+import androidx.compose.material.icons.twotone.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -43,8 +44,8 @@ sealed class Screen(
 ) {
     data object Home: Screen(
         "home",
-        R.string.home,
-        Icons.TwoTone.Home
+        R.string.explore,
+        Icons.TwoTone.Search
     )
     data object Add: Screen(
         "onboarding/start",
@@ -58,6 +59,7 @@ sealed class Screen(
     )*/
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun NyattaNavHost(
     navController: NavHostController,
