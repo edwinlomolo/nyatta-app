@@ -85,7 +85,6 @@ fun Listing(
         topBar = {
             TopAppBar(
                 canNavigateBack = true,
-                title = "Unit name",
                 navigateUp = navigateUp
             )
         },

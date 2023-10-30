@@ -18,7 +18,7 @@ fun ActionButton(
 ) {
     Button(
         modifier = modifier
-            .padding(top = 8.dp)
+            .padding(top = 4.dp)
             .fillMaxWidth(),
         shape = MaterialTheme.shapes.small,
         onClick = { onClick() }

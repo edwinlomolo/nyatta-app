@@ -1,27 +1,18 @@
 package com.example.nyatta.compose.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.example.nyatta.R
-import com.example.nyatta.compose.home.TopAppBar
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Description(
     modifier: Modifier = Modifier,
@@ -29,58 +20,32 @@ fun Description(
     description: String,
     onValueChange: (String) -> Unit = {},
     value: String,
-    onActionButtonClick: () -> Unit = {},
-    actionButtonText: String = stringResource(R.string.save_description),
-    placeholder: @Composable (() -> Unit)? = null,
-    navigateBack: () -> Unit = {},
-    appBarTitle: String,
-    actionButtonLeadingIcon: @Composable (() -> Unit)? = null
+    isError: Boolean = false,
+    placeholder: @Composable (() -> Unit)? = null
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = appBarTitle,
-                scrollBehavior = scrollBehavior
-            )
-        }
-    ) {innerPadding ->
-        Surface(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            Onboarding(
-                navigateBack = navigateBack,
-                actionButtonLeadingIcon = actionButtonLeadingIcon,
-                modifier = Modifier.padding(12.dp),
-                onActionButtonClick = onActionButtonClick,
-                actionButtonText = actionButtonText,
-                alignBottomCenter = false
-            ) {
-                Column {
-                    Title(title)
-                    Description(description)
-                    TextInput(
-                        value = value,
-                        onValueChange = { onValueChange(it) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                keyboardController?.hide()
-                            }
-                        ),
-                        keyboardOptions = KeyboardOptions.Default.copy(
-                            imeAction = ImeAction.Done
-                        ),
-                        placeholder = placeholder
-                    )
+    Column(
+        modifier = modifier.padding(8.dp)
+    ) {
+        Title(title)
+        Description(description)
+        TextInput(
+            isError = isError,
+            value = value,
+            onValueChange = { onValueChange(it) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    keyboardController?.hide()
                 }
-            }
-        }
+            ),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Done
+            ),
+            placeholder = placeholder
+        )
     }
 }

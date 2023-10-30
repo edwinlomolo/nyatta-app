@@ -22,18 +22,12 @@ object ApartmentDescriptionDestination: Navigation {
 @Composable
 fun ApartmentDescription(
     modifier: Modifier = Modifier,
-    navigateBack: () -> Unit = {},
-    navigateNext: (String) -> Unit = {},
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
     val uiState by apartmentViewModel.uiState.collectAsState()
 
     Description(
         modifier = modifier,
-        onActionButtonClick = {
-            navigateNext(SelectPropertyDestination.route)
-        },
-        navigateBack = navigateBack,
         title = stringResource(R.string.unit_name),
         description = stringResource(R.string.apartment_description),
         placeholder = {
@@ -41,7 +35,6 @@ fun ApartmentDescription(
                 text = stringResource(R.string.apartment_name_example)
             )
         },
-        appBarTitle = ApartmentDescriptionDestination.title,
         onValueChange = { apartmentViewModel.setName(it) },
         value = uiState.description
     )

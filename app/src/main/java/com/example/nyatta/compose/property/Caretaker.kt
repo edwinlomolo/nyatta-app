@@ -7,22 +7,17 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.twotone.ArrowForward
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -49,10 +44,7 @@ import com.example.nyatta.R
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.TextInput
 import com.example.nyatta.compose.components.Title
-import com.example.nyatta.compose.navigation.LocationGraph
 import com.example.nyatta.compose.navigation.Navigation
-import com.example.nyatta.compose.home.TopAppBar
-import com.example.nyatta.compose.components.Onboarding
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.PropertyViewModel
 import kotlinx.coroutines.launch
@@ -62,90 +54,67 @@ object CaretakerDestination: Navigation {
     override val title = "Caretaker"
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Caretaker(
     modifier: Modifier = Modifier,
-    navigateBack: () -> Unit = {},
-    navigateNext: (String) -> Unit = {},
     propertyViewModel: PropertyViewModel = viewModel(),
 ) {
     val propertyUiState by propertyViewModel.uiState.collectAsState()
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = CaretakerDestination.title
+    Column(
+        modifier = modifier
+            .padding(8.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        Title(stringResource(R.string.caretaker))
+        Description(stringResource(R.string.caretaker_description))
+        Column {
+            Text(
+                text = stringResource(R.string.is_caretaker),
+                style = MaterialTheme.typography.labelSmall,
+                modifier = Modifier.padding(8.dp)
             )
-        }
-    ) { innerPadding ->
-        Surface(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            Onboarding(
-                navigateBack = navigateBack,
-                actionButtonText = stringResource(R.string.set_location),
-                actionButtonLeadingIcon = {
-                    Icon(
-                        Icons.TwoTone.ArrowForward,
-                        contentDescription = stringResource(R.string.set_location)
-                    )
-                },
-                onActionButtonClick = { navigateNext(LocationGraph.route) }
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .selectableGroup()
             ) {
-                Title(stringResource(R.string.caretaker))
-                Description(stringResource(R.string.caretaker_description))
-                Column {
-                    Text(
-                        text = stringResource(R.string.is_caretaker),
-                        style = MaterialTheme.typography.labelSmall,
-                        modifier = Modifier.padding(8.dp)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    RadioButton(
+                        selected = propertyUiState.isCaretaker,
+                        onClick = { propertyViewModel.setIsCaretaker(true) },
+                        modifier = Modifier
+                            .semantics {
+                                contentDescription = "Yes"
+                            }
                     )
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .selectableGroup()
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            RadioButton(
-                                selected = propertyUiState.isCaretaker,
-                                onClick = { propertyViewModel.setIsCaretaker(true) },
-                                modifier = Modifier
-                                    .semantics {
-                                        contentDescription = "Yes"
-                                    }
-                            )
-                            Text(
-                                text = stringResource(R.string.yes_caretaker),
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        }
-                        Spacer(modifier = Modifier.size(32.dp))
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            RadioButton(
-                                selected = !propertyUiState.isCaretaker,
-                                onClick = { propertyViewModel.setIsCaretaker(false) },
-                                modifier = Modifier
-                                    .semantics {
-                                        contentDescription = "No"
-                                    }
-                            )
-                            Text(
-                                text = stringResource(R.string.no_caretaker),
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        }
-                    }
+                    Text(
+                        text = stringResource(R.string.yes_caretaker),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
                 }
-                // TODO Image upload
-                if (!propertyUiState.isCaretaker) {
-                    CaretakerDetails(
-                         propertyViewModel = propertyViewModel
+                Spacer(modifier = Modifier.size(32.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    RadioButton(
+                        selected = !propertyUiState.isCaretaker,
+                        onClick = { propertyViewModel.setIsCaretaker(false) },
+                        modifier = Modifier
+                            .semantics {
+                                contentDescription = "No"
+                            }
+                    )
+                    Text(
+                        text = stringResource(R.string.no_caretaker),
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
             }
+        }
+        // TODO Image upload
+        if (!propertyUiState.isCaretaker) {
+            CaretakerDetails(
+                propertyViewModel = propertyViewModel
+            )
         }
     }
 }
@@ -200,7 +169,7 @@ fun CaretakerDetails(
             TextInput(
                 placeholder = {
                     Text(
-                        text = "First name",
+                        text = stringResource(R.string.first_name),
                         style = MaterialTheme.typography.labelSmall
                     )
                 },
@@ -213,7 +182,7 @@ fun CaretakerDetails(
             TextInput(
                 placeholder = {
                     Text(
-                        text = "Last name",
+                        text = stringResource(R.string.last_name),
                         style = MaterialTheme.typography.labelSmall
                     )
                 },
@@ -228,11 +197,12 @@ fun CaretakerDetails(
                 onValueChange = { propertyViewModel.setCaretakerPhone(it) },
                 prefix = {
                     Text(
-                        text = "+254",
+                        text = propertyViewModel.countryCode,
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.primary
                     )
                 },
+                isError = !propertyData.validToProceed.caretakerPhone,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done,
                     keyboardType = KeyboardType.Number

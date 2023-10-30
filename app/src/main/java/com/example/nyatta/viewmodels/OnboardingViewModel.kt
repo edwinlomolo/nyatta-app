@@ -7,7 +7,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 data class OnboardingUiState(
-    val type: String? = null
+    val type: String? = null,
+    val validToProceed: OnboardingDataValidity = OnboardingDataValidity()
+)
+
+data class OnboardingDataValidity(
+    val type: Boolean = false
 )
 
 class OnboardingViewModel: ViewModel() {
@@ -17,7 +22,11 @@ class OnboardingViewModel: ViewModel() {
 
     fun setType(type: String) {
         _uiState.update {
-            it.copy(type = type)
+            val valid = it.validToProceed.copy(type = type.isNotEmpty())
+            it.copy(
+                type = type,
+                validToProceed = valid
+            )
         }
     }
 }

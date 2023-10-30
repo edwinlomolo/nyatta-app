@@ -18,11 +18,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navigation
+import com.example.nyatta.compose.components.OnboardingBottomBar
 import com.example.nyatta.viewmodels.OnboardingViewModel
 import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.compose.startpropertyonboarding.Type
 import com.example.nyatta.compose.user.SignUp
 import com.example.nyatta.compose.user.UserSignUpDestination
+import com.example.nyatta.viewmodels.AuthState
+import com.example.nyatta.viewmodels.OnboardingUiState
 
 
 object StartPropertyOnboardingGraph: Navigation {
@@ -31,10 +34,15 @@ object StartPropertyOnboardingGraph: Navigation {
 }
 
 fun NavGraphBuilder.startPropertyOnboarding(
+    modifier: Modifier = Modifier,
     navController: NavHostController,
     onboardingViewModel: OnboardingViewModel,
-    isAuthenticated: Boolean
+    authState: AuthState,
+    onboardingUiState: OnboardingUiState
 ) {
+    val validToProceed = onboardingUiState.validToProceed.type
+    val isAuthenticated = authState.isAuthed
+
     navigation(
         startDestination = if (!isAuthenticated) UserSignUpDestination.route else StartOnboardingDestination.route,
         route = StartPropertyOnboardingGraph.route
@@ -83,11 +91,33 @@ fun NavGraphBuilder.startPropertyOnboarding(
             }
         }
         composable(route = StartOnboardingDestination.route) {
-            Type(
-                navigateBack = { navController.popBackStack() },
-                onboardingViewModel = onboardingViewModel,
-                navigateToNext = { navController.navigate(it) }
-            )
+            Scaffold(
+                bottomBar = {
+                    OnboardingBottomBar(
+                        validToProceed = validToProceed,
+                        navigateBack = { navController.popBackStack() },
+                        onActionButtonClick = {
+                            when (onboardingUiState.type) {
+                                "Apartments Building" -> navController.navigate(
+                                    PropertyOnboarding.route
+                                )
+
+                                else -> navController.navigate(ApartmentOnboarding.route)
+                            }
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                Surface(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    Type(
+                        onboardingViewModel = onboardingViewModel
+                    )
+                }
+            }
         }
     }
 }

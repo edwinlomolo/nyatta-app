@@ -1,8 +1,5 @@
 package com.example.nyatta.compose.property
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.twotone.ArrowForward
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -25,22 +22,13 @@ object PropertyDescriptionDestination: Navigation {
 @Composable
 fun PropertyDescription(
     modifier: Modifier = Modifier,
-    navigateBack: () -> Unit = {},
-    navigateNext: (String) -> Unit = {},
     propertyViewModel: PropertyViewModel = viewModel()
 ) {
     val propertyUiState by propertyViewModel.uiState.collectAsState()
 
     Description(
+        isError = !propertyUiState.validToProceed.description,
         modifier = modifier,
-        actionButtonLeadingIcon = {
-            Icon(
-                Icons.TwoTone.ArrowForward,
-                contentDescription = stringResource(R.string.declare_caretaker)
-            )
-        },
-        actionButtonText = stringResource(R.string.declare_caretaker),
-        onActionButtonClick = { navigateNext(CaretakerDestination.route) },
         title = stringResource(R.string.property_name),
         description = stringResource(R.string.property_name_description),
         placeholder = {
@@ -48,8 +36,6 @@ fun PropertyDescription(
                 text = stringResource(R.string.description_supporting_text)
             )
         },
-        navigateBack = navigateBack,
-        appBarTitle = PropertyDescriptionDestination.title,
         onValueChange = { propertyViewModel.setName(it) },
         value = propertyUiState.description
     )

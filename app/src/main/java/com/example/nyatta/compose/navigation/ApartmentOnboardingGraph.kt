@@ -39,9 +39,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
     ) {
         composable(route = ApartmentDescriptionDestination.route) {
             ApartmentDescription(
-                apartmentViewModel = apartmentViewModel,
-                navigateBack = { navController.popBackStack() },
-                navigateNext = { navController.navigate(it) }
+                apartmentViewModel = apartmentViewModel
             )
         }
         composable(route = SelectPropertyDestination.route) {

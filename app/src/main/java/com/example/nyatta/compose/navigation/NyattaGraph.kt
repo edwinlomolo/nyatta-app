@@ -1,6 +1,5 @@
 package com.example.nyatta.compose.navigation
 
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -80,7 +79,12 @@ fun NyattaNavHost(
     authViewModel: AuthViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
 ) {
     val auth by authViewModel.auth.collectAsState()
-    val isAuthenticated = auth.isAuthed
+    val onboardingUiState by onboardingViewModel.uiState.collectAsState()
+    val propertyUiState by propertyViewModel.uiState.collectAsState()
+
+    val authData = auth
+    val onboardingUiData = onboardingUiState
+    val propertyUiData = propertyUiState
 
     NavHost(
         modifier = modifier,
@@ -134,11 +138,16 @@ fun NyattaNavHost(
             }
         }
         startPropertyOnboarding(
+            modifier = modifier,
             navController = navController,
             onboardingViewModel = onboardingViewModel,
-            isAuthenticated = isAuthenticated,
+            authState = authData,
+            onboardingUiState = onboardingUiData
         )
-        paymentGraph(navController)
+        paymentGraph(
+            navController = navController,
+            accViewModel = accountViewModel
+        )
         locationGraph(
             navController = navController,
             townsViewModel = townsViewModel,
@@ -146,8 +155,10 @@ fun NyattaNavHost(
         )
         listingDetailsGraph(navController)
         propertyOnboardingGraph(
+            modifier = modifier,
             propertyViewModel = propertyViewModel,
-            navController = navController
+            navController = navController,
+            propertyUiState = propertyUiData
         )
         apartmentOnboardingGraph(
             navController = navController,
