@@ -185,12 +185,6 @@ fun Listing(
                            text = "John Doe",
                            style = MaterialTheme.typography.bodyLarge
                        )
-                       /*Icon(
-                           painterResource(R.drawable.verify),
-                           contentDescription = "Verified",
-                           modifier = Modifier.size(16.dp),
-                           tint = MaterialTheme.colorScheme.onSurfaceVariant
-                       )*/
                    }
                }
                Section(
@@ -284,7 +278,7 @@ fun Tag(
         Text(
             text = text,
             color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.labelSmall
         )
     }
 }
@@ -300,7 +294,7 @@ fun ListingBottomBar(
                 shape = MaterialTheme.shapes.small,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(54.dp)
+                    .height(48.dp)
             ) {
                 Text(
                     text = "Call",
