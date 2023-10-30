@@ -83,7 +83,7 @@ fun Phone(
                     isError = !userDetail.validDetails,
                     prefix = {
                         Text(
-                            "+254",
+                            text = accountViewModel.countryCode,
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.primary
                         )

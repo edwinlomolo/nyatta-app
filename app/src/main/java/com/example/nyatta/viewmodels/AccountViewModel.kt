@@ -1,5 +1,6 @@
 package com.example.nyatta.viewmodels
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -27,8 +28,9 @@ interface AccountUiState {
 class AccountViewModel(
     private val authRepository: AuthRepository
 ): ViewModel() {
-    private val countryCode = "+254"
-    private val phonenumberUtil = PhoneNumberUtil.getInstance()
+    val countryCode = "+254"
+    private val defaultRegion = "KE"
+    private val phoneUtil = PhoneNumberUtil.getInstance()
     private val _userDetails = MutableStateFlow(UserDetails())
     val userUiDetails: StateFlow<UserDetails> = _userDetails.asStateFlow()
 
@@ -40,7 +42,8 @@ class AccountViewModel(
             accUiState = AccountUiState.Loading
             viewModelScope.launch {
                 accUiState = try {
-                    val response = authRepository.signUp(countryCode+userUiDetails.value.phone)
+                    val phone = phoneUtil.parse(userUiDetails.value.phone, defaultRegion)
+                    val response = authRepository.signUp(phone.countryCode.toString()+phone.nationalNumber.toString())
                     if (response.hasErrors()) {
                         AccountUiState.ApolloError(response.errors!!)
                     } else {
@@ -73,7 +76,7 @@ class AccountViewModel(
             val phone = Phonenumber.PhoneNumber()
             phone.countryCode = countryCode.toInt()
             phone.nationalNumber = phoneNumber.toLong()
-            return phonenumberUtil.isValidNumber(phone)
+            return phoneUtil.isValidNumber(phone)
         } catch(e: Throwable) {
             false
         }
