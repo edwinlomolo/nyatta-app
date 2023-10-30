@@ -275,11 +275,15 @@ fun Tag(
 ) {
     Box(
         modifier = modifier
-            .background(color = MaterialTheme.colorScheme.background)
+            .background(
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                shape = MaterialTheme.shapes.small
+            )
             .padding(start = 12.dp, end = 12.dp, bottom = 4.dp, top = 4.dp)
     ) {
         Text(
             text = text,
+            color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.titleMedium
         )
     }
