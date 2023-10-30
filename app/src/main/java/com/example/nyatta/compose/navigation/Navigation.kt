@@ -1,4 +1,4 @@
-package com.example.nyatta.navigation
+package com.example.nyatta.compose.navigation
 
 interface Navigation {
     // Path for a composable

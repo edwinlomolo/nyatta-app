@@ -17,7 +17,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.nyatta.compose.components.TextInput
-import com.example.nyatta.navigation.Navigation
+import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.compose.components.Onboarding
 import com.example.nyatta.ui.theme.NyattaTheme

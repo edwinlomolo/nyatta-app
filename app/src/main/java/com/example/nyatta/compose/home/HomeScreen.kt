@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.Loading
-import com.example.nyatta.navigation.Navigation
+import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.compose.listing.ListingCard
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme

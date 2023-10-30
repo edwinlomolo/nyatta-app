@@ -39,9 +39,9 @@ import com.example.nyatta.R
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.Onboarding
 import com.example.nyatta.compose.components.Title
-import com.example.nyatta.navigation.ApartmentOnboarding
-import com.example.nyatta.navigation.Navigation
-import com.example.nyatta.navigation.PropertyOnboarding
+import com.example.nyatta.compose.navigation.ApartmentOnboarding
+import com.example.nyatta.compose.navigation.Navigation
+import com.example.nyatta.compose.navigation.PropertyOnboarding
 import com.example.nyatta.viewmodels.OnboardingViewModel
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme

@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.TextInput
-import com.example.nyatta.navigation.Navigation
+import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.ui.theme.NyattaTheme

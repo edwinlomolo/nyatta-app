@@ -20,7 +20,7 @@ import com.example.nyatta.data.amenities
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.Onboarding
 import com.example.nyatta.compose.components.Title
-import com.example.nyatta.navigation.Navigation
+import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.viewmodels.ApartmentViewModel
 

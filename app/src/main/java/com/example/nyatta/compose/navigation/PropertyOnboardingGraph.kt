@@ -1,4 +1,4 @@
-package com.example.nyatta.navigation
+package com.example.nyatta.compose.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController

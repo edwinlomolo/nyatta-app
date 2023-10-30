@@ -1,4 +1,4 @@
-package com.example.nyatta.navigation
+package com.example.nyatta.compose.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding

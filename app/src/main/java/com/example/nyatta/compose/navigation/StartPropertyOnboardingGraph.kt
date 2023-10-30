@@ -1,4 +1,4 @@
-package com.example.nyatta.navigation
+package com.example.nyatta.compose.navigation
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
