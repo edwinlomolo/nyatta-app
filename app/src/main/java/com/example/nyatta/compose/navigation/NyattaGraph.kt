@@ -2,6 +2,7 @@ package com.example.nyatta.compose.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.AddCircle
@@ -10,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -59,7 +61,12 @@ sealed class Screen(
     )*/
 }
 
-@OptIn(ExperimentalLayoutApi::class)
+val navigationItems = listOf(
+    Screen.Home,
+    Screen.Add,
+    //Screen.Account
+)
+
 @Composable
 fun NyattaNavHost(
     navController: NavHostController,
@@ -73,80 +80,81 @@ fun NyattaNavHost(
     authViewModel: AuthViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
 ) {
     val authUiState by authViewModel.authUiState.collectAsState()
-    val navigationItems = listOf(
-        Screen.Home,
-        Screen.Add,
-        //Screen.Account
-    )
 
-    Scaffold(
-        bottomBar = {
-            NavigationBar {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
+    NavHost(
+        modifier = modifier,
+        navController = navController,
+        startDestination = HomeDestination.route
+    ) {
+        composable(route = HomeDestination.route) {
+            Scaffold(
+                bottomBar = {
+                    NavigationBar {
+                        val navBackStackEntry by navController.currentBackStackEntryAsState()
+                        val currentDestination = navBackStackEntry?.destination
 
-                navigationItems.forEach { screen ->
-                    NavigationBarItem(
-                        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
-                        label = { Text(stringResource(screen.nameResourceId)) },
-                        icon = { Icon(screen.icon, contentDescription = stringResource(screen.nameResourceId)) },
-                        onClick = {
-                            navController.navigate(screen.route) {
-                                // Pop up to the start destination of the graph to
-                                // avoid building up a large stack of destinations
-                                // on the back stack as users select items
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                        navigationItems.forEach { screen ->
+                            NavigationBarItem(
+                                selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                                label = { Text(stringResource(screen.nameResourceId)) },
+                                icon = { Icon(screen.icon, contentDescription = stringResource(screen.nameResourceId)) },
+                                onClick = {
+                                    navController.navigate(screen.route) {
+                                        // Pop up to the start destination of the graph to
+                                        // avoid building up a large stack of destinations
+                                        // on the back stack as users select items
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        // Avoid multiple copies of the same destination when
+                                        // re-selecting the same item
+                                        launchSingleTop = true
+                                        // Restore state when re-selecting a previously selected item
+                                        restoreState = true
+                                    }
                                 }
-                                // Avoid multiple copies of the same destination when
-                                // re-selecting the same item
-                                launchSingleTop = true
-                                // Restore state when re-selecting a previously selected item
-                                restoreState = true
-                            }
+                            )
                         }
+                    }
+                }
+            ) { innerPadding ->
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    Home(
+                        onNavigateToListing = {
+                            navController.navigate("${ListingDetailsDestination.route}/${it}")
+                        },
+                        homeViewModel = homeViewModel
                     )
                 }
             }
         }
-    ) { innerPadding ->
-        NavHost(
+        startPropertyOnboarding(
             navController = navController,
-            startDestination = HomeDestination.route,
-            modifier = modifier.padding(innerPadding)
-        ) {
-            composable(route = HomeDestination.route) {
-                Home(
-                    onNavigateToListing = {
-                        navController.navigate("${ListingDetailsDestination.route}/${it}")
-                    },
-                    homeViewModel = homeViewModel
-                )
-            }
-            startPropertyOnboarding(
-                navController = navController,
-                onboardingViewModel = onboardingViewModel,
-                authUiState = authUiState
-            )
-            paymentGraph(navController)
-            locationGraph(
-                navController = navController,
-                townsViewModel = townsViewModel,
-                onboardingViewModel = onboardingViewModel
-            )
-            listingDetailsGraph(navController)
-            propertyOnboardingGraph(
-                propertyViewModel = propertyViewModel,
-                navController = navController
-            )
-            apartmentOnboardingGraph(
-                navController = navController,
-                apartmentViewModel = apartmentViewModel
-            )
-            loginGraph(
-                accountViewModel = accountViewModel,
-                navController = navController
-            )
-        }
+            onboardingViewModel = onboardingViewModel,
+            authUiState = authUiState
+        )
+        paymentGraph(navController)
+        locationGraph(
+            navController = navController,
+            townsViewModel = townsViewModel,
+            onboardingViewModel = onboardingViewModel
+        )
+        listingDetailsGraph(navController)
+        propertyOnboardingGraph(
+            propertyViewModel = propertyViewModel,
+            navController = navController
+        )
+        apartmentOnboardingGraph(
+            navController = navController,
+            apartmentViewModel = apartmentViewModel
+        )
+        loginGraph(
+            accountViewModel = accountViewModel,
+            navController = navController
+        )
     }
 }
