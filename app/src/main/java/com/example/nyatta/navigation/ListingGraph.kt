@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.navigation
+package com.example.nyatta.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -6,10 +6,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.example.nyatta.ui.screens.listing.Listing
-import com.example.nyatta.ui.screens.listing.ListingDetailsDestination
-import com.example.nyatta.ui.screens.listing.ListingPhoto
-import com.example.nyatta.ui.screens.listing.ListingPhotosDestination
+import com.example.nyatta.compose.listing.Listing
+import com.example.nyatta.compose.listing.ListingDetailsDestination
+import com.example.nyatta.compose.listing.ListingPhoto
+import com.example.nyatta.compose.listing.ListingPhotosDestination
 
 object ListingDetailsGraph: Navigation {
     override val route = "listing/details"

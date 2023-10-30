@@ -34,10 +34,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.GetTownsQuery
-import com.example.nyatta.ui.components.Loading
-import com.example.nyatta.ui.components.ActionButton
-import com.example.nyatta.ui.navigation.Navigation
-import com.example.nyatta.ui.screens.payment.PayDestination
+import com.example.nyatta.compose.components.Loading
+import com.example.nyatta.compose.components.ActionButton
+import com.example.nyatta.navigation.Navigation
+import com.example.nyatta.compose.payment.PayDestination
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.TownsUiState
 import com.example.nyatta.viewmodels.TownsViewModel

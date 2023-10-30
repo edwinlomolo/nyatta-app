@@ -32,9 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
-import com.example.nyatta.ui.components.Loading
-import com.example.nyatta.ui.navigation.Navigation
-import com.example.nyatta.ui.screens.listing.ListingCard
+import com.example.nyatta.compose.components.Loading
+import com.example.nyatta.navigation.Navigation
+import com.example.nyatta.compose.listing.ListingCard
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.HomeUiState
@@ -108,17 +108,13 @@ fun TopAppBar(
                     if (title != null) {
                         Text(
                             text = title,
-                            style = TextStyle(fontFamily = MabryFont, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            style = MaterialTheme.typography.titleMedium
                         )
                     }
                     if (listingsCount > 0) {
                         Text(
                             text = stringResource(R.string.listings_in_your_area, listingsCount),
-                            style = TextStyle(
-                                fontFamily = MabryFont,
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                            style = MaterialTheme.typography.bodyLarge
                         )
                     }
                 }

@@ -1,36 +1,27 @@
 package com.example.nyatta.compose.apartment
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowForward
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.data.amenities
-import com.example.nyatta.ui.components.Description
-import com.example.nyatta.ui.components.Title
-import com.example.nyatta.ui.navigation.Navigation
-import com.example.nyatta.ui.screens.home.TopAppBar
+import com.example.nyatta.compose.components.Description
+import com.example.nyatta.compose.components.Onboarding
+import com.example.nyatta.compose.components.Title
+import com.example.nyatta.navigation.Navigation
+import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.viewmodels.ApartmentViewModel
 
 object ApartmentAmenitiesDestination: Navigation {
@@ -42,16 +33,14 @@ object ApartmentAmenitiesDestination: Navigation {
 @Composable
 fun Amenities(
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit = {},
+    navigateBack: () -> Unit = {},
     navigateNext: (String) -> Unit = {},
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = ApartmentAmenitiesDestination.title,
-                canNavigateBack = true,
-                navigateUp = navigateUp
+                title = ApartmentAmenitiesDestination.title
             )
         }
     ) { innerPadding ->
@@ -59,23 +48,11 @@ fun Amenities(
             .fillMaxSize()
             .padding(innerPadding)
         ) {
-            Column(
-                modifier = modifier
+            Onboarding(
+                modifier = modifier,
+                navigateBack = navigateBack
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Title("Amenities")
-                    Spacer(modifier = Modifier.weight((1f)))
-                    IconButton(
-                        onClick = { navigateNext(ApartmentBedroomsDestination.route) }
-                    ) {
-                        Icon(
-                            Icons.Outlined.ArrowForward,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(32.dp)
-                        )
-                    }
-                }
+                Title("Amenities")
                 Description(stringResource(R.string.select_amenities_offered))
                 LazyColumn {
                     items(amenities) { amenity ->

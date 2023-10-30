@@ -9,10 +9,10 @@ import com.apollographql.apollo3.api.Error
 import com.apollographql.apollo3.exception.ApolloException
 import com.example.nyatta.GetTownsQuery
 import com.example.nyatta.data.towns.TownsRepository
-import com.example.nyatta.ui.screens.location.TownsUiState.Success
-import com.example.nyatta.ui.screens.location.TownsUiState.ApolloError
-import com.example.nyatta.ui.screens.location.TownsUiState.ApplicationError
-import com.example.nyatta.ui.screens.location.TownsUiState.Loading
+import com.example.nyatta.viewmodels.TownsUiState.Success
+import com.example.nyatta.viewmodels.TownsUiState.ApolloError
+import com.example.nyatta.viewmodels.TownsUiState.ApplicationError
+import com.example.nyatta.viewmodels.TownsUiState.Loading
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

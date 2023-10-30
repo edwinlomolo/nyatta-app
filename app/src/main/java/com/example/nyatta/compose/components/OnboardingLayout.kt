@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.components
+package com.example.nyatta.compose.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,6 +13,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,47 +34,49 @@ fun Onboarding(
     alignBottomCenter: Boolean = true,
     showProceedButton: Boolean = true,
     isActionButtonLoading: Boolean = false,
+    navigateBack: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
-    Column(
-        modifier = modifier
-            .padding(12.dp)
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = verticalArrangement,
-        horizontalAlignment = horizontalAlignment
-    ) {
-        content()
-        // TODO has to be another way to do this
-        if (alignBottomCenter) Spacer(modifier = Modifier.weight(1f))
-        if (showProceedButton) {
+    Scaffold(
+        bottomBar = {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.Center
+                modifier = Modifier.padding(8.dp)
             ) {
-                if (!isActionButtonLoading) {
-                    Button(
-                        onClick = { onActionButtonClick() },
-                        modifier = Modifier
-                            .padding(top = 4.dp)
-                            .fillMaxWidth(),
-                        shape = MaterialTheme.shapes.small
-                    ) {
-                        Text(
-                            modifier = Modifier.padding(8.dp),
-                            text = actionButtonText,
-                            style = MaterialTheme.typography.titleSmall
-                        )
-                        if (actionButtonLeadingIcon != null) actionButtonLeadingIcon()
-                    }
-                } else {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(18.dp)
+                Button(
+                    onClick = navigateBack,
+                    shape = MaterialTheme.shapes.small
+                ) {
+                    Text(
+                        text = "Back",
+                        style = MaterialTheme.typography.labelSmall
                     )
                 }
+                Spacer(modifier = Modifier.weight(1f))
+                Button(
+                    onClick = onActionButtonClick,
+                    shape = MaterialTheme.shapes.small
+                ) {
+                    Text(
+                        text = "Next",
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                }
+            }
+        }
+    ) { innerPadding ->
+        Surface(
+            modifier = modifier
+                .padding(innerPadding)
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = verticalArrangement,
+                horizontalAlignment = horizontalAlignment
+            ) {
+                content()
             }
         }
     }
@@ -80,7 +84,7 @@ fun Onboarding(
 
 @Preview
 @Composable
-fun OnboardingPreview() {
+fun OnboardingLayoutPreview() {
     NyattaTheme {
         Onboarding {}
     }

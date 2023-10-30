@@ -18,7 +18,7 @@ val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = MabryFont,
         fontWeight = FontWeight.Normal,
-        fontSize = 18.sp,
+        fontSize = 16.sp,
     ),
     // Other default text styles to override
     titleLarge = TextStyle(
@@ -28,17 +28,16 @@ val Typography = Typography(
     ),
     titleMedium = TextStyle(
         fontFamily = MabryFont,
-        fontWeight = FontWeight.Normal,
-        fontSize = 24.sp,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 16.sp,
     ),
     titleSmall = TextStyle(
         fontFamily = MabryFont,
-        fontWeight = FontWeight.Normal,
-        fontSize = 20.sp
+        fontWeight = FontWeight.SemiBold,
     ),
     labelSmall = TextStyle(
         fontFamily = MabryFont,
-        fontWeight = FontWeight.Medium,
-        fontSize = 20.sp,
+        lineHeight = 8.sp,
+        fontWeight = FontWeight.SemiBold,
     )
 )

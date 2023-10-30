@@ -36,13 +36,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
-import com.example.nyatta.ui.components.Description
-import com.example.nyatta.ui.components.Onboarding
-import com.example.nyatta.ui.components.Title
-import com.example.nyatta.ui.navigation.ApartmentOnboarding
-import com.example.nyatta.ui.navigation.Navigation
-import com.example.nyatta.ui.navigation.PropertyOnboarding
-import com.example.nyatta.compose.screens.OnboardingViewModel
+import com.example.nyatta.compose.components.Description
+import com.example.nyatta.compose.components.Onboarding
+import com.example.nyatta.compose.components.Title
+import com.example.nyatta.navigation.ApartmentOnboarding
+import com.example.nyatta.navigation.Navigation
+import com.example.nyatta.navigation.PropertyOnboarding
+import com.example.nyatta.viewmodels.OnboardingViewModel
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 
@@ -61,8 +61,9 @@ val typeDefinition = listOf(
 @Composable
 fun Type(
     modifier: Modifier = Modifier,
-    onboardingViewModel: com.example.nyatta.compose.screens.OnboardingViewModel = viewModel(),
-    navigateToNext: (String) -> Unit = {}
+    onboardingViewModel: OnboardingViewModel = viewModel(),
+    navigateToNext: (String) -> Unit = {},
+    navigateBack: () -> Unit = {}
 ) {
     val onboardingUiState by onboardingViewModel.uiState.collectAsState()
     val propertyOptions = onboardingViewModel.propertyOptions
@@ -76,6 +77,7 @@ fun Type(
             Onboarding(
                 modifier = modifier
                     .selectableGroup(),
+                navigateBack = navigateBack,
                 actionButtonText = stringResource(R.string.start),
                 onActionButtonClick = {
                     when (onboardingUiState.type) {
@@ -92,7 +94,7 @@ fun Type(
                 propertyOptions.forEachIndexed { index, option ->
                     Row(
                         modifier = Modifier
-                            .padding(8.dp)
+                            .padding(4.dp)
                             .fillMaxWidth()
                             .selectable(
                                 selected = (option == onboardingUiState.type),
@@ -127,7 +129,7 @@ fun Type(
                                     selected = (option == onboardingUiState.type),
                                     onClick = { onboardingViewModel.setType(option) }
                                 )
-                                Spacer(modifier = Modifier.size(28.dp))
+                                Spacer(modifier = Modifier.size(24.dp))
                                 Image(
                                     painterResource(optionImages[index]),
                                     contentDescription = null,
@@ -139,21 +141,14 @@ fun Type(
                                     Text(
                                         text = option,
                                         modifier = Modifier
-                                            .padding(start = 12.dp),
-                                        style = TextStyle(
-                                            fontFamily = MabryFont,
-                                            fontSize = 16.sp,
-                                            fontWeight = FontWeight.SemiBold
-                                        )
+                                            .padding(start = 8.dp),
+                                        style = MaterialTheme.typography.titleMedium
                                     )
                                     Text(
                                         modifier = Modifier
-                                            .padding(start = 12.dp, top = 4.dp),
+                                            .padding(start = 8.dp, top = 4.dp),
                                         text = stringResource(typeDefinition[index]),
-                                        style = TextStyle(
-                                            fontFamily = MabryFont,
-                                            fontSize = 14.sp
-                                        )
+                                        style = MaterialTheme.typography.bodyLarge
                                     )
                                 }
                             }

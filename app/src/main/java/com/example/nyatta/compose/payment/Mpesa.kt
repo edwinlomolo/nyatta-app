@@ -36,12 +36,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.nyatta.R
-import com.example.nyatta.ui.components.Description
-import com.example.nyatta.ui.components.TextInput
-import com.example.nyatta.ui.components.Title
-import com.example.nyatta.ui.navigation.Navigation
-import com.example.nyatta.ui.screens.home.TopAppBar
-import com.example.nyatta.ui.components.Onboarding
+import com.example.nyatta.compose.components.Description
+import com.example.nyatta.compose.components.TextInput
+import com.example.nyatta.compose.components.Title
+import com.example.nyatta.navigation.Navigation
+import com.example.nyatta.compose.home.TopAppBar
+import com.example.nyatta.compose.components.Onboarding
 import com.example.nyatta.ui.theme.NyattaTheme
 
 object PayDestination: Navigation {

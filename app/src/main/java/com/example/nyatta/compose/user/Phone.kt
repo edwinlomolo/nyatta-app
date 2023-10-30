@@ -1,9 +1,16 @@
 package com.example.nyatta.compose.user
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -23,11 +30,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
-import com.example.nyatta.ui.components.TextInput
-import com.example.nyatta.ui.navigation.Navigation
-import com.example.nyatta.ui.screens.home.TopAppBar
-import com.example.nyatta.ui.components.Onboarding
-import com.example.nyatta.ui.screens.startpropertyonboarding.StartOnboardingDestination
+import com.example.nyatta.compose.components.TextInput
+import com.example.nyatta.navigation.Navigation
+import com.example.nyatta.compose.home.TopAppBar
+import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.AccountUiState
 import com.example.nyatta.viewmodels.AccountViewModel
@@ -65,19 +71,9 @@ fun Phone(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            Onboarding(
+            Column(
                 modifier = Modifier
                     .padding(12.dp),
-                alignBottomCenter = false,
-                isActionButtonLoading = accUiState is AccountUiState.Loading,
-                actionButtonText = stringResource(R.string.create_account),
-                onActionButtonClick = {
-                    scope.launch {
-                        accountViewModel.signIn {
-                            navigateNext(StartOnboardingDestination.route)
-                        }
-                    }
-                }
             ) {
                 TextInput(
                     value = userDetail.phone,
@@ -88,6 +84,7 @@ fun Phone(
                     prefix = {
                         Text(
                             "+254",
+                            style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.primary
                         )
                     },
@@ -101,6 +98,33 @@ fun Phone(
                         }
                     )
                 )
+                Button(
+                    onClick = {
+                        scope.launch {
+                            accountViewModel.signIn {
+                                navigateNext(StartOnboardingDestination.route)
+                            }
+                        }
+                    },
+                    shape = MaterialTheme.shapes.small,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        if (accUiState is AccountUiState.Loading) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(18.dp),
+                                color = MaterialTheme.colorScheme.background
+                            )
+                        } else {
+                            Text(
+                                text = stringResource(R.string.create_account),
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    }
+                }
             }
         }
     }

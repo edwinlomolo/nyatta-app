@@ -1,21 +1,21 @@
-package com.example.nyatta.ui.navigation
+package com.example.nyatta.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.nyatta.ui.screens.property.Caretaker
-import com.example.nyatta.ui.screens.property.CaretakerDestination
-import com.example.nyatta.ui.screens.property.PropertyDescription
-import com.example.nyatta.ui.screens.property.PropertyDescriptionDestination
-import com.example.nyatta.ui.screens.property.PropertyViewModel
+import com.example.nyatta.compose.property.Caretaker
+import com.example.nyatta.compose.property.CaretakerDestination
+import com.example.nyatta.compose.property.PropertyDescription
+import com.example.nyatta.compose.property.PropertyDescriptionDestination
+import com.example.nyatta.viewmodels.PropertyViewModel
 
 object PropertyOnboarding: Navigation {
     override val route = "onboarding/property"
     override val title = "Setup property"
 }
 
-fun NavGraphBuilder.propertyGraph(
+fun NavGraphBuilder.propertyOnboardingGraph(
     navController: NavHostController,
     propertyViewModel: PropertyViewModel,
 ) {
@@ -26,7 +26,7 @@ fun NavGraphBuilder.propertyGraph(
         composable(route = PropertyDescriptionDestination.route) {
             PropertyDescription(
                 propertyViewModel = propertyViewModel,
-                navigateUp = { navController.navigateUp() },
+                navigateBack = { navController.popBackStack() },
                 navigateNext = { navController.navigate(it) }
             )
         }
@@ -34,7 +34,7 @@ fun NavGraphBuilder.propertyGraph(
             Caretaker(
                 propertyViewModel = propertyViewModel,
                 navigateNext = { navController.navigate(it) },
-                navigateUp = { navController.navigateUp() }
+                navigateBack = { navController.popBackStack() }
             )
         }
     }

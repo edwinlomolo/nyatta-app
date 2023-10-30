@@ -38,25 +38,21 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.nyatta.R
-import com.example.nyatta.ui.components.Description
-import com.example.nyatta.ui.components.TextInput
-import com.example.nyatta.ui.components.Title
-import com.example.nyatta.ui.navigation.LocationGraph
-import com.example.nyatta.ui.navigation.Navigation
-import com.example.nyatta.ui.screens.home.TopAppBar
-import com.example.nyatta.ui.components.Onboarding
-import com.example.nyatta.ui.theme.MabryFont
+import com.example.nyatta.compose.components.Description
+import com.example.nyatta.compose.components.TextInput
+import com.example.nyatta.compose.components.Title
+import com.example.nyatta.navigation.LocationGraph
+import com.example.nyatta.navigation.Navigation
+import com.example.nyatta.compose.home.TopAppBar
+import com.example.nyatta.compose.components.Onboarding
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.PropertyViewModel
 import kotlinx.coroutines.launch
@@ -70,7 +66,7 @@ object CaretakerDestination: Navigation {
 @Composable
 fun Caretaker(
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit = {},
+    navigateBack: () -> Unit = {},
     navigateNext: (String) -> Unit = {},
     propertyViewModel: PropertyViewModel = viewModel(),
 ) {
@@ -79,8 +75,6 @@ fun Caretaker(
     Scaffold(
         topBar = {
             TopAppBar(
-                canNavigateBack = true,
-                navigateUp = navigateUp,
                 title = CaretakerDestination.title
             )
         }
@@ -91,7 +85,7 @@ fun Caretaker(
                 .padding(innerPadding)
         ) {
             Onboarding(
-                modifier = modifier.padding(12.dp),
+                navigateBack = navigateBack,
                 actionButtonText = stringResource(R.string.set_location),
                 actionButtonLeadingIcon = {
                     Icon(
@@ -106,11 +100,7 @@ fun Caretaker(
                 Column {
                     Text(
                         text = stringResource(R.string.is_caretaker),
-                        style = TextStyle(
-                            fontFamily = MabryFont,
-                            fontSize = 21.sp,
-                            fontWeight = FontWeight.SemiBold
-                        ),
+                        style = MaterialTheme.typography.labelSmall,
                         modifier = Modifier.padding(8.dp)
                     )
                     Row(
@@ -128,7 +118,8 @@ fun Caretaker(
                                     }
                             )
                             Text(
-                                text = stringResource(R.string.yes_caretaker)
+                                text = stringResource(R.string.yes_caretaker),
+                                style = MaterialTheme.typography.bodyLarge
                             )
                         }
                         Spacer(modifier = Modifier.size(32.dp))
@@ -142,7 +133,8 @@ fun Caretaker(
                                     }
                             )
                             Text(
-                                text = stringResource(R.string.no_caretaker)
+                                text = stringResource(R.string.no_caretaker),
+                                style = MaterialTheme.typography.bodyLarge
                             )
                         }
                     }
@@ -207,7 +199,10 @@ fun CaretakerDetails(
         Column {
             TextInput(
                 placeholder = {
-                    Text("First name")
+                    Text(
+                        text = "First name",
+                        style = MaterialTheme.typography.labelSmall
+                    )
                 },
                 value = propertyData.caretaker.firstName,
                 onValueChange = { propertyViewModel.setCaretakerFirstname(it) },
@@ -217,7 +212,10 @@ fun CaretakerDetails(
             )
             TextInput(
                 placeholder = {
-                    Text("Last name")
+                    Text(
+                        text = "Last name",
+                        style = MaterialTheme.typography.labelSmall
+                    )
                 },
                 value = propertyData.caretaker.lastName,
                 onValueChange = { propertyViewModel.setCaretakerLastname(it) },
@@ -231,6 +229,7 @@ fun CaretakerDetails(
                 prefix = {
                     Text(
                         text = "+254",
+                        style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.primary
                     )
                 },

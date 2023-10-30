@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.components
+package com.example.nyatta.compose.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.nyatta.R
-import com.example.nyatta.ui.screens.home.TopAppBar
+import com.example.nyatta.compose.home.TopAppBar
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -32,7 +32,7 @@ fun Description(
     onActionButtonClick: () -> Unit = {},
     actionButtonText: String = stringResource(R.string.save_description),
     placeholder: @Composable (() -> Unit)? = null,
-    navigateUp: () -> Unit = {},
+    navigateBack: () -> Unit = {},
     appBarTitle: String,
     actionButtonLeadingIcon: @Composable (() -> Unit)? = null
 ) {
@@ -43,9 +43,7 @@ fun Description(
         topBar = {
             TopAppBar(
                 title = appBarTitle,
-                scrollBehavior = scrollBehavior,
-                canNavigateBack = true,
-                navigateUp = navigateUp
+                scrollBehavior = scrollBehavior
             )
         }
     ) {innerPadding ->
@@ -55,6 +53,7 @@ fun Description(
                 .padding(innerPadding)
         ) {
             Onboarding(
+                navigateBack = navigateBack,
                 actionButtonLeadingIcon = actionButtonLeadingIcon,
                 modifier = Modifier.padding(12.dp),
                 onActionButtonClick = onActionButtonClick,

@@ -20,11 +20,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
-import com.example.nyatta.ui.components.Description
-import com.example.nyatta.ui.components.Title
-import com.example.nyatta.ui.navigation.Navigation
-import com.example.nyatta.ui.screens.home.TopAppBar
-import com.example.nyatta.ui.components.Onboarding
+import com.example.nyatta.compose.components.Description
+import com.example.nyatta.compose.components.Title
+import com.example.nyatta.navigation.Navigation
+import com.example.nyatta.compose.home.TopAppBar
+import com.example.nyatta.compose.components.Onboarding
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.ApartmentViewModel
 
@@ -37,7 +37,7 @@ object ApartmentStateDestination: Navigation {
 @Composable
 fun UnitState(
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit = {},
+    navigateBack: () -> Unit = {},
     navigateNext: (String) -> Unit = {},
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
@@ -46,9 +46,7 @@ fun UnitState(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = ApartmentStateDestination.title,
-                canNavigateBack = true,
-                navigateUp = navigateUp
+                title = ApartmentStateDestination.title
             )
         }
     ) { innerPadding ->
@@ -58,7 +56,7 @@ fun UnitState(
         ) {
             Onboarding(
                 modifier = Modifier.padding(12.dp),
-                actionButtonText = "Save",
+                navigateBack = navigateBack,
                 onActionButtonClick = {
                     navigateNext(ApartmentPriceDestination.route)
                 },

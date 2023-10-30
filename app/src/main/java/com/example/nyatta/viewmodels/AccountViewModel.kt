@@ -70,10 +70,10 @@ class AccountViewModel(
 
     private fun validatePhone(phoneNumber: String): Boolean {
         return try {
-                val phone = Phonenumber.PhoneNumber()
-                phone.countryCode = countryCode.toInt()
-                phone.nationalNumber = phoneNumber.toLong()
-                return phonenumberUtil.isValidNumber(phone)
+            val phone = Phonenumber.PhoneNumber()
+            phone.countryCode = countryCode.toInt()
+            phone.nationalNumber = phoneNumber.toLong()
+            return phonenumberUtil.isValidNumber(phone)
         } catch(e: Throwable) {
             false
         }
@@ -83,9 +83,13 @@ class AccountViewModel(
         _userDetails.update {
             it.copy(
                 phone = phone,
-                validDetails = validatePhone(phone)
+                validDetails = if (phone.isNotEmpty()) validatePhone(phone) else true
             )
         }
+    }
+
+    init {
+        _userDetails.value = UserDetails()
     }
 }
 

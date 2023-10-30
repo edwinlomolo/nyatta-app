@@ -25,12 +25,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
-import com.example.nyatta.ui.components.Description
-import com.example.nyatta.ui.components.TextInput
-import com.example.nyatta.ui.components.Title
-import com.example.nyatta.ui.navigation.Navigation
-import com.example.nyatta.ui.screens.home.TopAppBar
-import com.example.nyatta.ui.components.Onboarding
+import com.example.nyatta.compose.components.Description
+import com.example.nyatta.compose.components.TextInput
+import com.example.nyatta.compose.components.Title
+import com.example.nyatta.navigation.Navigation
+import com.example.nyatta.compose.home.TopAppBar
+import com.example.nyatta.compose.components.Onboarding
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.ApartmentViewModel
 
@@ -44,7 +44,7 @@ val options = listOf("Beach House Properties", "Mwea Ventures")
 @Composable
 fun Location(
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit = {},
+    navigateBack: () -> Unit = {},
     navigateNext: (String) -> Unit = {},
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
@@ -54,9 +54,7 @@ fun Location(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = ApartmentLocationDestination.title,
-                canNavigateBack = true,
-                navigateUp = navigateUp
+                title = ApartmentLocationDestination.title
             )
         }
     ) { innerPadding ->
@@ -67,11 +65,10 @@ fun Location(
         ) {
             Onboarding(
                 modifier = Modifier.padding(12.dp),
-                actionButtonText = stringResource(R.string.apartment_location_save),
+                navigateBack = navigateBack,
                 onActionButtonClick = {
                     navigateNext(UnitTypeDestination.route)
-                },
-                alignBottomCenter = false
+                }
             ) {
                 Title(stringResource(R.string.location))
                 Description(stringResource(R.string.location_building_share))

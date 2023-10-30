@@ -19,13 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
-import com.example.nyatta.ui.components.Description
-import com.example.nyatta.ui.components.TextInput
-import com.example.nyatta.ui.components.Title
-import com.example.nyatta.ui.navigation.Navigation
-import com.example.nyatta.ui.screens.home.TopAppBar
-import com.example.nyatta.ui.components.Onboarding
-import com.example.nyatta.ui.screens.uploads.UploadsDestination
+import com.example.nyatta.compose.components.Description
+import com.example.nyatta.compose.components.TextInput
+import com.example.nyatta.compose.components.Title
+import com.example.nyatta.navigation.Navigation
+import com.example.nyatta.compose.home.TopAppBar
+import com.example.nyatta.compose.components.Onboarding
+import com.example.nyatta.compose.uploads.UploadsDestination
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.ApartmentViewModel
 
@@ -38,7 +38,7 @@ object ApartmentBathsDestination: Navigation {
 @Composable
 fun Bath(
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit = {},
+    navigateBack: () -> Unit = {},
     navigateNext: (String) -> Unit = {},
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
@@ -47,9 +47,7 @@ fun Bath(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = ApartmentBathsDestination.title,
-                canNavigateBack = true,
-                navigateUp = navigateUp
+                title = ApartmentBathsDestination.title
             )
         }
     ) { innerPadding ->
@@ -60,11 +58,10 @@ fun Bath(
         ) {
             Onboarding(
                 modifier = Modifier.padding(12.dp),
-                actionButtonText = "Save",
+                navigateBack = navigateBack,
                 onActionButtonClick = {
                     navigateNext(UploadsDestination.route)
-                },
-                alignBottomCenter = false
+                }
             ) {
                 Title(stringResource(R.string.bath_label_text))
                 Description(stringResource(R.string.tell_baths))

@@ -10,8 +10,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
 import com.example.nyatta.ui.theme.NyattaTheme
-import com.example.nyatta.ui.components.Description
-import com.example.nyatta.ui.navigation.Navigation
+import com.example.nyatta.compose.components.Description
+import com.example.nyatta.navigation.Navigation
 import com.example.nyatta.viewmodels.ApartmentViewModel
 
 object ApartmentDescriptionDestination: Navigation {
@@ -22,7 +22,7 @@ object ApartmentDescriptionDestination: Navigation {
 @Composable
 fun ApartmentDescription(
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit = {},
+    navigateBack: () -> Unit = {},
     navigateNext: (String) -> Unit = {},
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
@@ -33,7 +33,7 @@ fun ApartmentDescription(
         onActionButtonClick = {
             navigateNext(SelectPropertyDestination.route)
         },
-        navigateUp = navigateUp,
+        navigateBack = navigateBack,
         title = stringResource(R.string.unit_name),
         description = stringResource(R.string.apartment_description),
         placeholder = {

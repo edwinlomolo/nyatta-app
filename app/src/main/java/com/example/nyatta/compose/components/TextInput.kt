@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.components
+package com.example.nyatta.compose.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
@@ -32,11 +32,12 @@ fun TextInput(
         colors = TextFieldDefaults.colors(
             focusedContainerColor = if (isError) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.background,
             unfocusedContainerColor = if (isError) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.background,
-            unfocusedIndicatorColor = MaterialTheme.colorScheme.primary
+            unfocusedIndicatorColor = MaterialTheme.colorScheme.primary,
+            errorTextColor = MaterialTheme.colorScheme.error
         ),
         isError = isError,
         supportingText = {
-            if (isError) Text(text = "Invalid", color = MaterialTheme.colorScheme.error)
+            if (isError) Text(text = "Invalid", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.labelSmall)
         },
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,

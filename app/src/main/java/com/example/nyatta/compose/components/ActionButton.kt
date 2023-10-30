@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.components
+package com.example.nyatta.compose.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,16 +18,16 @@ fun ActionButton(
 ) {
     Button(
         modifier = modifier
-            .padding(top = 12.dp)
+            .padding(top = 8.dp)
             .fillMaxWidth(),
         shape = MaterialTheme.shapes.small,
         onClick = { onClick() }
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.labelSmall,
             modifier = Modifier
-                .padding(8.dp)
+                .padding(4.dp)
         )
         if (content != null) {
             content()

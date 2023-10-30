@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.navigation
+package com.example.nyatta.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
@@ -26,15 +26,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.NyattaViewModelProvider
 import com.example.nyatta.R
-import com.example.nyatta.compose.screens.OnboardingViewModel
-import com.example.nyatta.ui.screens.user.AccountViewModel
-import com.example.nyatta.ui.screens.apartment.ApartmentViewModel
-import com.example.nyatta.ui.screens.home.Home
-import com.example.nyatta.ui.screens.home.HomeDestination
-import com.example.nyatta.ui.screens.home.HomeViewModel
-import com.example.nyatta.ui.screens.listing.ListingDetailsDestination
-import com.example.nyatta.ui.screens.location.TownsViewModel
-import com.example.nyatta.ui.screens.property.PropertyViewModel
+import com.example.nyatta.viewmodels.OnboardingViewModel
+import com.example.nyatta.viewmodels.AccountViewModel
+import com.example.nyatta.viewmodels.ApartmentViewModel
+import com.example.nyatta.compose.home.Home
+import com.example.nyatta.compose.home.HomeDestination
+import com.example.nyatta.viewmodels.HomeViewModel
+import com.example.nyatta.compose.listing.ListingDetailsDestination
+import com.example.nyatta.viewmodels.TownsViewModel
+import com.example.nyatta.viewmodels.PropertyViewModel
 
 sealed class Screen(
     val route: String,
@@ -63,7 +63,7 @@ fun NyattaNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     propertyViewModel: PropertyViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
-    onboardingViewModel: com.example.nyatta.compose.screens.OnboardingViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
+    onboardingViewModel: OnboardingViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     apartmentViewModel: ApartmentViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     homeViewModel: HomeViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     townsViewModel: TownsViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
@@ -133,11 +133,11 @@ fun NyattaNavHost(
                 onboardingViewModel = onboardingViewModel
             )
             listingDetailsGraph(navController)
-            propertyGraph(
+            propertyOnboardingGraph(
                 propertyViewModel = propertyViewModel,
                 navController = navController
             )
-            apartmentGraph(
+            apartmentOnboardingGraph(
                 navController = navController,
                 apartmentViewModel = apartmentViewModel
             )

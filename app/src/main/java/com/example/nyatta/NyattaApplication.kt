@@ -1,20 +1,20 @@
-package com.example.nyatta.ui
+package com.example.nyatta
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import com.example.nyatta.ui.navigation.NyattaNavHost
+import com.example.nyatta.navigation.NyattaNavHost
 import com.example.nyatta.ui.theme.NyattaTheme
 
 @Composable
-fun NyattaApp() {
+fun NyattaApplication() {
     NyattaNavHost(navController = rememberNavController())
 }
 
 @Preview(showBackground = true)
 @Composable
-fun NyattaAppPreview() {
+fun NyattaApplicationPreview() {
     NyattaTheme {
-        NyattaApp()
+        NyattaApplication()
     }
 }

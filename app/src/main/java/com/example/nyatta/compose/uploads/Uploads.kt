@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,13 +30,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
-import com.example.nyatta.ui.components.ActionButton
-import com.example.nyatta.ui.components.Description
-import com.example.nyatta.ui.components.Title
-import com.example.nyatta.ui.navigation.Navigation
-import com.example.nyatta.ui.screens.home.TopAppBar
-import com.example.nyatta.ui.screens.apartment.ApartmentStateDestination
-import com.example.nyatta.ui.screens.apartment.ApartmentViewModel
+import com.example.nyatta.compose.components.Description
+import com.example.nyatta.compose.components.Title
+import com.example.nyatta.navigation.Navigation
+import com.example.nyatta.compose.home.TopAppBar
+import com.example.nyatta.compose.components.Onboarding
+import com.example.nyatta.viewmodels.ApartmentViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
 
 object UploadsDestination: Navigation {
@@ -49,27 +47,15 @@ object UploadsDestination: Navigation {
 @Composable
 fun Uploads(
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit = {},
+    navigateBack: () -> Unit = {},
     navigateNext: (String) -> Unit = {},
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = UploadsDestination.title,
-                canNavigateBack = true,
-                navigateUp = navigateUp
+                title = UploadsDestination.title
             )
-        },
-        bottomBar = {
-            Row(modifier = Modifier.padding(4.dp)) {
-                ActionButton(
-                    text = "Save",
-                    onClick = {
-                        navigateNext(ApartmentStateDestination.route)
-                    }
-                )
-            }
         }
     ) { innerPadding ->
         Surface(
@@ -77,10 +63,11 @@ fun Uploads(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            Column(
+            Onboarding(
                 modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(12.dp)
+                    .padding(12.dp),
+                navigateBack = navigateBack,
+                onActionButtonClick = {}
             ) {
                 Title(stringResource(R.string.uploads))
                 Description(stringResource(R.string.describe_unit_images))

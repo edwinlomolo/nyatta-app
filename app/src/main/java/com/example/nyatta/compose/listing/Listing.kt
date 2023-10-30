@@ -20,9 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -46,12 +43,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.nyatta.R
-import com.example.nyatta.ui.navigation.Navigation
+import com.example.nyatta.navigation.Navigation
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
-import com.example.nyatta.ui.screens.home.TopAppBar
+import com.example.nyatta.compose.home.TopAppBar
 
 data class Amenity(
     val category: String,
@@ -96,11 +92,11 @@ fun Listing(
         bottomBar = {
             ListingBottomBar()
         }
-    ) {
+    ) { innerPadding ->
         Surface(
             modifier = modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(innerPadding)
         ) {
            Column (
                modifier = Modifier.verticalScroll(rememberScrollState())
@@ -140,11 +136,8 @@ fun Listing(
                        shape = MaterialTheme.shapes.small
                    ) {
                        Text(
-                           text = "View",
-                           style = TextStyle(
-                               fontFamily = MabryFont,
-                               fontSize = 18.sp
-                           )
+                           text = stringResource(R.string.view),
+                           style = MaterialTheme.typography.labelSmall
                        )
                    }
                }
@@ -184,43 +177,39 @@ fun Listing(
                            contentDescription = null,
                            contentScale = ContentScale.Crop,
                            modifier = Modifier
-                               .size(100.dp)
+                               .size(50.dp)
                                .clip(CircleShape)
                        )
                        Spacer(modifier = Modifier.size(18.dp))
                        Text(
-                           text = "First Last Name",
-                           style = TextStyle(
-                               fontFamily = MabryFont,
-                               fontSize = 18.sp,
-                               fontWeight = FontWeight.SemiBold
-                           )
+                           text = "John Doe",
+                           style = MaterialTheme.typography.bodyLarge
                        )
-                       Icon(
+                       /*Icon(
                            painterResource(R.drawable.verify),
                            contentDescription = "Verified",
-                           modifier = Modifier.size(24.dp),
+                           modifier = Modifier.size(16.dp),
                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                       )
+                       )*/
                    }
                }
                Section(
                    title = "Amenities",
                ) {
-                   LazyHorizontalGrid(
-                       rows = GridCells.Fixed(1),
-                       modifier = Modifier.height(156.dp)
+                   Column(
+                       modifier = Modifier.padding(bottom = 8.dp)
                    ) {
-                       items(amenities.keys.toList()) {
+                       amenities.keys.toList().map { amenity ->
                            Text(
-                               text = it,
+                               text = amenity,
                                modifier = Modifier.padding(8.dp),
-                               fontWeight = FontWeight.Bold
+                               style = MaterialTheme.typography.titleSmall
                            )
-                           Column(modifier = Modifier.offset(y = 36.dp)) {
-                               amenities[it]?.map {
+                           Column {
+                               amenities[amenity]?.map {
                                    Text(
                                        text = it.name,
+                                       style = MaterialTheme.typography.bodyLarge,
                                        modifier = Modifier.padding(start = 16.dp)
                                    )
                                }
@@ -252,10 +241,7 @@ fun FeaturedAmenities(
         Column {
             Text(
                 text = "2",
-                style = TextStyle(
-                    fontFamily = MabryFont,
-                    fontSize = 18.sp
-                ),
+                style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.size(12.dp))
@@ -277,12 +263,7 @@ fun Section(
     Text(
         modifier = modifier.padding(8.dp),
         text = title,
-        style = TextStyle(
-            fontFamily = MabryFont,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.SemiBold,
-            lineHeight = 16.sp
-        )
+        style = MaterialTheme.typography.titleMedium
     )
     Divider(modifier = Modifier.padding(8.dp))
     content()
@@ -299,8 +280,7 @@ fun Tag(
     ) {
         Text(
             text = text,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.surfaceTint
+            style = MaterialTheme.typography.titleMedium
         )
     }
 }
@@ -321,7 +301,7 @@ fun ListingBottomBar(
                 Text(
                     text = "Call",
                     style = TextStyle(
-                        fontSize = 18.sp,
+                        fontFamily = MabryFont,
                         fontWeight = FontWeight.SemiBold
                     )
                 )

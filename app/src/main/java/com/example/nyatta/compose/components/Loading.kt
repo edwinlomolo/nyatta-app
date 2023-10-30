@@ -1,4 +1,4 @@
-package com.example.nyatta.ui.components
+package com.example.nyatta.compose.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

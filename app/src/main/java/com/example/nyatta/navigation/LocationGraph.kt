@@ -1,22 +1,22 @@
-package com.example.nyatta.ui.navigation
+package com.example.nyatta.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.nyatta.compose.screens.OnboardingViewModel
-import com.example.nyatta.ui.screens.location.Location
-import com.example.nyatta.ui.screens.location.LocationDestination
-import com.example.nyatta.ui.screens.location.TownDestination
-import com.example.nyatta.ui.screens.location.Towns
-import com.example.nyatta.ui.screens.location.TownsViewModel
+import com.example.nyatta.viewmodels.OnboardingViewModel
+import com.example.nyatta.compose.location.Location
+import com.example.nyatta.compose.location.LocationDestination
+import com.example.nyatta.compose.location.TownDestination
+import com.example.nyatta.compose.location.Towns
+import com.example.nyatta.viewmodels.TownsViewModel
 
 object LocationGraph: Navigation {
     override val route = "location_graph"
     override val title = "Location"
 }
 fun NavGraphBuilder.locationGraph(
-    onboardingViewModel: com.example.nyatta.compose.screens.OnboardingViewModel,
+    onboardingViewModel: OnboardingViewModel,
     townsViewModel: TownsViewModel,
     navController: NavHostController
 ) {

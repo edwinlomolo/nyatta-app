@@ -1,35 +1,35 @@
-package com.example.nyatta.ui.navigation
+package com.example.nyatta.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.nyatta.ui.screens.apartment.Amenities
-import com.example.nyatta.ui.screens.apartment.ApartmentAmenitiesDestination
-import com.example.nyatta.ui.screens.apartment.ApartmentBathsDestination
-import com.example.nyatta.ui.screens.apartment.ApartmentBedroomsDestination
-import com.example.nyatta.ui.screens.apartment.ApartmentDescription
-import com.example.nyatta.ui.screens.apartment.ApartmentDescriptionDestination
-import com.example.nyatta.ui.screens.apartment.ApartmentPriceDestination
-import com.example.nyatta.ui.screens.apartment.ApartmentStateDestination
-import com.example.nyatta.ui.screens.apartment.ApartmentViewModel
-import com.example.nyatta.ui.screens.apartment.Bath
-import com.example.nyatta.ui.screens.apartment.Bedroom
-import com.example.nyatta.ui.screens.apartment.Price
-import com.example.nyatta.ui.screens.apartment.SelectProperty
-import com.example.nyatta.ui.screens.apartment.SelectPropertyDestination
-import com.example.nyatta.ui.screens.apartment.Unit
-import com.example.nyatta.ui.screens.apartment.UnitState
-import com.example.nyatta.ui.screens.apartment.UnitTypeDestination
-import com.example.nyatta.ui.screens.uploads.Uploads
-import com.example.nyatta.ui.screens.uploads.UploadsDestination
+import com.example.nyatta.compose.apartment.Amenities
+import com.example.nyatta.compose.apartment.ApartmentAmenitiesDestination
+import com.example.nyatta.compose.apartment.ApartmentBathsDestination
+import com.example.nyatta.compose.apartment.ApartmentBedroomsDestination
+import com.example.nyatta.compose.apartment.ApartmentDescription
+import com.example.nyatta.compose.apartment.ApartmentDescriptionDestination
+import com.example.nyatta.compose.apartment.ApartmentPriceDestination
+import com.example.nyatta.compose.apartment.ApartmentStateDestination
+import com.example.nyatta.viewmodels.ApartmentViewModel
+import com.example.nyatta.compose.apartment.Bath
+import com.example.nyatta.compose.apartment.Bedroom
+import com.example.nyatta.compose.apartment.Price
+import com.example.nyatta.compose.apartment.SelectProperty
+import com.example.nyatta.compose.apartment.SelectPropertyDestination
+import com.example.nyatta.compose.apartment.Unit
+import com.example.nyatta.compose.apartment.UnitState
+import com.example.nyatta.compose.apartment.UnitTypeDestination
+import com.example.nyatta.compose.uploads.Uploads
+import com.example.nyatta.compose.uploads.UploadsDestination
 
 object ApartmentOnboarding: Navigation {
     override val route = "onboarding/apartment"
     override val title = "Setup apartment"
 }
 
-fun NavGraphBuilder.apartmentGraph(
+fun NavGraphBuilder.apartmentOnboardingGraph(
     navController: NavHostController,
     apartmentViewModel: ApartmentViewModel
 ) {
@@ -40,63 +40,63 @@ fun NavGraphBuilder.apartmentGraph(
         composable(route = ApartmentDescriptionDestination.route) {
             ApartmentDescription(
                 apartmentViewModel = apartmentViewModel,
-                navigateUp = { navController.navigateUp() },
+                navigateBack = { navController.popBackStack() },
                 navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = SelectPropertyDestination.route) {
             SelectProperty(
                 apartmentViewModel = apartmentViewModel,
-                navigateUp = { navController.navigateUp() },
+                navigateBack = { navController.popBackStack() },
                 navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = UnitTypeDestination.route) {
             Unit(
                 apartmentViewModel = apartmentViewModel,
-                navigateUp = { navController.navigateUp() },
+                navigateBack = { navController.popBackStack() },
                 navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = ApartmentAmenitiesDestination.route) {
             Amenities(
                 apartmentViewModel = apartmentViewModel,
-                navigateUp = { navController.navigateUp() },
+                navigateBack = { navController.popBackStack() },
                 navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = ApartmentBedroomsDestination.route) {
             Bedroom(
                 apartmentViewModel = apartmentViewModel,
-                navigateUp = { navController.navigateUp() },
+                navigateBack = { navController.popBackStack() },
                 navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = ApartmentBathsDestination.route) {
             Bath(
                 apartmentViewModel = apartmentViewModel,
-                navigateUp = { navController.navigateUp() },
+                navigateBack = { navController.popBackStack() },
                 navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = UploadsDestination.route) {
             Uploads(
                 apartmentViewModel = apartmentViewModel,
-                navigateUp = { navController.navigateUp() },
+                navigateBack = { navController.popBackStack() },
                 navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = ApartmentStateDestination.route) {
             UnitState(
                 apartmentViewModel = apartmentViewModel,
-                navigateUp = { navController.navigateUp() },
+                navigateBack = { navController.popBackStack() },
                 navigateNext = { navController.navigate(it) }
             )
         }
         composable(route = ApartmentPriceDestination.route) {
             Price(
                 apartmentViewModel = apartmentViewModel,
-                navigateUp = { navController.navigateUp() }
+                navigateBack = { navController.popBackStack() },
             )
         }
     }
