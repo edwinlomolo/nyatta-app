@@ -1,5 +1,6 @@
 package com.example.nyatta.compose.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -44,11 +46,15 @@ fun Onboarding(
             ) {
                 Button(
                     onClick = navigateBack,
-                    shape = MaterialTheme.shapes.small
+                    shape = MaterialTheme.shapes.small,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant
+                    )
                 ) {
                     Text(
                         text = "Back",
-                        style = MaterialTheme.typography.labelSmall
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
