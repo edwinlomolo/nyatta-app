@@ -80,7 +80,6 @@ class MainActivity : ComponentActivity() {
                     contract = ActivityResultContracts.RequestMultiplePermissions()
                 ) { permissions ->
                     hasLocationPermissions = permissions.values.reduce { acc, isPermissionGranted ->
-                        Log.d("PERM", "$acc")
                         acc && isPermissionGranted
                     }
                     if (hasLocationPermissions) {
