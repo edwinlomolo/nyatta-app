@@ -71,9 +71,9 @@ fun NavGraphBuilder.propertyOnboardingGraph(
                         navigateBack = { navController.popBackStack() },
                         onActionButtonClick = {
                             if (!isCaretaker && validToProceed) {
-                                navController.navigate(PaymentGraph.route)
-                            } else if (isCaretaker) {
-                                navController.navigate(PaymentGraph.route)
+                                navController.navigate(LocationGraph.route)
+                            } else {
+                                navController.navigate(LocationGraph.route)
                             }
                         }
                     )

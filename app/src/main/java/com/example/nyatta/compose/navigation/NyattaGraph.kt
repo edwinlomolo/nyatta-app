@@ -145,10 +145,12 @@ fun NyattaNavHost(
             onboardingUiState = onboardingUiData
         )
         paymentGraph(
+            modifier = modifier,
             navController = navController,
             accViewModel = accountViewModel
         )
         locationGraph(
+            modifier = modifier,
             navController = navController,
             townsViewModel = townsViewModel,
             onboardingViewModel = onboardingViewModel

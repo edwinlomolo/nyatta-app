@@ -68,7 +68,6 @@ fun Mpesa(
             .padding(8.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Title(stringResource(R.string.pay_monthly))
         Description(stringResource(R.string.first_marketing_copy))
         Description(stringResource(R.string.pay_monthly_description))
         Row(
