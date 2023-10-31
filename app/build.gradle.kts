@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.apollographql.apollo3") version "4.0.0-alpha.3"
     id("com.google.devtools.ksp") version "1.9.10-1.0.13"
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -62,6 +63,9 @@ dependencies {
     // To use Kotlin Symbol Processing (KSP)
     ksp("androidx.room:room-compiler:$roomVersion")
 
+    implementation("com.google.maps.android:maps-compose-utils:4.1.1")
+    implementation("com.google.maps.android:maps-compose:2.15.0")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.googlecode.libphonenumber:libphonenumber:8.2.0")
     implementation("androidx.room:room-ktx:$roomVersion")
     implementation("androidx.navigation:navigation-compose:$navVersion") // Jetpack Compose Navigation

@@ -15,7 +15,10 @@ import com.example.nyatta.compose.location.Location
 import com.example.nyatta.compose.location.LocationDestination
 import com.example.nyatta.compose.location.TownDestination
 import com.example.nyatta.compose.location.Towns
+import com.example.nyatta.viewmodels.AccountViewModel
 import com.example.nyatta.viewmodels.TownsViewModel
+import com.example.nyatta.viewmodels.UserDetails
+import com.google.android.gms.maps.model.LatLng
 
 object LocationGraph: Navigation {
     override val route = "location_graph"
@@ -25,6 +28,7 @@ fun NavGraphBuilder.locationGraph(
     modifier: Modifier = Modifier,
     onboardingViewModel: OnboardingViewModel,
     townsViewModel: TownsViewModel,
+    userLocation: LatLng,
     navController: NavHostController
 ) {
     navigation(
@@ -50,6 +54,7 @@ fun NavGraphBuilder.locationGraph(
                         .padding(innerPadding)
                 ) {
                     Location(
+                        userLocation = userLocation,
                         onboardingViewModel = onboardingViewModel
                     )
                 }

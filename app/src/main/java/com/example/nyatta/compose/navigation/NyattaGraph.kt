@@ -81,10 +81,12 @@ fun NyattaNavHost(
     val auth by authViewModel.auth.collectAsState()
     val onboardingUiState by onboardingViewModel.uiState.collectAsState()
     val propertyUiState by propertyViewModel.uiState.collectAsState()
+    val userUiDetails by accountViewModel.userUiDetails.collectAsState()
 
     val authData = auth
     val onboardingUiData = onboardingUiState
     val propertyUiData = propertyUiState
+    val userLocation = userUiDetails.location
 
     NavHost(
         modifier = modifier,
@@ -153,7 +155,8 @@ fun NyattaNavHost(
             modifier = modifier,
             navController = navController,
             townsViewModel = townsViewModel,
-            onboardingViewModel = onboardingViewModel
+            onboardingViewModel = onboardingViewModel,
+            userLocation = userLocation
         )
         listingDetailsGraph(navController)
         propertyOnboardingGraph(

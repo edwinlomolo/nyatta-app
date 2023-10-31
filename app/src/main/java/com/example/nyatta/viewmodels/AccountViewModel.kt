@@ -1,6 +1,5 @@
 package com.example.nyatta.viewmodels
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,6 +9,7 @@ import com.apollographql.apollo3.api.Error
 import com.apollographql.apollo3.exception.ApolloException
 import com.example.nyatta.data.auth.AuthRepository
 import com.example.nyatta.data.model.User
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -91,6 +91,12 @@ class AccountViewModel(
         }
     }
 
+    fun setDeviceLocation(location: LatLng) {
+        _userDetails.update {
+            it.copy(location = location)
+        }
+    }
+
     init {
         _userDetails.value = UserDetails()
     }
@@ -98,5 +104,6 @@ class AccountViewModel(
 
 data class UserDetails(
     val phone: String = "",
-    val validDetails: Boolean = true
+    val validDetails: Boolean = true,
+    val location: LatLng = LatLng(0.0,0.0)
 )

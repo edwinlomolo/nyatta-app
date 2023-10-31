@@ -7,10 +7,12 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -35,12 +37,16 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.example.nyatta.ui.theme.NyattaTheme
+import com.example.nyatta.viewmodels.AccountViewModel
+import com.example.nyatta.viewmodels.NyattaViewModelProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val accViewModel: AccountViewModel by viewModels { NyattaViewModelProvider.Factory }
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +80,7 @@ class MainActivity : ComponentActivity() {
                     contract = ActivityResultContracts.RequestMultiplePermissions()
                 ) { permissions ->
                     hasLocationPermissions = permissions.values.reduce { acc, isPermissionGranted ->
+                        Log.d("PERM", "$acc")
                         acc && isPermissionGranted
                     }
                     if (hasLocationPermissions) {
@@ -136,7 +143,7 @@ class MainActivity : ComponentActivity() {
                             LaunchedEffect(Unit) {
                                 scope.launch {
                                     val userAction = snackbarHostState.showSnackbar(
-                                        message = "Authorize location permission",
+                                        message = "You experience on Nyatta would be better if we can have your device location.",
                                         actionLabel = "Approve",
                                         duration = SnackbarDuration.Indefinite,
                                         withDismissAction = true
@@ -147,7 +154,7 @@ class MainActivity : ComponentActivity() {
                                             locationPermissionLauncher.launch(locationPermissions)
                                         }
                                         SnackbarResult.Dismissed -> {
-                                            shouldShowPermissionRationale = false
+                                            //shouldShowPermissionRationale = false
                                         }
                                     }
                                 }
