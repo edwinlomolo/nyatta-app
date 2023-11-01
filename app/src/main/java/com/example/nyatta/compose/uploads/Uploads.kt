@@ -6,18 +6,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,8 +31,6 @@ import com.example.nyatta.R
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.Title
 import com.example.nyatta.compose.navigation.Navigation
-import com.example.nyatta.compose.home.TopAppBar
-import com.example.nyatta.compose.components.Onboarding
 import com.example.nyatta.viewmodels.ApartmentViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
 
@@ -47,42 +43,25 @@ object UploadsDestination: Navigation {
 @Composable
 fun Uploads(
     modifier: Modifier = Modifier,
-    navigateBack: () -> Unit = {},
-    navigateNext: (String) -> Unit = {},
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = UploadsDestination.title
-            )
-        }
-    ) { innerPadding ->
-        Surface(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            Onboarding(
-                modifier = Modifier
-                    .padding(12.dp),
-                navigateBack = navigateBack,
-                onActionButtonClick = {}
-            ) {
-                Title(stringResource(R.string.uploads))
-                Description(stringResource(R.string.describe_unit_images))
-                FeatureImage(text = stringResource(R.string.living_room), imageCount = 4)
-                FeatureImage(text = stringResource(R.string.baths), imageCount = 2)
-                // TODO if has bedroom count
-                FeatureImage(text = stringResource(R.string.bedrooms), imageCount = 3)
-                // TODO if has balcony/front porch
-                FeatureImage(text = stringResource(R.string.balcony), imageCount = 1)
-                FeatureImage(text = stringResource(R.string.front_porch), imageCount = 1)
-                FeatureImage(text = stringResource(R.string.kitchen), imageCount = 2)
-                // TODO if has parking
-                FeatureImage(text = stringResource(R.string.parking), imageCount = 2)
-            }
-        }
+    Column(
+        modifier = modifier
+            .padding(8.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        Title(stringResource(R.string.uploads))
+        Description(stringResource(R.string.describe_unit_images))
+        FeatureImage(text = stringResource(R.string.living_room), imageCount = 4)
+        FeatureImage(text = stringResource(R.string.baths), imageCount = 2)
+        // TODO if has bedroom count
+        FeatureImage(text = stringResource(R.string.bedrooms), imageCount = 3)
+        // TODO if has balcony/front porch
+        FeatureImage(text = stringResource(R.string.balcony), imageCount = 1)
+        FeatureImage(text = stringResource(R.string.front_porch), imageCount = 1)
+        FeatureImage(text = stringResource(R.string.kitchen), imageCount = 2)
+        // TODO if has parking
+        FeatureImage(text = stringResource(R.string.parking), imageCount = 2)
     }
 }
 
@@ -122,7 +101,7 @@ fun FeatureImage(text: String, imageCount: Int, modifier: Modifier = Modifier) {
                     .padding(8.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(MaterialTheme.colorScheme.inversePrimary)
-                    .clickable{}
+                    .clickable {}
             )
         }
     }

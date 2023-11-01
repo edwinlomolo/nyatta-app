@@ -1,12 +1,10 @@
 package com.example.nyatta.compose.apartment
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,8 +21,6 @@ import com.example.nyatta.R
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.Title
 import com.example.nyatta.compose.navigation.Navigation
-import com.example.nyatta.compose.home.TopAppBar
-import com.example.nyatta.compose.components.Onboarding
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.ApartmentViewModel
 
@@ -37,49 +33,30 @@ object ApartmentStateDestination: Navigation {
 @Composable
 fun UnitState(
     modifier: Modifier = Modifier,
-    navigateBack: () -> Unit = {},
-    navigateNext: (String) -> Unit = {},
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
     var state by remember { mutableStateOf(true) }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = ApartmentStateDestination.title
-            )
-        }
-    ) { innerPadding ->
-        Surface(modifier = modifier
-            .fillMaxSize()
-            .padding(innerPadding)
-        ) {
-            Onboarding(
-                modifier = Modifier.padding(12.dp),
-                navigateBack = navigateBack,
-                onActionButtonClick = {
-                    navigateNext(ApartmentPriceDestination.route)
-                },
-                alignBottomCenter = false
-            ) {
-                Title(stringResource(R.string.unit_state))
-                Description(stringResource(R.string.tell_unit_state))
-                Row {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        RadioButton(
-                            selected = state,
-                            onClick = { state = true }
-                        )
-                        Text(stringResource(R.string.vacant))
-                    }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        RadioButton(
-                            selected = !state,
-                            onClick = { state = false }
-                        )
-                        Text(stringResource(R.string.occupied))
-                    }
-                }
+    Column(
+        modifier = modifier
+            .padding(8.dp)
+    ) {
+        Title(stringResource(R.string.unit_state))
+        Description(stringResource(R.string.tell_unit_state))
+        Row {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                RadioButton(
+                    selected = state,
+                    onClick = { state = true }
+                )
+                Text(stringResource(R.string.vacant))
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                RadioButton(
+                    selected = !state,
+                    onClick = { state = false }
+                )
+                Text(stringResource(R.string.occupied))
             }
         }
     }

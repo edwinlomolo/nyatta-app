@@ -167,6 +167,7 @@ fun NyattaNavHost(
             propertyUiState = propertyUiData
         )
         apartmentOnboardingGraph(
+            modifier = modifier,
             navController = navController,
             apartmentViewModel = apartmentViewModel
         )

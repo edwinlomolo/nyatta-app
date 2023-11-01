@@ -1,13 +1,11 @@
 package com.example.nyatta.compose.apartment
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -22,8 +20,6 @@ import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.TextInput
 import com.example.nyatta.compose.components.Title
 import com.example.nyatta.compose.navigation.Navigation
-import com.example.nyatta.compose.home.TopAppBar
-import com.example.nyatta.compose.components.Onboarding
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.ApartmentViewModel
 
@@ -36,53 +32,37 @@ object ApartmentPriceDestination: Navigation {
 @Composable
 fun Price(
     modifier: Modifier = Modifier,
-    navigateBack: () -> Unit = {},
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = ApartmentPriceDestination.title
-            )
-        }
-    ) { innerPadding ->
-        Surface(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            Onboarding(
-                modifier = Modifier.padding(12.dp),
-                navigateBack = navigateBack,
-                onActionButtonClick = {}
-            ) {
-                Title("Price")
-                Description("Monthly charge for this unit")
-                TextInput(
-                    value = "",
-                    onValueChange = {},
-                    modifier = Modifier
-                        .padding(8.dp),
-                    prefix = {
-                        Text(
-                            text = "KES",
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Done,
-                        keyboardType = KeyboardType.Number
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            keyboardController?.hide()
-                        }
-                    )
+    Column(
+        modifier = modifier
+            .padding(8.dp)
+    ) {
+        Title("Price")
+        Description("Monthly charge for this unit")
+        TextInput(
+            value = "",
+            onValueChange = {},
+            modifier = Modifier
+                .padding(8.dp),
+            prefix = {
+                Text(
+                    text = "KES",
+                    color = MaterialTheme.colorScheme.primary
                 )
-            }
-        }
+            },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Number
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    keyboardController?.hide()
+                }
+            )
+        )
     }
 }
 

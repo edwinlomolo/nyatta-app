@@ -1,5 +1,12 @@
 package com.example.nyatta.compose.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -21,6 +28,7 @@ import com.example.nyatta.compose.apartment.SelectPropertyDestination
 import com.example.nyatta.compose.apartment.Unit
 import com.example.nyatta.compose.apartment.UnitState
 import com.example.nyatta.compose.apartment.UnitTypeDestination
+import com.example.nyatta.compose.components.OnboardingBottomBar
 import com.example.nyatta.compose.uploads.Uploads
 import com.example.nyatta.compose.uploads.UploadsDestination
 
@@ -30,6 +38,7 @@ object ApartmentOnboarding: Navigation {
 }
 
 fun NavGraphBuilder.apartmentOnboardingGraph(
+    modifier: Modifier,
     navController: NavHostController,
     apartmentViewModel: ApartmentViewModel
 ) {
@@ -38,64 +47,274 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
         route = ApartmentOnboarding.route
     ) {
         composable(route = ApartmentDescriptionDestination.route) {
-            ApartmentDescription(
-                apartmentViewModel = apartmentViewModel
-            )
+            Scaffold(
+                bottomBar = {
+                    OnboardingBottomBar(
+                        navigateBack = {
+                            navController.popBackStack()
+                        },
+                        onActionButtonClick = {
+                            navController.navigate(SelectPropertyDestination.route)
+                        },
+                        actionButtonText = {
+                            Text(
+                                text = "Associate with property",
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                Surface(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    ApartmentDescription(
+                        apartmentViewModel = apartmentViewModel
+                    )
+                }
+            }
         }
         composable(route = SelectPropertyDestination.route) {
-            SelectProperty(
-                apartmentViewModel = apartmentViewModel,
-                navigateBack = { navController.popBackStack() },
-                navigateNext = { navController.navigate(it) }
-            )
+            Scaffold(
+                bottomBar = {
+                    OnboardingBottomBar(
+                        navigateBack = {
+                            navController.popBackStack()
+                        },
+                        onActionButtonClick = {
+                            navController.navigate(UnitTypeDestination.route)
+                        },
+                        actionButtonText = {
+                            Text(
+                                text = "Describe unit type",
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                Surface(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    SelectProperty(
+                        apartmentViewModel = apartmentViewModel,
+                    )
+                }
+            }
         }
         composable(route = UnitTypeDestination.route) {
-            Unit(
-                apartmentViewModel = apartmentViewModel,
-                navigateBack = { navController.popBackStack() },
-                navigateNext = { navController.navigate(it) }
-            )
+            Scaffold(
+                bottomBar = {
+                    OnboardingBottomBar(
+                        navigateBack = {
+                            navController.popBackStack()
+                        },
+                        onActionButtonClick = {
+                            navController.navigate(ApartmentAmenitiesDestination.route)
+                        },
+                        actionButtonText = {
+                            Text(
+                                text = "Add amenities",
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                Surface(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    Unit(
+                        apartmentViewModel = apartmentViewModel
+                    )
+                }
+            }
         }
         composable(route = ApartmentAmenitiesDestination.route) {
-            Amenities(
-                apartmentViewModel = apartmentViewModel,
-                navigateBack = { navController.popBackStack() },
-                navigateNext = { navController.navigate(it) }
-            )
+            Scaffold(
+                bottomBar = {
+                    OnboardingBottomBar(
+                        navigateBack = {
+                            navController.popBackStack()
+                        },
+                        onActionButtonClick = {
+                            navController.navigate(ApartmentBedroomsDestination.route)
+                        },
+                        actionButtonText = {
+                            Text(
+                                text = "Describe bedrooms",
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                Surface(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    Amenities(
+                        apartmentViewModel = apartmentViewModel
+                    )
+                }
+            }
         }
         composable(route = ApartmentBedroomsDestination.route) {
-            Bedroom(
-                apartmentViewModel = apartmentViewModel,
-                navigateBack = { navController.popBackStack() },
-                navigateNext = { navController.navigate(it) }
-            )
+            Scaffold(
+                bottomBar = {
+                    OnboardingBottomBar(
+                        navigateBack = {
+                            navController.popBackStack()
+                        },
+                        onActionButtonClick = {
+                            navController.navigate(ApartmentBathsDestination.route)
+                        },
+                        actionButtonText = {
+                            Text(
+                                text = "Describe bathrooms",
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                Surface(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    Bedroom(
+                        apartmentViewModel = apartmentViewModel
+                    )
+                }
+            }
         }
         composable(route = ApartmentBathsDestination.route) {
-            Bath(
-                apartmentViewModel = apartmentViewModel,
-                navigateBack = { navController.popBackStack() },
-                navigateNext = { navController.navigate(it) }
-            )
+            Scaffold(
+                bottomBar = {
+                    OnboardingBottomBar(
+                        navigateBack = {
+                            navController.popBackStack()
+                        },
+                        onActionButtonClick = {
+                            navController.navigate(UploadsDestination.route)
+                        },
+                        actionButtonText = {
+                            Text(
+                                text = "Add images",
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                Surface(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    Bath(
+                        apartmentViewModel = apartmentViewModel
+                    )
+                }
+            }
         }
         composable(route = UploadsDestination.route) {
-            Uploads(
-                apartmentViewModel = apartmentViewModel,
-                navigateBack = { navController.popBackStack() },
-                navigateNext = { navController.navigate(it) }
-            )
+            Scaffold(
+                bottomBar = {
+                    OnboardingBottomBar(
+                        navigateBack = {
+                            navController.popBackStack()
+                        },
+                        onActionButtonClick = {
+                            navController.navigate(ApartmentStateDestination.route)
+                        },
+                        actionButtonText = {
+                            Text(
+                                text = "Describe unit state",
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                Surface(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    Uploads(
+                        apartmentViewModel = apartmentViewModel,
+                    )
+                }
+            }
         }
         composable(route = ApartmentStateDestination.route) {
-            UnitState(
-                apartmentViewModel = apartmentViewModel,
-                navigateBack = { navController.popBackStack() },
-                navigateNext = { navController.navigate(it) }
-            )
+            Scaffold(
+                bottomBar = {
+                    OnboardingBottomBar(
+                        navigateBack = {
+                            navController.popBackStack()
+                        },
+                        onActionButtonClick = {
+                            navController.navigate(ApartmentPriceDestination.route)
+                        },
+                        actionButtonText = {
+                            Text(
+                                text = "Add unit price",
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                Surface(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    UnitState(
+                        apartmentViewModel = apartmentViewModel,
+                    )
+                }
+            }
         }
         composable(route = ApartmentPriceDestination.route) {
-            Price(
-                apartmentViewModel = apartmentViewModel,
-                navigateBack = { navController.popBackStack() },
-            )
+            Scaffold(
+                bottomBar = {
+                    OnboardingBottomBar(
+                        navigateBack = {
+                            navController.popBackStack()
+                        },
+                        onActionButtonClick = {
+                            navController.navigate(PaymentGraph.route)
+                        },
+                        actionButtonText = {
+                            Text(
+                                text = "Create unit",
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                Surface(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    Price(
+                        apartmentViewModel = apartmentViewModel
+                    )
+                }
+            }
         }
     }
 }

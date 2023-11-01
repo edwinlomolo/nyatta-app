@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navigation
+import com.example.nyatta.R
 import com.example.nyatta.compose.components.OnboardingBottomBar
 import com.example.nyatta.viewmodels.OnboardingViewModel
 import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
@@ -43,6 +44,7 @@ fun NavGraphBuilder.startPropertyOnboarding(
 ) {
     val validToProceed = onboardingUiState.validToProceed.type
     val isAuthenticated = authState.isAuthed
+    val propertyType = onboardingUiState.type
 
     navigation(
         startDestination = if (!isAuthenticated) UserSignUpDestination.route else StartOnboardingDestination.route,
@@ -107,10 +109,17 @@ fun NavGraphBuilder.startPropertyOnboarding(
                             }
                         },
                         actionButtonText = {
-                            Text(
-                                text = "Describe property",
-                                style = MaterialTheme.typography.labelSmall
-                            )
+                            if (propertyType == "Apartments Building") {
+                                Text(
+                                    text = stringResource(R.string.describe_this_property),
+                                    style = MaterialTheme.typography.labelSmall
+                                )
+                            } else {
+                                Text(
+                                    text = stringResource(R.string.describe_apartment_unit),
+                                    style = MaterialTheme.typography.labelSmall
+                                )
+                            }
                         }
                     )
                 }

@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -12,8 +11,6 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -33,10 +30,7 @@ import com.example.nyatta.R
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.TextInput
 import com.example.nyatta.compose.components.Title
-import com.example.nyatta.compose.navigation.LocationGraph
 import com.example.nyatta.compose.navigation.Navigation
-import com.example.nyatta.compose.home.TopAppBar
-import com.example.nyatta.compose.components.Onboarding
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.ApartmentViewModel
 
@@ -50,8 +44,6 @@ val propertyList = listOf("Beach House Properties", "Mwea Ventures")
 @Composable
 fun SelectProperty(
     modifier: Modifier = Modifier,
-    navigateBack: () -> Unit = {},
-    navigateNext: (String) -> Unit = {},
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
     val apartmentUiState by apartmentViewModel.uiState.collectAsState()
@@ -59,88 +51,71 @@ fun SelectProperty(
     var expanded by remember { mutableStateOf(false) }
     var matchedProperty by remember { mutableStateOf(propertyList[0]) }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = SelectPropertyDestination.title
-            )
+    Column(
+        modifier = modifier
+            .padding(8.dp)
+    ) {
+        Title(stringResource(R.string.select_property))
+        Description(stringResource(R.string.associate_unit_property))
+        Row {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                RadioButton(
+                    selected = apartmentUiState.associatedTo,
+                    onClick = { apartmentViewModel.setAssociatedTo(true) },
+                    modifier = Modifier.semantics { contentDescription = "Associate property" }
+                )
+                Text(
+                    text = stringResource(R.string.yes_caretaker)
+                )
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                RadioButton(
+                    selected = !apartmentUiState.associatedTo,
+                    onClick = { apartmentViewModel.setAssociatedTo(false) },
+                    modifier = Modifier.semantics { contentDescription = "Don't associate property" }
+                )
+                Text(
+                    text = stringResource(R.string.no_caretaker)
+                )
+            }
         }
-    ) { innerPadding ->
-        Surface(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            Onboarding(
-                modifier = Modifier.padding(12.dp),
-                navigateBack = navigateBack,
-                onActionButtonClick = {
-                    navigateNext(LocationGraph.route)
-                }
-            ) {
-                Title(stringResource(R.string.select_property))
-                Description(stringResource(R.string.associate_unit_property))
-                Row {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        RadioButton(
-                            selected = apartmentUiState.associatedTo,
-                            onClick = { apartmentViewModel.setAssociatedTo(true) },
-                            modifier = Modifier.semantics { contentDescription = "Associate property" }
+        if (apartmentUiState.associatedTo) {
+            Column {
+                Box {
+                    ExposedDropdownMenuBox(
+                        expanded = expanded,
+                        onExpandedChange = {
+                            expanded = !expanded
+                        }
+                    ) {
+                        TextInput(
+                            value = matchedProperty,
+                            onValueChange = { /*TODO*/ },
+                            readOnly = true,
+                            trailingIcon = {
+                                ExposedDropdownMenuDefaults.TrailingIcon(expanded)
+                            },
+                            modifier = Modifier
+                                .menuAnchor()
+                                .padding(start = 8.dp, end = 8.dp)
                         )
-                        Text(
-                            text = stringResource(R.string.yes_caretaker)
-                        )
-                    }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        RadioButton(
-                            selected = !apartmentUiState.associatedTo,
-                            onClick = { apartmentViewModel.setAssociatedTo(false) },
-                            modifier = Modifier.semantics { contentDescription = "Don't associate property" }
-                        )
-                        Text(
-                            text = stringResource(R.string.no_caretaker)
-                        )
-                    }
-                }
-                if (apartmentUiState.associatedTo) {
-                    Column {
-                        Box {
-                            ExposedDropdownMenuBox(
-                                expanded = expanded,
-                                onExpandedChange = {
-                                    expanded = !expanded
-                                }
-                            ) {
-                                TextInput(
-                                    value = matchedProperty,
-                                    onValueChange = { /*TODO*/ },
-                                    readOnly = true,
-                                    trailingIcon = {
-                                        ExposedDropdownMenuDefaults.TrailingIcon(expanded)
-                                    },
-                                    modifier = Modifier
-                                        .menuAnchor()
-                                        .padding(start = 8.dp, end = 8.dp)
-                                )
-                                ExposedDropdownMenu(
-                                    expanded = expanded,
-                                    onDismissRequest = {
+                        ExposedDropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = {
+                                expanded = false
+                            },
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.background)
+                        ) {
+                            propertyList.forEach {
+                                DropdownMenuItem(
+                                    text = { Text(it) },
+                                    onClick = {
+                                        matchedProperty = it
                                         expanded = false
                                     },
-                                    modifier = Modifier
-                                        .background(MaterialTheme.colorScheme.background)
-                                ) {
-                                    propertyList.forEach {
-                                        DropdownMenuItem(
-                                            text = { Text(it) },
-                                            onClick = {
-                                                matchedProperty = it
-                                                expanded = false
-                                            },
-                                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                                        )
-                                    }
-                                }
+                                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                                )
                             }
                         }
                     }

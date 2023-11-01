@@ -1,12 +1,10 @@
 package com.example.nyatta.compose.apartment
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -23,9 +21,6 @@ import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.TextInput
 import com.example.nyatta.compose.components.Title
 import com.example.nyatta.compose.navigation.Navigation
-import com.example.nyatta.compose.home.TopAppBar
-import com.example.nyatta.compose.components.Onboarding
-import com.example.nyatta.compose.uploads.UploadsDestination
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.ApartmentViewModel
 
@@ -38,53 +33,34 @@ object ApartmentBathsDestination: Navigation {
 @Composable
 fun Bath(
     modifier: Modifier = Modifier,
-    navigateBack: () -> Unit = {},
-    navigateNext: (String) -> Unit = {},
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = ApartmentBathsDestination.title
-            )
-        }
-    ) { innerPadding ->
-        Surface(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            Onboarding(
-                modifier = Modifier.padding(12.dp),
-                navigateBack = navigateBack,
-                onActionButtonClick = {
-                    navigateNext(UploadsDestination.route)
+    Column(
+        modifier = modifier
+            .padding(8.dp)
+    ) {
+        Title(stringResource(R.string.bath_label_text))
+        Description(stringResource(R.string.tell_baths))
+        TextInput(
+            value = "",
+            onValueChange = {},
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
+            placeholder = {
+                Text(stringResource(R.string.bath_label_text))
+            },
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    keyboardController?.hide()
                 }
-            ) {
-                Title(stringResource(R.string.bath_label_text))
-                Description(stringResource(R.string.tell_baths))
-                TextInput(
-                    value = "",
-                    onValueChange = {},
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Done
-                    ),
-                    placeholder = {
-                        Text(stringResource(R.string.bath_label_text))
-                    },
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            keyboardController?.hide()
-                        }
-                    ),
-                    modifier = Modifier
-                        .padding(8.dp)
-                )
-            }
-        }
+            ),
+            modifier = Modifier
+                .padding(8.dp)
+        )
     }
 }
 
