@@ -2,8 +2,10 @@ package com.example.nyatta.compose.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -28,7 +30,8 @@ fun NavGraphBuilder.locationGraph(
     modifier: Modifier = Modifier,
     onboardingViewModel: OnboardingViewModel,
     townsViewModel: TownsViewModel,
-    userLocation: LatLng,
+    deviceLocation: LatLng,
+    propertyType: String,
     navController: NavHostController
 ) {
     navigation(
@@ -43,7 +46,15 @@ fun NavGraphBuilder.locationGraph(
                             navController.popBackStack()
                         },
                         onActionButtonClick = {
-                            navController.navigate(TownDestination.route)
+                            if (propertyType == "Apartments Building") navController.navigate(PaymentGraph.route)
+                        },
+                        actionButtonText = {
+                            if (propertyType === "Apartments Building") {
+                                Text(
+                                    text = "Create property",
+                                    style = MaterialTheme.typography.labelSmall
+                                )
+                            }
                         }
                     )
                 }
@@ -54,7 +65,7 @@ fun NavGraphBuilder.locationGraph(
                         .padding(innerPadding)
                 ) {
                     Location(
-                        userLocation = userLocation,
+                        deviceLocation = deviceLocation,
                         onboardingViewModel = onboardingViewModel
                     )
                 }

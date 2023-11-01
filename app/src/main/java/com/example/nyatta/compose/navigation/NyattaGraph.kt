@@ -86,7 +86,7 @@ fun NyattaNavHost(
     val authData = auth
     val onboardingUiData = onboardingUiState
     val propertyUiData = propertyUiState
-    val userLocation = userUiDetails.location
+    val deviceLocation = userUiDetails.location
 
     NavHost(
         modifier = modifier,
@@ -156,7 +156,8 @@ fun NyattaNavHost(
             navController = navController,
             townsViewModel = townsViewModel,
             onboardingViewModel = onboardingViewModel,
-            userLocation = userLocation
+            deviceLocation = deviceLocation,
+            propertyType = onboardingUiData.type!!
         )
         listingDetailsGraph(navController)
         propertyOnboardingGraph(

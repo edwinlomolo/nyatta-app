@@ -2,8 +2,10 @@ package com.example.nyatta.compose.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -48,6 +50,12 @@ fun NavGraphBuilder.propertyOnboardingGraph(
                         navigateBack = { navController.popBackStack() },
                         onActionButtonClick = {
                             if (!emptyState) navController.navigate(CaretakerDestination.route)
+                        },
+                        actionButtonText = {
+                            Text(
+                                text = "Add caretaker",
+                                style = MaterialTheme.typography.labelSmall
+                            )
                         }
                     )
                 }
@@ -75,6 +83,12 @@ fun NavGraphBuilder.propertyOnboardingGraph(
                             } else {
                                 navController.navigate(LocationGraph.route)
                             }
+                        },
+                        actionButtonText = {
+                            Text(
+                                text = "Confirm location",
+                                style = MaterialTheme.typography.labelSmall
+                            )
                         }
                     )
                 }

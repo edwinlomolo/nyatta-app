@@ -4,8 +4,10 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -40,18 +42,26 @@ import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.AccountViewModel
 import com.example.nyatta.viewmodels.NyattaViewModelProvider
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.tasks.CancellationTokenSource
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var fusedLocationClient: FusedLocationProviderClient? = null
+    private var locationPriority: Int? = null
     private val accViewModel: AccountViewModel by viewModels { NyattaViewModelProvider.Factory }
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
             var hasLocationPermissions by remember { mutableStateOf(hasLocationPermissions())}
             var shouldShowPermissionRationale by remember {
                 mutableStateOf(
@@ -72,6 +82,9 @@ class MainActivity : ComponentActivity() {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION
             )
+            val usePreciseLocation = locationPermissions.contains(Manifest.permission.ACCESS_FINE_LOCATION)
+            locationPriority = if (usePreciseLocation) Priority.PRIORITY_HIGH_ACCURACY else Priority.PRIORITY_BALANCED_POWER_ACCURACY
+            val locationRequest = LocationRequest.Builder(locationPriority!!, TimeUnit.SECONDS.toMillis(3)).build()
             var shouldDirectUserToApplicationSettings by remember {
                 mutableStateOf(false)
             }
@@ -83,14 +96,19 @@ class MainActivity : ComponentActivity() {
                         acc && isPermissionGranted
                     }
                     if (hasLocationPermissions) {
-                        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-                        fusedLocationClient.lastLocation
-                            .addOnSuccessListener { location ->
+                        fusedLocationClient?.getCurrentLocation(
+                            locationPriority!!,
+                            CancellationTokenSource().token
+                        )
+                            ?.addOnSuccessListener { location: Location ->
+                                accViewModel
+                                    .setDeviceLocation(
+                                        LatLng(
+                                            location.latitude,
+                                            location.longitude
+                                        )
+                                    )
                             }
-                            .addOnFailureListener { exception ->
-                                exception.printStackTrace()
-                            }
-
                     }
 
                     if (!hasLocationPermissions) {
@@ -107,22 +125,45 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             val lifecycleOwner = LocalLifecycleOwner.current
-            DisposableEffect(
-                key1 = lifecycleOwner,
-                effect = {
-                    val observer = LifecycleEventObserver { _, event, ->
-                        if (event == Lifecycle.Event.ON_START &&
-                            !hasLocationPermissions &&
-                            !shouldShowPermissionRationale) {
-                            locationPermissionLauncher.launch(locationPermissions)
+            DisposableEffect(hasLocationPermissions, lifecycleOwner) {
+                val locationCallback: LocationCallback = object: LocationCallback() {
+                    override fun onLocationResult(p0: LocationResult) {
+                        for (location in p0.locations) {
+                            Log.d("DevLoc", "$location")
+                            accViewModel
+                                .setDeviceLocation(LatLng(location.latitude, location.longitude))
                         }
                     }
-                    lifecycleOwner.lifecycle.addObserver(observer)
-                    onDispose {
-                        lifecycleOwner.lifecycle.removeObserver(observer)
+                }
+                val observer = LifecycleEventObserver { _, event, ->
+                    if (event == Lifecycle.Event.ON_START &&
+                        !hasLocationPermissions &&
+                        !shouldShowPermissionRationale) {
+                        locationPermissionLauncher.launch(locationPermissions)
+                    } else if (event == Lifecycle.Event.ON_START && hasLocationPermissions) {
+                        // start location updates
+                        fusedLocationClient
+                            ?.requestLocationUpdates(
+                                locationRequest, locationCallback, Looper.getMainLooper()
+                            )
+                    } else if (hasLocationPermissions && event == Lifecycle.Event.ON_STOP) {
+                        //stop location updates
+                        fusedLocationClient?.removeLocationUpdates(locationCallback)
+                    } else if (hasLocationPermissions && event == Lifecycle.Event.ON_PAUSE) {
+                        fusedLocationClient
+                            ?.removeLocationUpdates(locationCallback)
+                    } else if (hasLocationPermissions && event == Lifecycle.Event.ON_RESUME) {
+                        fusedLocationClient
+                            ?.requestLocationUpdates(
+                                locationRequest, locationCallback, Looper.getMainLooper()
+                            )
                     }
                 }
-            )
+                lifecycleOwner.lifecycle.addObserver(observer)
+                onDispose {
+                    lifecycleOwner.lifecycle.removeObserver(observer)
+                }
+            }
 
             val scope = rememberCoroutineScope()
             val snackbarHostState = remember { SnackbarHostState() }

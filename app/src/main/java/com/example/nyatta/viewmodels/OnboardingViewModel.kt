@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 data class OnboardingUiState(
-    val type: String? = null,
+    val type: String = "",
     val validToProceed: OnboardingDataValidity = OnboardingDataValidity()
 )
 

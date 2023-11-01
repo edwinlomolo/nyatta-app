@@ -1,9 +1,8 @@
 package com.example.nyatta.compose.location
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -20,8 +19,6 @@ import com.example.nyatta.compose.components.Title
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.viewmodels.OnboardingViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
-import com.example.nyatta.viewmodels.AccountViewModel
-import com.example.nyatta.viewmodels.UserDetails
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -37,15 +34,14 @@ object LocationDestination: Navigation {
 @Composable
 fun Location(
     onboardingViewModel: OnboardingViewModel = viewModel(),
-    userLocation: LatLng = LatLng(0.0, 0.0)
+    deviceLocation: LatLng = LatLng(0.0, 0.0)
 ) {
     val onboardingUiState by onboardingViewModel.uiState.collectAsState()
     val onboardingState = onboardingUiState
-    val userDeviceLocation = LatLng(userLocation.latitude, userLocation.longitude)
+    val userDeviceLocation = LatLng(deviceLocation.latitude, deviceLocation.longitude)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(userDeviceLocation, 15f)
     }
-    //Log.d("Locat", "$userDeviceLocation")
 
     Column(
         modifier = Modifier.padding(8.dp)
@@ -58,11 +54,10 @@ fun Location(
         }
         Box(
             modifier = Modifier
-                .fillMaxSize()
                 .align(Alignment.CenterHorizontally)
         ) {
             GoogleMap(
-                modifier = Modifier.matchParentSize(),
+                modifier = Modifier.height(200.dp),
                 cameraPositionState = cameraPositionState
             ) {
                 Marker(

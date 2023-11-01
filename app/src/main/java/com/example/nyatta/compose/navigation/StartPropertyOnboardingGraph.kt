@@ -3,6 +3,7 @@ package com.example.nyatta.compose.navigation
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -104,6 +105,12 @@ fun NavGraphBuilder.startPropertyOnboarding(
 
                                 else -> navController.navigate(ApartmentOnboarding.route)
                             }
+                        },
+                        actionButtonText = {
+                            Text(
+                                text = "Describe property",
+                                style = MaterialTheme.typography.labelSmall
+                            )
                         }
                     )
                 }
