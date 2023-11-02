@@ -1,12 +1,21 @@
 package com.example.nyatta.compose.apartment
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.twotone.CheckCircle
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -14,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
 import com.example.nyatta.ui.theme.NyattaTheme
-import com.example.nyatta.data.amenities
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.Title
 import com.example.nyatta.compose.navigation.Navigation
@@ -30,6 +38,9 @@ fun Amenities(
     modifier: Modifier = Modifier,
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
+    val apartmentUiState by apartmentViewModel.uiState.collectAsState()
+    val amenities = apartmentViewModel.defaultAmenities
+
     Column(
         modifier = modifier
             .padding(8.dp)
@@ -39,10 +50,22 @@ fun Amenities(
         LazyColumn {
             items(amenities) { amenity ->
                 ListItem(
+                    modifier = Modifier
+                        .clickable{
+                            apartmentViewModel.addUnitAmenity(amenity)
+                        },
                     headlineContent = {
-                        Text(
-                            text = amenity.label
-                        )
+                        Row {
+                            Text(
+                                text = amenity.label
+                            )
+                            Spacer(modifier = Modifier.size(28.dp))
+                            if (apartmentUiState.selectedAmenities.indexOf(amenity) > 0)
+                                Icon(
+                                    Icons.TwoTone.CheckCircle,
+                                    contentDescription = amenity.label
+                                )
+                        }
                     }
                 )
             }

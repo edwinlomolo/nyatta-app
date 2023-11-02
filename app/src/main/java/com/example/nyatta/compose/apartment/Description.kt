@@ -25,9 +25,11 @@ fun ApartmentDescription(
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
     val uiState by apartmentViewModel.uiState.collectAsState()
+    val reportError = if (uiState.description.isNotEmpty()) !uiState.dataValidity.description else false
 
     Description(
         modifier = modifier,
+        isError = reportError,
         title = stringResource(R.string.unit_name),
         description = stringResource(R.string.apartment_description),
         placeholder = {

@@ -31,6 +31,7 @@ import com.example.nyatta.compose.apartment.UnitTypeDestination
 import com.example.nyatta.compose.components.OnboardingBottomBar
 import com.example.nyatta.compose.uploads.Uploads
 import com.example.nyatta.compose.uploads.UploadsDestination
+import com.example.nyatta.viewmodels.ApartmentDataValidity
 
 object ApartmentOnboarding: Navigation {
     override val route = "onboarding/apartment"
@@ -40,8 +41,11 @@ object ApartmentOnboarding: Navigation {
 fun NavGraphBuilder.apartmentOnboardingGraph(
     modifier: Modifier,
     navController: NavHostController,
-    apartmentViewModel: ApartmentViewModel
+    apartmentViewModel: ApartmentViewModel,
+    dataValidity: ApartmentDataValidity
 ) {
+    val validToProceedNext = dataValidity.description
+
     navigation(
         startDestination = ApartmentDescriptionDestination.route,
         route = ApartmentOnboarding.route
@@ -50,6 +54,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
             Scaffold(
                 bottomBar = {
                     OnboardingBottomBar(
+                        validToProceed = validToProceedNext,
                         navigateBack = {
                             navController.popBackStack()
                         },

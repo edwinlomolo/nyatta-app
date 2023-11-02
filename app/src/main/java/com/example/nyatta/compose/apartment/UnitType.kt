@@ -10,6 +10,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -32,7 +33,6 @@ object UnitTypeDestination: Navigation {
     override val title = "Apartment type"
 }
 
-val unitTypeOptions = listOf("Single Room", "Studio", "1 bedroom", "2 bedroom", "3 bedroom")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,9 +40,10 @@ fun Unit(
     modifier: Modifier = Modifier,
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
-    var unitType by remember {
-        mutableStateOf(unitTypeOptions[0])
-    }
+    val apartmentUiState by apartmentViewModel.uiState.collectAsState()
+
+    val unitTypeOptions = apartmentViewModel.unitTypeOptions
+    val unitType = apartmentUiState.unitType
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -81,7 +82,7 @@ fun Unit(
                     DropdownMenuItem(
                         text = { Text(option) },
                         onClick = {
-                            unitType = option
+                            apartmentViewModel.setUnitType(option)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
