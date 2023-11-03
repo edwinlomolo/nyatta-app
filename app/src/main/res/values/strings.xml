@@ -101,4 +101,13 @@
     <string name="next">Next</string>
     <string name="describe_this_property">Describe this property</string>
     <string name="describe_apartment_unit">Describe apartment unit</string>
+    <string name="describe_amenities">Describe amenities</string>
+    <string name="add_bedrooms">Add bedrooms</string>
+    <string name="describe_unit_type">Describe unit type</string>
+    <string name="associate_with_property">Associate with property</string>
+    <string name="describe_bathrooms">Describe bathrooms</string>
+    <string name="add_images">Add images</string>
+    <string name="describe_unit_state">Describe unit state</string>
+    <string name="add_unit_price">Add unit price</string>
+    <string name="create_unit">Create unit</string>
 </resources>

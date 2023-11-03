@@ -1,5 +1,6 @@
 package com.example.nyatta.compose.navigation
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -7,10 +8,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.nyatta.R
 import com.example.nyatta.compose.apartment.Amenities
 import com.example.nyatta.compose.apartment.ApartmentAmenitiesDestination
 import com.example.nyatta.compose.apartment.ApartmentBathsDestination
@@ -48,6 +51,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
 ) {
     val descriptionValidToProceed = dataValidity.description
     val amenitiesValidToProceed = apartmentData.selectedAmenities.isNotEmpty()
+    val hasBedCount: Boolean = apartmentData.unitType != "Single room" && apartmentData.unitType != "Studio"
 
     navigation(
         startDestination = ApartmentDescriptionDestination.route,
@@ -66,7 +70,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         },
                         actionButtonText = {
                             Text(
-                                text = "Associate with property",
+                                text = stringResource(R.string.associate_with_property),
                                 style = MaterialTheme.typography.labelSmall
                             )
                         }
@@ -96,7 +100,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         },
                         actionButtonText = {
                             Text(
-                                text = "Describe unit type",
+                                text = stringResource(R.string.describe_unit_type),
                                 style = MaterialTheme.typography.labelSmall
                             )
                         }
@@ -121,12 +125,16 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         navigateBack = {
                             navController.popBackStack()
                         },
-                        onActionButtonClick = {
-                            navController.navigate(ApartmentAmenitiesDestination.route)
+                        onActionButtonClick =
+                        {
+                            if (!hasBedCount)
+                                navController.navigate(ApartmentAmenitiesDestination.route)
+                            else
+                                navController.navigate(ApartmentBedroomsDestination.route)
                         },
                         actionButtonText = {
                             Text(
-                                text = "Add amenities",
+                                text = if (hasBedCount) stringResource(R.string.add_bedrooms) else stringResource(R.string.describe_amenities),
                                 style = MaterialTheme.typography.labelSmall
                             )
                         }
@@ -144,7 +152,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                 }
             }
         }
-        composable(route = ApartmentAmenitiesDestination.route) {
+        composable(route = ApartmentBedroomsDestination.route) {
             Scaffold(
                 bottomBar = {
                     OnboardingBottomBar(
@@ -153,41 +161,11 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                             navController.popBackStack()
                         },
                         onActionButtonClick = {
-                            navController.navigate(ApartmentBedroomsDestination.route)
+                            navController.navigate(ApartmentAmenitiesDestination.route)
                         },
                         actionButtonText = {
                             Text(
-                                text = "Describe bedrooms",
-                                style = MaterialTheme.typography.labelSmall
-                            )
-                        }
-                    )
-                }
-            ) { innerPadding ->
-                Surface(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
-                ) {
-                    Amenities(
-                        apartmentViewModel = apartmentViewModel
-                    )
-                }
-            }
-        }
-        composable(route = ApartmentBedroomsDestination.route) {
-            Scaffold(
-                bottomBar = {
-                    OnboardingBottomBar(
-                        navigateBack = {
-                            navController.popBackStack()
-                        },
-                        onActionButtonClick = {
-                            navController.navigate(ApartmentBathsDestination.route)
-                        },
-                        actionButtonText = {
-                            Text(
-                                text = "Describe bathrooms",
+                                text = stringResource(R.string.describe_amenities),
                                 style = MaterialTheme.typography.labelSmall
                             )
                         }
@@ -205,6 +183,36 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                 }
             }
         }
+        composable(route = ApartmentAmenitiesDestination.route) {
+            Scaffold(
+                bottomBar = {
+                    OnboardingBottomBar(
+                        navigateBack = {
+                            navController.popBackStack()
+                        },
+                        onActionButtonClick = {
+                            navController.navigate(ApartmentBathsDestination.route)
+                        },
+                        actionButtonText = {
+                            Text(
+                                text = stringResource(R.string.describe_bathrooms),
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                Surface(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    Amenities(
+                        apartmentViewModel = apartmentViewModel
+                    )
+                }
+            }
+        }
         composable(route = ApartmentBathsDestination.route) {
             Scaffold(
                 bottomBar = {
@@ -217,7 +225,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         },
                         actionButtonText = {
                             Text(
-                                text = "Add images",
+                                text = stringResource(R.string.add_images),
                                 style = MaterialTheme.typography.labelSmall
                             )
                         }
@@ -247,7 +255,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         },
                         actionButtonText = {
                             Text(
-                                text = "Describe unit state",
+                                text = stringResource(R.string.describe_unit_state),
                                 style = MaterialTheme.typography.labelSmall
                             )
                         }
@@ -277,7 +285,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         },
                         actionButtonText = {
                             Text(
-                                text = "Add unit price",
+                                text = stringResource(R.string.add_unit_price),
                                 style = MaterialTheme.typography.labelSmall
                             )
                         }
@@ -307,7 +315,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         },
                         actionButtonText = {
                             Text(
-                                text = "Create unit",
+                                text = stringResource(R.string.create_unit),
                                 style = MaterialTheme.typography.labelSmall
                             )
                         }

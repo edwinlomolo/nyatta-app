@@ -79,8 +79,9 @@ fun Unit(
                     .background(MaterialTheme.colorScheme.background)
             ) {
                 unitTypeOptions.forEach { option ->
+                    val typeOption = if (option != "Single room" && option != "Studio") "$option bedroom" else option
                     DropdownMenuItem(
-                        text = { Text(option) },
+                        text = { Text(typeOption) },
                         onClick = {
                             apartmentViewModel.setUnitType(option)
                             expanded = false
