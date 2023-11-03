@@ -172,7 +172,8 @@ fun NyattaNavHost(
             modifier = modifier,
             navController = navController,
             apartmentViewModel = apartmentViewModel,
-            dataValidity = dataValidity
+            dataValidity = dataValidity,
+            apartmentData = apartmentUiState
         )
         loginGraph(
             accountViewModel = accountViewModel,

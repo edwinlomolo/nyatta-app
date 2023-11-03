@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.twotone.CheckCircle
+import androidx.compose.material.icons.twotone.Check
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
@@ -48,7 +48,7 @@ fun Amenities(
         Title("Amenities")
         Description(stringResource(R.string.select_amenities_offered))
         LazyColumn {
-            items(amenities) { amenity ->
+            items(amenities, key = { it.id }) { amenity ->
                 ListItem(
                     modifier = Modifier
                         .clickable{
@@ -59,12 +59,13 @@ fun Amenities(
                             Text(
                                 text = amenity.label
                             )
-                            Spacer(modifier = Modifier.size(28.dp))
-                            if (apartmentUiState.selectedAmenities.indexOf(amenity) > 0)
+                            if (apartmentUiState.selectedAmenities.any { it.id == amenity.id }) {
+                                Spacer(modifier = Modifier.size(28.dp))
                                 Icon(
-                                    Icons.TwoTone.CheckCircle,
+                                    Icons.TwoTone.Check,
                                     contentDescription = amenity.label
                                 )
+                            } else null
                         }
                     }
                 )

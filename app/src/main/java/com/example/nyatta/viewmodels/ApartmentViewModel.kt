@@ -42,13 +42,9 @@ class ApartmentViewModel: ViewModel() {
 
     fun addUnitAmenity(amenity: Amenity) {
         _uiState.update {
-            val selectedAmenities = it.selectedAmenities
-            if (selectedAmenities.indexOf(amenity) < 0) {
-                selectedAmenities.add(if (selectedAmenities.size == 0) 0 else selectedAmenities.size-1, amenity)
-            } else if (selectedAmenities.indexOf(amenity) > 0) {
-                selectedAmenities.removeAt(selectedAmenities.indexOf(amenity))
-            }
-            it.copy(selectedAmenities = selectedAmenities)
+            it.copy(
+                selectedAmenities = it.addAmenity(amenity),
+            )
         }
     }
 
@@ -56,7 +52,7 @@ class ApartmentViewModel: ViewModel() {
         _uiState.value = ApartmentData(
             associatedToProperty = selectProperties[0],
             unitType = unitTypeOptions[0],
-            selectedAmenities = mutableListOf<Amenity>()
+            selectedAmenities = mutableListOf()
         )
     }
 }
@@ -66,8 +62,22 @@ data class ApartmentData(
     val associatedToProperty: SelectPropertyData = SelectPropertyData(),
     val dataValidity: ApartmentDataValidity = ApartmentDataValidity(),
     val unitType: String = "",
-    val selectedAmenities: MutableList<Amenity> = mutableListOf<Amenity>()
+    val selectedAmenities: List<Amenity> = listOf()
 )
+fun ApartmentData.addAmenity(e: Amenity): List<Amenity> {
+    val foundAmenityIndex = selectedAmenities.indexOfFirst { it.id == e.id }
+    val mutableList = selectedAmenities.toMutableList()
+    if (mutableList.size == 0) {
+        mutableList.add(e)
+    } else if (foundAmenityIndex > 0) {
+        mutableList.removeAt(foundAmenityIndex)
+    } else if (foundAmenityIndex < 0) {
+        mutableList.add(e)
+    } else {
+        mutableList.removeAt(0)
+    }
+    return mutableList.toList()
+}
 data class SelectPropertyData(
     val id: String = "",
     val title: String = ""

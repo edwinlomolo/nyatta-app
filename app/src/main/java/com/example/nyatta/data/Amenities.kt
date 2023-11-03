@@ -1,8 +1,11 @@
 package com.example.nyatta.data
 
+import kotlin.random.Random
+
 data class Amenity(
     val category: String,
-    val label: String
+    val label: String,
+    val id: Int = Random.nextInt()
 )
 
 val amenities = listOf<Amenity>(
