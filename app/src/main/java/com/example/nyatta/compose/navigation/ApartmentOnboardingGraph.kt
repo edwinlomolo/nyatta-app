@@ -50,6 +50,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
     dataValidity: ApartmentDataValidity
 ) {
     val descriptionValidToProceed = dataValidity.description
+    val bathroomsValidToProceed = dataValidity.bathrooms
     val amenitiesValidToProceed = apartmentData.selectedAmenities.isNotEmpty()
     val hasBedCount: Boolean = apartmentData.unitType != "Single room" && apartmentData.unitType != "Studio"
 
@@ -217,6 +218,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
             Scaffold(
                 bottomBar = {
                     OnboardingBottomBar(
+                        validToProceed = bathroomsValidToProceed,
                         navigateBack = {
                             navController.popBackStack()
                         },

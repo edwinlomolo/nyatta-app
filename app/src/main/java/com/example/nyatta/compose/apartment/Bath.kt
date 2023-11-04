@@ -4,9 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -29,12 +30,15 @@ object ApartmentBathsDestination: Navigation {
     override val title = "Bathrooms"
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Bath(
     modifier: Modifier = Modifier,
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
+    val apartmentUiState by apartmentViewModel.uiState.collectAsState()
+
+    val apartmentData = apartmentUiState
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
@@ -44,8 +48,8 @@ fun Bath(
         Title(stringResource(R.string.bath_label_text))
         Description(stringResource(R.string.tell_baths))
         TextInput(
-            value = "",
-            onValueChange = {},
+            value = apartmentData.bathrooms,
+            onValueChange = { apartmentViewModel.setBathrooms(it) },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Done

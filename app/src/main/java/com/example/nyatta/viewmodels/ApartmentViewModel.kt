@@ -39,7 +39,7 @@ class ApartmentViewModel: ViewModel() {
     fun setUnitType(unitType: String) {
         val hasBedCount: Int = if (unitType != "Single room" && unitType != "Studio") unitType.toInt() else 0
         _uiState.update {
-            val emptyBedrooms = Array(hasBedCount) { it -> Bedroom(number = it+1)}.toList()
+            val emptyBedrooms = Array(hasBedCount) { index -> Bedroom(number = index+1)}.toList()
             it.copy(
                 unitType = unitType,
                 bedrooms = emptyBedrooms
@@ -67,13 +67,28 @@ class ApartmentViewModel: ViewModel() {
         }
     }
 
-    init {
+    fun setBathrooms(count: String) {
+        _uiState.update {
+            val valid = it.dataValidity.copy(bathrooms = count.isNotEmpty())
+            it.copy(
+                bathrooms = count,
+                dataValidity = valid
+            )
+        }
+    }
+
+    private fun resetApartmentData() {
         _uiState.value = ApartmentData(
             associatedToProperty = selectProperties[0],
             unitType = unitTypeOptions[0],
             selectedAmenities = listOf(),
-            bedrooms = listOf()
+            bedrooms = listOf(),
+            bathrooms = ""
         )
+    }
+
+    init {
+        resetApartmentData()
     }
 }
 
@@ -83,7 +98,8 @@ data class ApartmentData(
     val dataValidity: ApartmentDataValidity = ApartmentDataValidity(),
     val unitType: String = "",
     val selectedAmenities: List<Amenity> = listOf(),
-    val bedrooms: List<Bedroom> = listOf()
+    val bedrooms: List<Bedroom> = listOf(),
+    val bathrooms: String = ""
 )
 fun ApartmentData.addAmenity(e: Amenity): List<Amenity> {
     val foundAmenityIndex = selectedAmenities.indexOfFirst { it.id == e.id }
@@ -119,6 +135,7 @@ data class SelectPropertyData(
 
 data class ApartmentDataValidity(
     val description: Boolean = false,
+    val bathrooms: Boolean = false
 )
 
 data class Bedroom(
