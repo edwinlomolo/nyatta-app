@@ -156,7 +156,6 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
             Scaffold(
                 bottomBar = {
                     OnboardingBottomBar(
-                        validToProceed = amenitiesValidToProceed,
                         navigateBack = {
                             navController.popBackStack()
                         },
@@ -187,6 +186,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
             Scaffold(
                 bottomBar = {
                     OnboardingBottomBar(
+                        validToProceed = amenitiesValidToProceed,
                         navigateBack = {
                             navController.popBackStack()
                         },

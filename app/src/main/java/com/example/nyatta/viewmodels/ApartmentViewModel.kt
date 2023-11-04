@@ -1,5 +1,6 @@
 package com.example.nyatta.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.nyatta.compose.apartment.Bedroom
 import com.example.nyatta.data.Amenity
@@ -38,7 +39,7 @@ class ApartmentViewModel: ViewModel() {
     fun setUnitType(unitType: String) {
         val hasBedCount: Int = if (unitType != "Single room" && unitType != "Studio") unitType.toInt() else 0
         _uiState.update {
-            val emptyBedrooms = Array(hasBedCount) { index -> Bedroom(number = index)}.toList()
+            val emptyBedrooms = Array(hasBedCount) { it -> Bedroom(number = it+1)}.toList()
             it.copy(
                 unitType = unitType,
                 bedrooms = emptyBedrooms
@@ -100,12 +101,14 @@ fun ApartmentData.addAmenity(e: Amenity): List<Amenity> {
 }
 fun ApartmentData.updateBedroomMaster(bedroomNumber: Int, master: Boolean): List<Bedroom> {
     val mutableBedrooms = bedrooms.toMutableList()
-    mutableBedrooms[bedroomNumber].copy(master = master)
+    val bedroom = mutableBedrooms[bedroomNumber]
+    mutableBedrooms[bedroomNumber] = Bedroom(number = bedroom.number, master = master, enSuite = bedroom.enSuite)
     return mutableBedrooms.toList()
 }
 fun ApartmentData.updateBedroomEnSuite(bedroomNumber: Int, enSuite: Boolean): List<Bedroom> {
     val mutableBedrooms = bedrooms.toMutableList()
-    mutableBedrooms[bedroomNumber].copy(enSuite = enSuite)
+    val bedroom = mutableBedrooms[bedroomNumber]
+    mutableBedrooms[bedroomNumber] = Bedroom(number = bedroom.number, master = bedroom.master, enSuite = enSuite)
     return mutableBedrooms.toList()
 }
 
