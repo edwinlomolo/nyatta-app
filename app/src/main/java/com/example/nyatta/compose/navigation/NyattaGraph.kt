@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.AddCircle
+import androidx.compose.material.icons.twotone.LocationOn
 import androidx.compose.material.icons.twotone.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -46,7 +47,7 @@ sealed class Screen(
     data object Home: Screen(
         "home",
         R.string.explore,
-        Icons.TwoTone.Search
+        Icons.TwoTone.LocationOn
     )
     data object Add: Screen(
         "onboarding/start",
@@ -105,7 +106,7 @@ fun NyattaNavHost(
                         navigationItems.forEach { screen ->
                             NavigationBarItem(
                                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
-                                label = { Text(stringResource(screen.nameResourceId)) },
+                                //label = { Text(stringResource(screen.nameResourceId)) },
                                 icon = { Icon(screen.icon, contentDescription = stringResource(screen.nameResourceId)) },
                                 onClick = {
                                     navController.navigate(screen.route) {
