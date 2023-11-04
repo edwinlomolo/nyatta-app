@@ -1,7 +1,9 @@
 package com.example.nyatta.compose.uploads
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
@@ -12,39 +14,47 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.Title
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.viewmodels.ApartmentViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
+import com.example.nyatta.viewmodels.ApartmentData
+import kotlinx.coroutines.launch
 
 object UploadsDestination: Navigation {
     override val route = "uploads"
     override val title = "Upload images"
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Uploads(
     modifier: Modifier = Modifier,
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
+    val apartmentUiState by apartmentViewModel.uiState.collectAsState()
+
+    val apartmentData = apartmentUiState
+
     Column(
         modifier = modifier
             .padding(8.dp)
@@ -52,38 +62,96 @@ fun Uploads(
     ) {
         Title(stringResource(R.string.uploads))
         Description(stringResource(R.string.describe_unit_images))
-        FeatureImage(text = stringResource(R.string.living_room), imageCount = 4)
-        FeatureImage(text = stringResource(R.string.baths), imageCount = 2)
+        FeatureImage(
+            text = stringResource(R.string.living_room),
+            imageCount = 4,
+            apartmentViewModel = apartmentViewModel,
+            apartmentData = apartmentData
+        )
+        FeatureImage(
+            text = stringResource(R.string.baths),
+            imageCount = 2,
+            apartmentViewModel = apartmentViewModel,
+            apartmentData = apartmentData
+        )
         // TODO if has bedroom count
-        FeatureImage(text = stringResource(R.string.bedrooms), imageCount = 3)
+        FeatureImage(
+            text = stringResource(R.string.bedrooms),
+            imageCount = 3,
+            apartmentViewModel = apartmentViewModel,
+            apartmentData = apartmentData
+        )
         // TODO if has balcony/front porch
-        FeatureImage(text = stringResource(R.string.balcony), imageCount = 1)
-        FeatureImage(text = stringResource(R.string.front_porch), imageCount = 1)
-        FeatureImage(text = stringResource(R.string.kitchen), imageCount = 2)
+        FeatureImage(
+            text = stringResource(R.string.balcony),
+            imageCount = 2,
+            apartmentViewModel = apartmentViewModel,
+            apartmentData = apartmentData
+        )
+        FeatureImage(
+            text = stringResource(R.string.front_porch),
+            imageCount = 2,
+            apartmentViewModel = apartmentViewModel,
+            apartmentData = apartmentData
+        )
+        FeatureImage(
+            text = stringResource(R.string.kitchen),
+            imageCount = 2,
+            apartmentViewModel = apartmentViewModel,
+            apartmentData = apartmentData
+        )
         // TODO if has parking
-        FeatureImage(text = stringResource(R.string.parking), imageCount = 2)
+        FeatureImage(
+            text = stringResource(R.string.parking),
+            imageCount = 2,
+            apartmentViewModel = apartmentViewModel,
+            apartmentData = apartmentData
+        )
     }
 }
 
 @Composable
-fun FeatureImage(text: String, imageCount: Int, modifier: Modifier = Modifier) {
+fun FeatureImage(
+    modifier: Modifier = Modifier,
+    text: String,
+    imageCount: Int,
+    apartmentViewModel: ApartmentViewModel,
+    apartmentData: ApartmentData
+) {
+    val images = apartmentData.images
+    val imagesSize = images[text]?.size ?: 0
+    val scope = rememberCoroutineScope()
+    val pickMultipleMedia = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickMultipleVisualMedia(imageCount)
+    ) {
+        if (it.isNotEmpty()) {
+            apartmentViewModel.setUnitImages(text, it.map { uri -> uri.toString() })
+        }
+    }
+
     Column(
         modifier = modifier
             .padding(8.dp)
     ) {
         Text(
-            text = text,
+            text = "$text (${imageCount-imagesSize})",
             style = MaterialTheme.typography.titleMedium,
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .horizontalScroll(rememberScrollState())) {
-            repeat(imageCount) {
-                Image(
-                    painter = painterResource(R.drawable.rottweiler),
-                    contentDescription = stringResource(R.string.rottweiler_description),
+                .horizontalScroll(rememberScrollState()))
+        {
+            if (imagesSize > 0) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(
+                            R.drawable.rottweiler
+                        )
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = "Image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(135.dp)
@@ -91,18 +159,26 @@ fun FeatureImage(text: String, imageCount: Int, modifier: Modifier = Modifier) {
                         .clip(MaterialTheme.shapes.small)
                 )
             }
-            // TODO show if there no images picked
-            Image(
-                Icons.Outlined.Add,
-                contentDescription = stringResource(R.string.rottweiler_description),
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(135.dp)
-                    .padding(8.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colorScheme.inversePrimary)
-                    .clickable {}
-            )
+            if (imagesSize < imageCount) {
+                Image(
+                    painterResource(R.drawable.image_gallery),
+                    contentDescription = stringResource(R.string.rottweiler_description),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .padding(8.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickable {
+                            scope.launch {
+                                pickMultipleMedia.launch(
+                                    PickVisualMediaRequest(
+                                        ActivityResultContracts.PickVisualMedia.ImageOnly
+                                    )
+                                )
+                            }
+                        }
+                )
+            }
         }
     }
 }

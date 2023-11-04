@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import com.example.nyatta.data.amenities
+import okhttp3.internal.toImmutableMap
 import java.text.NumberFormat
 
 class ApartmentViewModel: ViewModel() {
@@ -94,6 +95,12 @@ class ApartmentViewModel: ViewModel() {
         }
     }
 
+    fun setUnitImages(category: String, images: List<String>) {
+        _uiState.update {
+            it.copy(images = it.addImages(category, images))
+        }
+    }
+
     private fun resetApartmentData() {
         _uiState.value = ApartmentData(
             associatedToProperty = selectProperties[0],
@@ -115,7 +122,8 @@ data class ApartmentData(
     val bedrooms: List<Bedroom> = listOf(),
     val bathrooms: String = "",
     val state: State = State.Vacant,
-    val price: String = ""
+    val price: String = "",
+    val images: Map<String, List<String>> = mapOf()
 )
 fun ApartmentData.addAmenity(e: Amenity): List<Amenity> {
     val foundAmenityIndex = selectedAmenities.indexOfFirst { it.id == e.id }
@@ -142,6 +150,11 @@ fun ApartmentData.updateBedroomEnSuite(bedroomNumber: Int, enSuite: Boolean): Li
     val bedroom = mutableBedrooms[bedroomNumber]
     mutableBedrooms[bedroomNumber] = Bedroom(number = bedroom.number, master = bedroom.master, enSuite = enSuite)
     return mutableBedrooms.toList()
+}
+fun ApartmentData.addImages(category: String, categoryImages: List<String>): Map<String, List<String>> {
+    val imageEntry = images.toMutableMap()
+    imageEntry[category] = categoryImages
+    return imageEntry.toImmutableMap()
 }
 
 data class SelectPropertyData(
