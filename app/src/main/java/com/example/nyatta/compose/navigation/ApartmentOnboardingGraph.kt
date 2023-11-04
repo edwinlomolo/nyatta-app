@@ -36,6 +36,7 @@ import com.example.nyatta.compose.uploads.Uploads
 import com.example.nyatta.compose.uploads.UploadsDestination
 import com.example.nyatta.viewmodels.ApartmentData
 import com.example.nyatta.viewmodels.ApartmentDataValidity
+import com.example.nyatta.viewmodels.AuthState
 
 object ApartmentOnboarding: Navigation {
     override val route = "onboarding/apartment"
@@ -47,12 +48,15 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
     navController: NavHostController,
     apartmentViewModel: ApartmentViewModel,
     apartmentData: ApartmentData,
-    dataValidity: ApartmentDataValidity
+    dataValidity: ApartmentDataValidity,
+    authData: AuthState
 ) {
     val descriptionValidToProceed = dataValidity.description
     val bathroomsValidToProceed = dataValidity.bathrooms
     val amenitiesValidToProceed = apartmentData.selectedAmenities.isNotEmpty()
+    val priceValidToProceed = dataValidity.price
     val hasBedCount: Boolean = apartmentData.unitType != "Single room" && apartmentData.unitType != "Studio"
+    val authData: AuthState = authData
 
     navigation(
         startDestination = ApartmentDescriptionDestination.route,
@@ -223,36 +227,6 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                             navController.popBackStack()
                         },
                         onActionButtonClick = {
-                            navController.navigate(UploadsDestination.route)
-                        },
-                        actionButtonText = {
-                            Text(
-                                text = stringResource(R.string.add_images),
-                                style = MaterialTheme.typography.labelSmall
-                            )
-                        }
-                    )
-                }
-            ) { innerPadding ->
-                Surface(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
-                ) {
-                    Bath(
-                        apartmentViewModel = apartmentViewModel
-                    )
-                }
-            }
-        }
-        composable(route = UploadsDestination.route) {
-            Scaffold(
-                bottomBar = {
-                    OnboardingBottomBar(
-                        navigateBack = {
-                            navController.popBackStack()
-                        },
-                        onActionButtonClick = {
                             navController.navigate(ApartmentStateDestination.route)
                         },
                         actionButtonText = {
@@ -269,8 +243,8 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         .fillMaxSize()
                         .padding(innerPadding)
                 ) {
-                    Uploads(
-                        apartmentViewModel = apartmentViewModel,
+                    Bath(
+                        apartmentViewModel = apartmentViewModel
                     )
                 }
             }
@@ -309,11 +283,42 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
             Scaffold(
                 bottomBar = {
                     OnboardingBottomBar(
+                        validToProceed = priceValidToProceed,
                         navigateBack = {
                             navController.popBackStack()
                         },
                         onActionButtonClick = {
-                            navController.navigate(PaymentGraph.route)
+                            navController.navigate(UploadsDestination.route)
+                        },
+                        actionButtonText = {
+                            Text(
+                                text = stringResource(R.string.add_images),
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                Surface(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    Price(
+                        apartmentViewModel = apartmentViewModel
+                    )
+                }
+            }
+        }
+        composable(route = UploadsDestination.route) {
+            Scaffold(
+                bottomBar = {
+                    OnboardingBottomBar(
+                        navigateBack = {
+                            navController.popBackStack()
+                        },
+                        onActionButtonClick = {
+                            if (!authData.isLandlord) navController.navigate(PaymentGraph.route)
                         },
                         actionButtonText = {
                             Text(
@@ -329,8 +334,8 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         .fillMaxSize()
                         .padding(innerPadding)
                 ) {
-                    Price(
-                        apartmentViewModel = apartmentViewModel
+                    Uploads(
+                        apartmentViewModel = apartmentViewModel,
                     )
                 }
             }

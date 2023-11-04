@@ -1,6 +1,5 @@
 package com.example.nyatta.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nyatta.data.auth.OfflineAuthRepository
@@ -24,12 +23,12 @@ class AuthViewModel(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000L),
             ).collect { user ->
-                Log.d("User", "$user")
                 if (user.isNotEmpty()) {
                     _auth.update {
                         it.copy(
                             token = user[0].token,
-                            isAuthed = true
+                            isAuthed = true,
+                            isLandlord = user[0].isLandlord
                         )
                     }
                 }
@@ -40,5 +39,6 @@ class AuthViewModel(
 
 data class AuthState(
     val isAuthed: Boolean = false,
-    val token: String = ""
+    val token: String = "",
+    val isLandlord: Boolean = false
 )

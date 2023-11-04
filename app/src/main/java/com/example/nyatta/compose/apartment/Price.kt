@@ -7,6 +7,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -21,6 +23,8 @@ import com.example.nyatta.compose.components.Title
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.ApartmentViewModel
+import java.util.Currency
+import java.util.Locale
 
 object ApartmentPriceDestination: Navigation {
     override val route = "apartment/price"
@@ -33,6 +37,9 @@ fun Price(
     modifier: Modifier = Modifier,
     apartmentViewModel: ApartmentViewModel = viewModel()
 ) {
+    val apartmentUiState by apartmentViewModel.uiState.collectAsState()
+
+    val apartmentData = apartmentUiState
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
@@ -42,13 +49,13 @@ fun Price(
         Title("Price")
         Description("Monthly charge for this unit")
         TextInput(
-            value = "",
-            onValueChange = {},
+            value = apartmentData.price,
+            onValueChange = { apartmentViewModel.setUnitPrice(it) },
             modifier = Modifier
                 .padding(8.dp),
             prefix = {
                 Text(
-                    text = "KES",
+                    text = Currency.getInstance(Locale.getDefault()).symbol,
                     color = MaterialTheme.colorScheme.primary
                 )
             },

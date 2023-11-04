@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import com.example.nyatta.data.amenities
+import java.text.NumberFormat
 
 class ApartmentViewModel: ViewModel() {
     val selectProperties = listOf(
@@ -77,13 +78,26 @@ class ApartmentViewModel: ViewModel() {
         }
     }
 
+    fun setUnitPrice(price: String) {
+        _uiState.update {
+            val valid = it.dataValidity.copy(price = price.isNotEmpty())
+            it.copy(
+                price = price,
+                dataValidity = valid
+            )
+        }
+    }
+
+    fun setUnitState(state: State) {
+        _uiState.update {
+            it.copy(state = state)
+        }
+    }
+
     private fun resetApartmentData() {
         _uiState.value = ApartmentData(
             associatedToProperty = selectProperties[0],
             unitType = unitTypeOptions[0],
-            selectedAmenities = listOf(),
-            bedrooms = listOf(),
-            bathrooms = ""
         )
     }
 
@@ -99,7 +113,9 @@ data class ApartmentData(
     val unitType: String = "",
     val selectedAmenities: List<Amenity> = listOf(),
     val bedrooms: List<Bedroom> = listOf(),
-    val bathrooms: String = ""
+    val bathrooms: String = "",
+    val state: State = State.Vacant,
+    val price: String = ""
 )
 fun ApartmentData.addAmenity(e: Amenity): List<Amenity> {
     val foundAmenityIndex = selectedAmenities.indexOfFirst { it.id == e.id }
@@ -135,7 +151,8 @@ data class SelectPropertyData(
 
 data class ApartmentDataValidity(
     val description: Boolean = false,
-    val bathrooms: Boolean = false
+    val bathrooms: Boolean = false,
+    val price: Boolean = false
 )
 
 data class Bedroom(
@@ -143,3 +160,4 @@ data class Bedroom(
     val master: Boolean = false,
     val enSuite: Boolean = false
 )
+enum class State { Vacant, Occupied }
