@@ -12,7 +12,6 @@ val amenities = listOf<Amenity>(
     Amenity("Kitchen", "Open Kitchen Plan"),
     Amenity("Kitchen", "Kitchen"),
     Amenity("Bedroom", "Closet/Dresser"),
-    Amenity("Kitchen", "Kitchen"),
     Amenity("Bathroom", "Hot Shower"),
     Amenity("Internet", "Safaricom Home Fibre"),
     Amenity("Kitchen", "Hot Water Sink"),

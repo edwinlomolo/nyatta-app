@@ -54,7 +54,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
     val bathroomsValidToProceed = dataValidity.bathrooms
     val amenitiesValidToProceed = apartmentData.selectedAmenities.isNotEmpty()
     val imagesSelectedValidToProceed = apartmentData.images.any { (k, _) -> apartmentData.images[k]?.isNotEmpty()
-        ?: false}
+        ?: false }
     val priceValidToProceed = dataValidity.price
     val hasBedCount: Boolean = apartmentData.unitType != "Single room" && apartmentData.unitType != "Studio"
     val authData: AuthState = authData

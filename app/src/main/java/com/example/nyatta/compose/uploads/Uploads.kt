@@ -54,6 +54,9 @@ fun Uploads(
     val apartmentUiState by apartmentViewModel.uiState.collectAsState()
 
     val apartmentData = apartmentUiState
+    val hasBedCount = apartmentData.unitType != "Single room" && apartmentData.unitType != "Studio"
+    val hasFrontPorch = apartmentData.selectedAmenities.any { it.label == "Front Porch" }
+    val hasBalcony = apartmentData.selectedAmenities.any { it.label == "Balcony" }
 
     Column(
         modifier = modifier
@@ -64,46 +67,45 @@ fun Uploads(
         Description(stringResource(R.string.describe_unit_images))
         FeatureImage(
             text = stringResource(R.string.living_room),
-            imageCount = 4,
+            imageCount = 8,
             apartmentViewModel = apartmentViewModel,
             apartmentData = apartmentData
         )
         FeatureImage(
             text = stringResource(R.string.baths),
-            imageCount = 2,
+            imageCount = 4,
             apartmentViewModel = apartmentViewModel,
             apartmentData = apartmentData
         )
         // TODO if has bedroom count
-        FeatureImage(
-            text = stringResource(R.string.bedrooms),
-            imageCount = 3,
-            apartmentViewModel = apartmentViewModel,
-            apartmentData = apartmentData
-        )
+        if (hasBedCount) {
+            FeatureImage(
+                text = stringResource(R.string.bedrooms),
+                imageCount = 8,
+                apartmentViewModel = apartmentViewModel,
+                apartmentData = apartmentData
+            )
+        }
         // TODO if has balcony/front porch
-        FeatureImage(
-            text = stringResource(R.string.balcony),
-            imageCount = 2,
-            apartmentViewModel = apartmentViewModel,
-            apartmentData = apartmentData
-        )
-        FeatureImage(
-            text = stringResource(R.string.front_porch),
-            imageCount = 2,
-            apartmentViewModel = apartmentViewModel,
-            apartmentData = apartmentData
-        )
+        if (hasBalcony) {
+            FeatureImage(
+                text = stringResource(R.string.balcony),
+                imageCount = 4,
+                apartmentViewModel = apartmentViewModel,
+                apartmentData = apartmentData
+            )
+        }
+        if (hasFrontPorch) {
+            FeatureImage(
+                text = stringResource(R.string.front_porch),
+                imageCount = 4,
+                apartmentViewModel = apartmentViewModel,
+                apartmentData = apartmentData
+            )
+        }
         FeatureImage(
             text = stringResource(R.string.kitchen),
-            imageCount = 2,
-            apartmentViewModel = apartmentViewModel,
-            apartmentData = apartmentData
-        )
-        // TODO if has parking
-        FeatureImage(
-            text = stringResource(R.string.parking),
-            imageCount = 2,
+            imageCount = 4,
             apartmentViewModel = apartmentViewModel,
             apartmentData = apartmentData
         )
@@ -125,7 +127,7 @@ fun FeatureImage(
         contract = ActivityResultContracts.PickMultipleVisualMedia(imageCount)
     ) {
         if (it.isNotEmpty()) {
-            apartmentViewModel.setUnitImages(text, it.map { uri -> uri.toString() })
+            apartmentViewModel.setUnitImages(text, it)
         }
     }
 
@@ -144,20 +146,22 @@ fun FeatureImage(
                 .horizontalScroll(rememberScrollState()))
         {
             if (imagesSize > 0) {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(
-                            R.drawable.rottweiler
-                        )
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = "Image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(135.dp)
-                        .padding(8.dp)
-                        .clip(MaterialTheme.shapes.small)
-                )
+                images[text]?.forEachIndexed { _, item ->
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(
+                                item
+                            )
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "Feature image",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(135.dp)
+                            .padding(8.dp)
+                            .clip(MaterialTheme.shapes.small)
+                    )
+                }
             }
             if (imagesSize < imageCount) {
                 Image(

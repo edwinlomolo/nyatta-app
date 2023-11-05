@@ -1,16 +1,15 @@
 package com.example.nyatta.viewmodels
 
-import android.util.Log
+import android.net.Uri
 import androidx.lifecycle.ViewModel
-import com.example.nyatta.compose.apartment.Bedroom
 import com.example.nyatta.data.Amenity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import com.example.nyatta.data.amenities
+import okhttp3.internal.toImmutableList
 import okhttp3.internal.toImmutableMap
-import java.text.NumberFormat
 
 class ApartmentViewModel: ViewModel() {
     val selectProperties = listOf(
@@ -95,7 +94,7 @@ class ApartmentViewModel: ViewModel() {
         }
     }
 
-    fun setUnitImages(category: String, images: List<String>) {
+    fun setUnitImages(category: String, images: List<Uri>) {
         _uiState.update {
             it.copy(images = it.addImages(category, images))
         }
@@ -123,7 +122,7 @@ data class ApartmentData(
     val bathrooms: String = "",
     val state: State = State.Vacant,
     val price: String = "",
-    val images: Map<String, List<String>> = mapOf()
+    val images: Map<String, List<Uri>> = mapOf()
 )
 fun ApartmentData.addAmenity(e: Amenity): List<Amenity> {
     val foundAmenityIndex = selectedAmenities.indexOfFirst { it.id == e.id }
@@ -151,9 +150,12 @@ fun ApartmentData.updateBedroomEnSuite(bedroomNumber: Int, enSuite: Boolean): Li
     mutableBedrooms[bedroomNumber] = Bedroom(number = bedroom.number, master = bedroom.master, enSuite = enSuite)
     return mutableBedrooms.toList()
 }
-fun ApartmentData.addImages(category: String, categoryImages: List<String>): Map<String, List<String>> {
+fun ApartmentData.addImages(category: String, categoryImages: List<Uri>): Map<String, List<Uri>> {
     val imageEntry = images.toMutableMap()
-    imageEntry[category] = categoryImages
+    if (imageEntry[category] == null) imageEntry[category] = listOf()
+    val keyValues = imageEntry[category]?.toMutableList()
+    keyValues?.addAll(categoryImages)
+    imageEntry[category] = keyValues!!.toImmutableList()
     return imageEntry.toImmutableMap()
 }
 
