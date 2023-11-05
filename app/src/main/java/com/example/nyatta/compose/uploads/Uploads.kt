@@ -124,7 +124,7 @@ fun FeatureImage(
     val imagesSize = images[text]?.size ?: 0
     val scope = rememberCoroutineScope()
     val pickMultipleMedia = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(imageCount)
+        contract = ActivityResultContracts.PickMultipleVisualMedia(imageCount-imagesSize)
     ) {
         if (it.isNotEmpty()) {
             apartmentViewModel.setUnitImages(text, it)

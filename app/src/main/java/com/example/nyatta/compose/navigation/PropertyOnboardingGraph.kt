@@ -16,6 +16,8 @@ import com.example.nyatta.compose.property.Caretaker
 import com.example.nyatta.compose.property.CaretakerDestination
 import com.example.nyatta.compose.property.PropertyDescription
 import com.example.nyatta.compose.property.PropertyDescriptionDestination
+import com.example.nyatta.compose.property.PropertyThumbnailDestination
+import com.example.nyatta.compose.property.Thumbnail
 import com.example.nyatta.viewmodels.PropertyData
 import com.example.nyatta.viewmodels.PropertyViewModel
 
@@ -35,6 +37,7 @@ fun NavGraphBuilder.propertyOnboardingGraph(
         route = PropertyOnboarding.route
     ) {
         val emptyState = propertyUiState.description.isEmpty()
+        val thumbnailValidToProceed = propertyUiState.validToProceed.thumbnail
         val isCaretaker = propertyUiState.isCaretaker
         val caretaker = propertyUiState.caretaker
         val validToProceed: Boolean = caretaker.firstName.isNotEmpty() &&
@@ -49,11 +52,11 @@ fun NavGraphBuilder.propertyOnboardingGraph(
                         validToProceed = !emptyState,
                         navigateBack = { navController.popBackStack() },
                         onActionButtonClick = {
-                            if (!emptyState) navController.navigate(CaretakerDestination.route)
+                            if (!emptyState) navController.navigate(PropertyThumbnailDestination.route)
                         },
                         actionButtonText = {
                             Text(
-                                text = "Add caretaker",
+                                text = "Add thumbnail",
                                 style = MaterialTheme.typography.labelSmall
                             )
                         }
@@ -66,6 +69,35 @@ fun NavGraphBuilder.propertyOnboardingGraph(
                         .padding(innerPadding)
                 ) {
                     PropertyDescription(
+                        propertyViewModel = propertyViewModel
+                    )
+                }
+            }
+        }
+        composable(route = PropertyThumbnailDestination.route) {
+            Scaffold(
+                bottomBar = {
+                    OnboardingBottomBar(
+                        validToProceed = thumbnailValidToProceed,
+                        navigateBack = { navController.popBackStack() },
+                        onActionButtonClick = {
+                            if (!emptyState) navController.navigate(CaretakerDestination.route)
+                        },
+                        actionButtonText = {
+                            Text(
+                                text = "Add caretaker",
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                Surface (
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    Thumbnail(
                         propertyViewModel = propertyViewModel
                     )
                 }

@@ -1,5 +1,6 @@
 package com.example.nyatta.viewmodels
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -7,28 +8,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import com.google.i18n.phonenumbers.Phonenumber
-
-data class PropertyData(
-    val description: String = "",
-    val isCaretaker: Boolean = false,
-    val caretaker: CaretakerData = CaretakerData(),
-    val validToProceed: PropertyDataValidity = PropertyDataValidity()
-)
-
-data class CaretakerData(
-    val image: String = "",
-    val firstName: String = "",
-    val lastName: String = "",
-    val phone: String = ""
-)
-
-data class PropertyDataValidity(
-    val description: Boolean = true,
-    val caretakerFirstname: Boolean = true,
-    val caretakerLastname: Boolean = true,
-    val caretakerPhone: Boolean = true,
-    val caretakerImage: Boolean = true
-)
 
 class PropertyViewModel: ViewModel() {
     private val defaultRegion = "KE"
@@ -107,4 +86,36 @@ class PropertyViewModel: ViewModel() {
             )
         }
     }
+
+    fun setPropertyThumbnail(thumbnail: Uri?) {
+        _uiState.update {
+            val valid = it.validToProceed.copy(thumbnail = thumbnail != null)
+            it.copy(
+                thumbnail = thumbnail,
+                validToProceed = valid
+            )
+        }
+    }
 }
+
+data class CaretakerData(
+    val image: String = "",
+    val firstName: String = "",
+    val lastName: String = "",
+    val phone: String = ""
+)
+data class PropertyDataValidity(
+    val description: Boolean = true,
+    val caretakerFirstname: Boolean = true,
+    val caretakerLastname: Boolean = true,
+    val caretakerPhone: Boolean = true,
+    val caretakerImage: Boolean = true,
+    val thumbnail: Boolean = false
+)
+data class PropertyData(
+    val description: String = "",
+    val isCaretaker: Boolean = false,
+    val caretaker: CaretakerData = CaretakerData(),
+    val validToProceed: PropertyDataValidity = PropertyDataValidity(),
+    val thumbnail: Uri? = null
+)
