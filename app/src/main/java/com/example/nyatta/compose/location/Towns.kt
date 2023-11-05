@@ -27,6 +27,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
@@ -34,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.GetTownsQuery
+import com.example.nyatta.R
 import com.example.nyatta.compose.components.Loading
 import com.example.nyatta.compose.components.ActionButton
 import com.example.nyatta.compose.navigation.Navigation
@@ -58,7 +60,14 @@ fun Towns(
 
     when(val s = townsViewModel.townsUiState) {
         TownsUiState.Loading -> Loading()
-        is TownsUiState.Success -> Town(townsViewModel = townsViewModel, towns = towns!!, navigateNext = navigateNext, navigateUp = navigateUp, modifier = modifier)
+        is TownsUiState.Success ->
+            Town(
+                townsViewModel = townsViewModel,
+                towns = towns!!,
+                navigateNext = navigateNext,
+                navigateUp = navigateUp,
+                modifier = modifier
+            )
         is TownsUiState.ApolloError -> Text(text = s.errors[0].message)
         is TownsUiState.ApplicationError -> Text(text = "${s.error}")
     }
@@ -109,7 +118,7 @@ fun TownsTopBar(
             .semantics { isTraversalGroup = true }
     ) {
         SearchBar(
-            placeholder = { Text("Search town") },
+            placeholder = { Text(stringResource(R.string.search_town)) },
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.background)
                 .align(Alignment.TopCenter)
@@ -124,7 +133,7 @@ fun TownsTopBar(
                 ) {
                     Icon(
                         Icons.Outlined.ArrowBack,
-                        contentDescription = "Back"
+                        contentDescription = stringResource(R.string.back)
                     )
                 }
             },
@@ -144,17 +153,17 @@ fun TownsTopBar(
                             .fillMaxWidth()
                     )
                 }
-                if (towns.isEmpty()) item { Text("Can't find town", style = MaterialTheme.typography.titleSmall, modifier = Modifier.padding(8.dp)) }
+                if (towns.isEmpty()) item { Text(stringResource(R.string.no_town), style = MaterialTheme.typography.titleSmall, modifier = Modifier.padding(8.dp)) }
             }
             if (towns.isNotEmpty())
                 ActionButton(
                     onClick = { navigateNext(PayDestination.route) },
                     modifier = Modifier.padding(4.dp),
-                    text = "Proceed"
+                    text = stringResource(R.string.proceed)
                 ) {
                     Icon(
                         Icons.TwoTone.ArrowForward,
-                        contentDescription = "Proceed"
+                        contentDescription = stringResource(R.string.proceed)
                     )
                 }
         }

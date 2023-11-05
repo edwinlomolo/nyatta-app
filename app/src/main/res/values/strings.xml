@@ -110,4 +110,9 @@
     <string name="describe_unit_state">Describe unit state</string>
     <string name="add_unit_price">Add unit price</string>
     <string name="create_unit">Create unit</string>
+    <string name="property_thumbnail">Property thumbnail</string>
+    <string name="thumbnail_description">This will be the face of your property but only visible to you. Easily identify properties by setting its image.</string>
+    <string name="current_device_location">Current device location</string>
+    <string name="search_town">Search town</string>
+    <string name="no_town">Can\'t find town</string>
 </resources>

@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -129,7 +128,6 @@ class MainActivity : ComponentActivity() {
                 val locationCallback: LocationCallback = object: LocationCallback() {
                     override fun onLocationResult(p0: LocationResult) {
                         for (location in p0.locations) {
-                            Log.d("DevLoc", "$location")
                             accViewModel
                                 .setDeviceLocation(LatLng(location.latitude, location.longitude))
                         }
@@ -141,13 +139,11 @@ class MainActivity : ComponentActivity() {
                         !shouldShowPermissionRationale) {
                         locationPermissionLauncher.launch(locationPermissions)
                     } else if (event == Lifecycle.Event.ON_START && hasLocationPermissions) {
-                        // start location updates
                         fusedLocationClient
                             ?.requestLocationUpdates(
                                 locationRequest, locationCallback, Looper.getMainLooper()
                             )
                     } else if (hasLocationPermissions && event == Lifecycle.Event.ON_STOP) {
-                        //stop location updates
                         fusedLocationClient?.removeLocationUpdates(locationCallback)
                     } else if (hasLocationPermissions && event == Lifecycle.Event.ON_PAUSE) {
                         fusedLocationClient
@@ -194,7 +190,6 @@ class MainActivity : ComponentActivity() {
                                             locationPermissionLauncher.launch(locationPermissions)
                                         }
                                         SnackbarResult.Dismissed -> {
-                                            //shouldShowPermissionRationale = false
                                         }
                                     }
                                 }

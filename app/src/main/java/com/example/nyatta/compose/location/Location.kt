@@ -62,7 +62,7 @@ fun Location(
             ) {
                 Marker(
                     state = MarkerState(position = userDeviceLocation),
-                    title = "Singapore"
+                    title = stringResource(R.string.current_device_location)
                 )
             }
         }

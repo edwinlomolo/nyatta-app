@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -58,8 +59,8 @@ fun Thumbnail(
             .fillMaxSize()
             .padding(8.dp)
     ) {
-        Title("Property thumbnail")
-        Description("This will be the face of your property but only visible to you. Easily identify properties by setting its image.")
+        Title(stringResource(R.string.property_thumbnail))
+        Description(stringResource(R.string.thumbnail_description))
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(
