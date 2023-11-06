@@ -63,8 +63,9 @@ dependencies {
     // To use Kotlin Symbol Processing (KSP)
     ksp("androidx.room:room-compiler:$roomVersion")
 
+    implementation("com.apollographql.apollo3:apollo-normalized-cache-sqlite:4.0.0-alpha.3")
     implementation("com.google.maps.android:maps-compose-utils:4.1.1")
-    implementation("com.google.maps.android:maps-compose:2.15.0")
+    implementation("com.google.maps.android:maps-compose:4.1.1")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.googlecode.libphonenumber:libphonenumber:8.2.0")
     implementation("androidx.room:room-ktx:$roomVersion")

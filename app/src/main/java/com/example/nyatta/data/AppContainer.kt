@@ -2,6 +2,10 @@ package com.example.nyatta.data
 
 import android.content.Context
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.cache.normalized.FetchPolicy
+import com.apollographql.apollo3.cache.normalized.fetchPolicy
+import com.apollographql.apollo3.cache.normalized.normalizedCache
+import com.apollographql.apollo3.cache.normalized.sql.SqlNormalizedCacheFactory
 import com.example.nyatta.data.auth.AuthRepository
 import com.example.nyatta.data.auth.OfflineAuthRepository
 import com.example.nyatta.data.hello.GqlHelloRepository
@@ -29,6 +33,8 @@ interface AppContainer {
  * }
  */
 
+val sqlNormalizedCacheFactory = SqlNormalizedCacheFactory("nyatta.db")
+
 class DefaultContainer(private val context: Context): AppContainer {
     private val baseUrl =
         "https://stagingapi.nyatta.app/api"
@@ -36,7 +42,8 @@ class DefaultContainer(private val context: Context): AppContainer {
     private val client = ApolloClient.Builder()
         .serverUrl(baseUrl)
         //.addInterceptor(LoggingApolloInterceptor())
-        .build()    
+        .normalizedCache(sqlNormalizedCacheFactory)
+        .build()
 
     override val helloRepository: HelloRepository by lazy {
         GqlHelloRepository(client)
