@@ -48,6 +48,12 @@ import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.compose.home.TopAppBar
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 
 data class Amenity(
     val category: String,
@@ -141,7 +147,7 @@ fun Listing(
                    }
                }
                Section (
-                   title = "Pricing"
+                   title = stringResource(R.string.pricing)
                ) {
                    Row(modifier = Modifier.padding(8.dp)) {
                        Text(
@@ -154,7 +160,7 @@ fun Listing(
                    }
                }
                Section(
-                   title = "Features"
+                   title = stringResource(R.string.features)
                ) {
                    Row(
                        modifier = Modifier.horizontalScroll(rememberScrollState())
@@ -165,7 +171,26 @@ fun Listing(
                    }
                }
                Section(
-                   title = "Caretaker"
+                   title = stringResource(R.string.location)
+               ) {
+                   val propertyLocation = LatLng(37.4219983, -122.084)
+                   val cameraPositionState = rememberCameraPositionState {
+                       position = CameraPosition.fromLatLngZoom(propertyLocation, 15f)
+                   }
+
+                   GoogleMap(
+                       modifier = Modifier
+                           .height(160.dp)
+                           .padding(8.dp),
+                       cameraPositionState = cameraPositionState
+                   ) {
+                       Marker(
+                           state = MarkerState(position = propertyLocation)
+                       )
+                   }
+               }
+               Section(
+                   title = stringResource(R.string.caretaker)
                ) {
                    Row(
                        modifier = Modifier.padding(8.dp),
@@ -187,7 +212,7 @@ fun Listing(
                    }
                }
                Section(
-                   title = "Amenities",
+                   title = stringResource(R.string.amenities),
                ) {
                    Column(
                        modifier = Modifier.padding(bottom = 8.dp)

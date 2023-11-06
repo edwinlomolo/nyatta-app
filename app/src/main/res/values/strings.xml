@@ -115,4 +115,7 @@
     <string name="current_device_location">Current device location</string>
     <string name="search_town">Search town</string>
     <string name="no_town">Can\'t find town</string>
+    <string name="features">Features</string>
+    <string name="pricing">Pricing</string>
+    <string name="amenities">Amenities</string>
 </resources>
