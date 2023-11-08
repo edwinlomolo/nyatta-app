@@ -4,8 +4,6 @@ import android.content.Context
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.http.HttpRequest
 import com.apollographql.apollo3.api.http.HttpResponse
-import com.apollographql.apollo3.cache.normalized.FetchPolicy
-import com.apollographql.apollo3.cache.normalized.fetchPolicy
 import com.apollographql.apollo3.cache.normalized.normalizedCache
 import com.apollographql.apollo3.cache.normalized.sql.SqlNormalizedCacheFactory
 import com.apollographql.apollo3.network.http.HttpInterceptor
@@ -28,7 +26,7 @@ interface AppContainer {
     val authRepository: OfflineAuthRepository
 }
 
-class AuthorizationInterceptor (val token: String = ""): HttpInterceptor {
+class AuthorizationInterceptor (val token: String): HttpInterceptor {
     override suspend fun intercept(
         request: HttpRequest,
         chain: HttpInterceptorChain
