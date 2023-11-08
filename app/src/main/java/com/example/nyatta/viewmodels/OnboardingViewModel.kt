@@ -30,3 +30,8 @@ class OnboardingViewModel: ViewModel() {
         }
     }
 }
+
+enum class PropertyType {
+    APARTMENTS_BUILDING,
+    APARTMENT
+}

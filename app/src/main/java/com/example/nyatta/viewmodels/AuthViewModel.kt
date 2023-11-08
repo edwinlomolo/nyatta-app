@@ -21,12 +21,13 @@ class AuthViewModel(
         viewModelScope.launch {
             authRepository.getUser().shareIn(
                 scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000L),
+                started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
             ).collect { user ->
                 if (user.isNotEmpty()) {
                     _auth.update {
                         it.copy(
                             token = user[0].token,
+                            phone = user[0].phone,
                             isAuthed = true,
                             isLandlord = user[0].isLandlord
                         )
@@ -35,10 +36,15 @@ class AuthViewModel(
             }
         }
     }
+
+    companion object {
+        private const val TIMEOUT_MILLIS = 5_000L
+    }
 }
 
 data class AuthState(
     val isAuthed: Boolean = false,
+    val phone: String = "",
     val token: String = "",
     val isLandlord: Boolean = false
 )

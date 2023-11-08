@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.lifecycleScope
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.AccountViewModel
 import com.example.nyatta.viewmodels.NyattaViewModelProvider
