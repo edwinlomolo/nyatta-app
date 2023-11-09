@@ -21,6 +21,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navigation
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.OnboardingBottomBar
+import com.example.nyatta.compose.home.HomeDestination
 import com.example.nyatta.viewmodels.OnboardingViewModel
 import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.compose.startpropertyonboarding.Type
@@ -98,7 +99,7 @@ fun NavGraphBuilder.startPropertyOnboarding(
                 bottomBar = {
                     OnboardingBottomBar(
                         validToProceed = validToProceed,
-                        navigateBack = { navController.popBackStack() },
+                        navigateBack = { navController.navigate(HomeDestination.route) },
                         onActionButtonClick = {
                             when (onboardingUiState.type) {
                                 "Apartments Building" -> navController.navigate(
