@@ -111,13 +111,14 @@ class AccountViewModel(
         }
     }
 
-    fun createPayment(phone: String, reason: String) {
+    fun createPayment(reason: String) {
+        val phone = phoneUtil.parse(userUiDetails.value.phone, defaultRegion)
         createPaymentUiState = ICreatePayment.Loading
         viewModelScope.launch {
             createPaymentUiState = try {
                 val response = client.mutation(
                     CreatePaymentMutation(
-                        phone = phone,
+                        phone = phone.countryCode.toString()+phone.nationalNumber.toString(),
                         description = reason,
                         amount = landlordSubscriptionFee,
                     )

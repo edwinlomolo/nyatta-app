@@ -141,10 +141,7 @@ fun Mpesa(
                 isLoading = (createPaymentState is ICreatePayment.Loading),
                 text = stringResource(R.string.pay),
                 onClick = {
-                    accViewModel.createPayment(
-                        accUiState.phone,
-                        "Landlord subscription"
-                    )
+                    accViewModel.createPayment("Landlord subscription")
                 }
             )
         }
