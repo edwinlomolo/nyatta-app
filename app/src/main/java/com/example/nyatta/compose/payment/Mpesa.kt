@@ -38,10 +38,10 @@ import com.example.nyatta.R
 import com.example.nyatta.compose.components.ActionButton
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.TextInput
-import com.example.nyatta.compose.components.Title
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.AccountViewModel
+import com.example.nyatta.viewmodels.ICreatePayment
 
 object PayDestination: Navigation {
     override val route = "property/payment"
@@ -59,6 +59,7 @@ fun Mpesa(
     accViewModel: AccountViewModel = viewModel()
 ) {
     val accUiState by accViewModel.userUiDetails.collectAsState()
+    val createPaymentState = accViewModel.createPaymentUiState
     val phone = accUiState.phone
     val keyboardController = LocalSoftwareKeyboardController.current
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(paymentOptions[0]) }
@@ -110,7 +111,7 @@ fun Mpesa(
                 value = phone,
                 prefix = {
                     Text(
-                        text = stringResource(R.string._254),
+                        text = accViewModel.countryPhoneCode[accViewModel.defaultRegion]!!,
                         color = MaterialTheme.colorScheme.primary
                     )
                 },
@@ -127,18 +128,24 @@ fun Mpesa(
             TextInput(
                 readOnly = true,
                 onValueChange = {},
-                value = stringResource(R.string.monthly_fee),
+                value = accViewModel.landlordSubscriptionFee,
                 prefix = {
                     Text(
-                        text = stringResource(R.string.kes),
+                        text = accViewModel.countryCurrencyCode[accViewModel.defaultRegion]!!,
                         color = MaterialTheme.colorScheme.primary
                     )
                 },
                 enabled = false
             )
             ActionButton(
+                isLoading = (createPaymentState is ICreatePayment.Loading),
                 text = stringResource(R.string.pay),
-                onClick = {}
+                onClick = {
+                    accViewModel.createPayment(
+                        accUiState.phone,
+                        "Landlord subscription"
+                    )
+                }
             )
         }
     }

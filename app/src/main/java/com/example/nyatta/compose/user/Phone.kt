@@ -6,11 +6,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -30,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
+import com.example.nyatta.compose.components.CircularProgressLoader
 import com.example.nyatta.compose.components.TextInput
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.compose.home.TopAppBar
@@ -83,7 +82,7 @@ fun Phone(
                     isError = !userDetail.validDetails,
                     prefix = {
                         Text(
-                            text = accountViewModel.countryCode,
+                            text = accountViewModel.countryPhoneCode[accountViewModel.defaultRegion]!!,
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.primary
                         )
@@ -113,10 +112,7 @@ fun Phone(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         if (accUiState is AccountUiState.Loading) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(18.dp),
-                                color = MaterialTheme.colorScheme.background
-                            )
+                            CircularProgressLoader()
                         } else {
                             Text(
                                 text = stringResource(R.string.create_account),

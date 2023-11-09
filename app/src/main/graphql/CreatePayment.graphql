@@ -1,0 +1,9 @@
+mutation CreatePayment($phone: String! $description: String! $amount: String!) {
+    createPayment(input: {
+        phone: $phone
+        description: $description
+        amount: $amount
+    }) {
+        success
+    }
+}

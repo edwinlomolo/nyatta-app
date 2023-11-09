@@ -5,23 +5,31 @@ type Amenity {
 
   provider: String
 
-  category: String
+  category: String!
 
-  propertyId: ID!
+  unitId: ID
 
   createdAt: Time
 
   updatedAt: Time
 }
 
-input AmenityInput {
-  name: String!
+type AnyUpload {
+  id: ID!
 
-  provider: String!
+  upload: String!
 
-  category: String
+  category: String!
 
   propertyId: ID!
+
+  userId: ID!
+
+  unitId: ID!
+
+  createdAt: Time
+
+  updatedAt: Time
 }
 
 type Bedroom {
@@ -49,13 +57,11 @@ type Caretaker {
 
   phone: String!
 
-  idVerification: String!
-
-  countryCode: String!
+  uploads: [AnyUpload!]!
 
   verified: Boolean!
 
-  shootsInCharge: [Shoot!]!
+  properties: [Property!]!
 
   createdAt: Time
 
@@ -69,15 +75,11 @@ input CaretakerInput {
 
   phone: String!
 
-  countryCode: CountryCode!
-
-  idVerification: String!
+  image: Upload!
 }
 
 input CaretakerVerificationInput {
   phone: String!
-
-  countryCode: CountryCode!
 
   verifyCode: String!
 }
@@ -86,8 +88,50 @@ enum CountryCode {
   KE
 }
 
+input CreatePaymentInput {
+  phone: String!
+
+  description: String!
+
+  amount: String!
+}
+
+type Gps {
+  lat: Float!
+
+  lng: Float!
+}
+
+input GpsInput {
+  lat: Float!
+
+  lng: Float!
+}
+
 input HandshakeInput {
   phone: String!
+}
+
+type Invoice {
+  id: ID!
+
+  msid: String!
+
+  phone: String!
+
+  status: InvoiceStatus!
+
+  wCoCheckoutId: String!
+
+  createdAt: Time
+
+  updatedAt: Time
+}
+
+enum InvoiceStatus {
+  PROCESSED
+
+  PROCESSING
 }
 
 type ListingOverview {
@@ -103,11 +147,7 @@ type Mutation {
 
   createProperty(input: NewProperty!): Property!
 
-  addAmenity(input: AmenityInput!): Amenity!
-
   addPropertyUnit(input: PropertyUnitInput!): PropertyUnit!
-
-  addUnitBedrooms(input: [UnitBedroomInput!]!): [Bedroom!]!
 
   addPropertyUnitTenant(input: TenancyInput!): Tenant!
 
@@ -121,35 +161,23 @@ type Mutation {
 
   handshake(input: HandshakeInput!): User!
 
-  updateUser(input: UpdateUserInput!): User!
-
-  setupProperty(input: SetupPropertyInput!): Status!
-
-  onboardUser(input: OnboardUserInput!): User!
-
   saveMailing(email: String): Status!
+
+  createPayment(input: CreatePaymentInput!): Status!
 }
 
 input NewProperty {
   name: String!
 
-  town: String!
-
-  postalCode: String!
-
   type: String!
 
-  createdBy: ID!
+  location: GpsInput!
+
+  thumbnail: Upload!
 }
 
 input NewUser {
   phone: String!
-}
-
-input OnboardUserInput {
-  email: String!
-
-  onboarding: Boolean!
 }
 
 type Property {
@@ -157,29 +185,31 @@ type Property {
 
   name: String!
 
-  town: String!
+  type: PropertyType!
 
-  postalCode: String!
+  location: Gps!
 
-  type: String!
-
-  status: String!
-
-  minPrice: Int!
-
-  maxPrice: Int!
-
-  amenities: [Amenity!]!
+  uploads: [AnyUpload!]!
 
   units: [PropertyUnit!]!
 
   createdBy: ID!
+
+  caretaker: Caretaker!
+
+  caretakerId: ID!
 
   owner: User!
 
   createdAt: Time
 
   updatedAt: Time
+}
+
+enum PropertyType {
+  APARTMENTS_BUILDING
+
+  APARTMENT
 }
 
 type PropertyUnit {
@@ -191,15 +221,21 @@ type PropertyUnit {
 
   propertyId: ID!
 
+  property: Property!
+
   price: String!
 
   amenityCount: Int!
 
   bathrooms: Int!
 
+  amenities: [Amenity!]!
+
   state: UnitState!
 
   type: String!
+
+  uploads: [AnyUpload!]!
 
   tenancy: [Tenant!]!
 
@@ -215,6 +251,8 @@ input PropertyUnitInput {
 
   name: String!
 
+  location: GpsInput!
+
   type: String!
 
   amenities: [UnitAmenityInput!]!
@@ -222,6 +260,8 @@ input PropertyUnitInput {
   bedrooms: [UnitBedroomInput!]!
 
   price: String!
+
+  uploads: [UploadImages!]
 }
 
 type Query {
@@ -246,24 +286,6 @@ type Query {
   getListings: [Property!]!
 }
 
-input SetupPropertyInput {
-  name: String!
-
-  town: String!
-
-  postalCode: String!
-
-  propertyType: String!
-
-  caretaker: CaretakerInput!
-
-  units: [UnitInput!]!
-
-  shoot: ShootInput!
-
-  creator: String!
-}
-
 type Shoot {
   id: ID!
 
@@ -276,16 +298,16 @@ type Shoot {
   createdAt: Time
 
   updatedAt: Time
-
-  contact: Caretaker!
-
-  contactId: ID!
 }
 
 input ShootInput {
   date: Time!
+}
 
-  contactPerson: String!
+enum ShootStatus {
+  PENDING
+
+  DONE
 }
 
 type SignInResponse {
@@ -301,8 +323,6 @@ type Status {
 input TenancyInput {
   startDate: Time!
 
-  endDate: Time
-
   propertyUnitId: ID!
 }
 
@@ -312,6 +332,8 @@ type Tenant {
   startDate: Time!
 
   endDate: Time
+
+  upload: [AnyUpload!]!
 
   propertyUnitId: ID!
 
@@ -341,27 +363,11 @@ input UnitAmenityInput {
 }
 
 input UnitBedroomInput {
-  propertyUnitId: ID
-
   bedroomNumber: Int!
 
   enSuite: Boolean!
 
   master: Boolean!
-}
-
-input UnitInput {
-  name: String!
-
-  price: String!
-
-  type: String!
-
-  amenities: [UnitAmenityInput!]!
-
-  bedrooms: [UnitBedroomInput!]!
-
-  baths: Int!
 }
 
 enum UnitState {
@@ -372,21 +378,21 @@ enum UnitState {
   UNAVAILABLE
 }
 
-input UpdateUserInput {
-  first_name: String!
+scalar Upload
 
-  last_name: String!
+enum UploadCategory {
+  PROFILE_IMG
 
-  avatar: String!
+  UNIT_IMAGE
 
-  email: String!
-
-  phone: String!
-
-  onboarding: Boolean!
+  CARETAKER_IMG
 }
 
-scalar Upload
+input UploadImages {
+  image: String!
+
+  category: String!
+}
 
 type User {
   id: ID!
@@ -399,11 +405,11 @@ type User {
 
   phone: String!
 
+  uploads: [AnyUpload!]!
+
   onboarding: Boolean!
 
   is_landlord: Boolean!
-
-  avatar: String!
 
   properties: [Property!]!
 
@@ -415,17 +421,11 @@ type User {
 input UserVerificationInput {
   phone: String!
 
-  email: String!
-
-  countryCode: CountryCode!
-
   verifyCode: String!
 }
 
 input VerificationInput {
   phone: String!
-
-  countryCode: CountryCode!
 
   verifyCode: String
 }
