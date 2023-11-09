@@ -73,10 +73,6 @@ class AccountViewModel(
         }
     }
 
-    fun createPayment() {
-        viewModelScope.launch {
-        }
-    }
 
     private fun validatePhone(phoneNumber: String): Boolean {
         return try {

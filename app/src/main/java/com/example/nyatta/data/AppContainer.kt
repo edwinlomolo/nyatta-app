@@ -58,7 +58,6 @@ class DefaultContainer(private val context: Context): AppContainer {
                 client = ApolloClient.Builder()
                     .serverUrl(baseUrl)
                     .addHttpInterceptor(AuthorizationInterceptor(token))
-                    .fetchPolicy(FetchPolicy.NetworkFirst)
                     .normalizedCache(sqlNormalizedCacheFactory)
                     .build()
             }
@@ -66,7 +65,7 @@ class DefaultContainer(private val context: Context): AppContainer {
     }
 
     private val baseUrl =
-        "https://a97c-102-217-127-1.ngrok.io/api"
+        "https://stagingapi.nyatta.app/api"
 
     override val helloRepository: HelloRepository by lazy {
         GqlHelloRepository(client)
