@@ -1,11 +1,11 @@
 package com.example.nyatta.viewmodels
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Error
 import com.apollographql.apollo3.exception.ApolloException
 import com.example.nyatta.data.auth.AuthRepository
@@ -27,7 +27,8 @@ interface AccountUiState {
     data class ApplicationError(val error: ApolloException): AccountUiState
 }
 class AccountViewModel(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val client: ApolloClient
 ): ViewModel() {
     val countryCode = "+254"
     private val defaultRegion = "KE"
@@ -69,6 +70,11 @@ class AccountViewModel(
                 }
                 cb()
             }
+        }
+    }
+
+    fun createPayment() {
+        viewModelScope.launch {
         }
     }
 

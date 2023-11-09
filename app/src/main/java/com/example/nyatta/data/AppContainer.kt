@@ -4,6 +4,8 @@ import android.content.Context
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.http.HttpRequest
 import com.apollographql.apollo3.api.http.HttpResponse
+import com.apollographql.apollo3.cache.normalized.FetchPolicy
+import com.apollographql.apollo3.cache.normalized.fetchPolicy
 import com.apollographql.apollo3.cache.normalized.normalizedCache
 import com.apollographql.apollo3.cache.normalized.sql.SqlNormalizedCacheFactory
 import com.apollographql.apollo3.network.http.HttpInterceptor
@@ -24,6 +26,7 @@ interface AppContainer {
     val listingsRepository: ListingsRepository
     val townsRepository: TownsRepository
     val authRepository: OfflineAuthRepository
+    val client: ApolloClient
 }
 
 class AuthorizationInterceptor (val token: String): HttpInterceptor {
@@ -46,7 +49,7 @@ class DefaultContainer(private val context: Context): AppContainer {
     private val userDao = NyattaDatabase.getDatabase(context).userDao()
     private val applicationScope = CoroutineScope(SupervisorJob())
     private lateinit var token: String
-    private lateinit var client: ApolloClient
+    override lateinit var client: ApolloClient
 
     init {
         applicationScope.launch {
@@ -55,6 +58,7 @@ class DefaultContainer(private val context: Context): AppContainer {
                 client = ApolloClient.Builder()
                     .serverUrl(baseUrl)
                     .addHttpInterceptor(AuthorizationInterceptor(token))
+                    .fetchPolicy(FetchPolicy.NetworkFirst)
                     .normalizedCache(sqlNormalizedCacheFactory)
                     .build()
             }
@@ -62,7 +66,7 @@ class DefaultContainer(private val context: Context): AppContainer {
     }
 
     private val baseUrl =
-        "https://8a76-102-217-127-1.ngrok.io/api"
+        "https://a97c-102-217-127-1.ngrok.io/api"
 
     override val helloRepository: HelloRepository by lazy {
         GqlHelloRepository(client)
