@@ -91,9 +91,9 @@ enum CountryCode {
 input CreatePaymentInput {
   phone: String!
 
-  description: String!
-
   amount: String!
+
+  email: String!
 }
 
 type Gps {
