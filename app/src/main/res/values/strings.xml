@@ -118,4 +118,8 @@
     <string name="features">Features</string>
     <string name="pricing">Pricing</string>
     <string name="amenities">Amenities</string>
+    <string name="loading">Loading</string>
+    <string name="caretaker_image">Caretaker image</string>
+    <string name="listing_photo">Listing photo</string>
+    <string name="listing_image">Listing image</string>
 </resources>
