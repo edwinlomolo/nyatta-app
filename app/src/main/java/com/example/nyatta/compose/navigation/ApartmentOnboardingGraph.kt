@@ -33,6 +33,7 @@ import com.example.nyatta.compose.apartment.UnitTypeDestination
 import com.example.nyatta.compose.components.OnboardingBottomBar
 import com.example.nyatta.compose.uploads.Uploads
 import com.example.nyatta.compose.uploads.UploadsDestination
+import com.example.nyatta.viewmodels.AccountViewModel
 import com.example.nyatta.viewmodels.ApartmentData
 import com.example.nyatta.viewmodels.ApartmentDataValidity
 import com.example.nyatta.viewmodels.AuthState
@@ -46,6 +47,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
     modifier: Modifier,
     navController: NavHostController,
     apartmentViewModel: ApartmentViewModel,
+    accViewModel: AccountViewModel,
     apartmentData: ApartmentData,
     dataValidity: ApartmentDataValidity,
     authData: AuthState
@@ -306,7 +308,8 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         .padding(innerPadding)
                 ) {
                     Price(
-                        apartmentViewModel = apartmentViewModel
+                        apartmentViewModel = apartmentViewModel,
+                        accViewModel = accViewModel
                     )
                 }
             }

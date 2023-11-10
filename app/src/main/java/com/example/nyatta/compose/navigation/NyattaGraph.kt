@@ -6,13 +6,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.AddCircle
 import androidx.compose.material.icons.twotone.LocationOn
-import androidx.compose.material.icons.twotone.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -175,7 +173,8 @@ fun NyattaNavHost(
             apartmentViewModel = apartmentViewModel,
             dataValidity = dataValidity,
             apartmentData = apartmentUiState,
-            authData = authData
+            authData = authData,
+            accViewModel = accountViewModel
         )
         loginGraph(
             accountViewModel = accountViewModel,

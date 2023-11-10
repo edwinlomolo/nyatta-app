@@ -22,9 +22,8 @@ import com.example.nyatta.compose.components.TextInput
 import com.example.nyatta.compose.components.Title
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.ui.theme.NyattaTheme
+import com.example.nyatta.viewmodels.AccountViewModel
 import com.example.nyatta.viewmodels.ApartmentViewModel
-import java.util.Currency
-import java.util.Locale
 
 object ApartmentPriceDestination: Navigation {
     override val route = "apartment/price"
@@ -35,7 +34,8 @@ object ApartmentPriceDestination: Navigation {
 @Composable
 fun Price(
     modifier: Modifier = Modifier,
-    apartmentViewModel: ApartmentViewModel = viewModel()
+    apartmentViewModel: ApartmentViewModel = viewModel(),
+    accViewModel: AccountViewModel = viewModel()
 ) {
     val apartmentUiState by apartmentViewModel.uiState.collectAsState()
 
@@ -55,7 +55,7 @@ fun Price(
                 .padding(8.dp),
             prefix = {
                 Text(
-                    text = Currency.getInstance(Locale.getDefault()).symbol,
+                    text = accViewModel.countryCurrencyCode[accViewModel.defaultRegion]!!,
                     color = MaterialTheme.colorScheme.primary
                 )
             },
