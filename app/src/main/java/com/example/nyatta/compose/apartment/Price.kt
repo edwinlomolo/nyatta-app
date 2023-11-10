@@ -12,11 +12,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.nyatta.R
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.TextInput
 import com.example.nyatta.compose.components.Title
@@ -46,8 +48,8 @@ fun Price(
         modifier = modifier
             .padding(8.dp)
     ) {
-        Title("Price")
-        Description("Monthly charge for this unit")
+        Title(stringResource(R.string.price))
+        Description(stringResource(R.string.unit_monthly_charge))
         TextInput(
             value = apartmentData.price,
             onValueChange = { apartmentViewModel.setUnitPrice(it) },

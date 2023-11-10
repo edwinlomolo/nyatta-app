@@ -122,4 +122,6 @@
     <string name="caretaker_image">Caretaker image</string>
     <string name="listing_photo">Listing photo</string>
     <string name="listing_image">Listing image</string>
+    <string name="price">Price</string>
+    <string name="unit_monthly_charge">Monthly charge for this unit</string>
 </resources>
