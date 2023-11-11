@@ -25,7 +25,7 @@ object NyattaViewModelProvider {
         initializer {
             AccountViewModel(
                 nyattaApplication().container.authRepository,
-                nyattaApplication().container.client
+                nyattaApplication().container.apolloClient
             )
         }
         // Initializer for TownsViewModel
@@ -34,7 +34,11 @@ object NyattaViewModelProvider {
         }
         // Initializer for HomeViewModel
         initializer {
-            HomeViewModel(nyattaApplication().container.helloRepository)
+            HomeViewModel(
+                nyattaApplication().container.helloRepository,
+                nyattaApplication().container.authRepository,
+                nyattaApplication().container.apolloRepository
+            )
         }
         // Initializer for AuthViewModel
         initializer {

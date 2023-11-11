@@ -19,6 +19,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 interface AccountUiState {
     data class Auth(val user: User? = null): AccountUiState
@@ -45,6 +48,25 @@ class AccountViewModel(
     private val phoneUtil = PhoneNumberUtil.getInstance()
     private val _userDetails = MutableStateFlow(UserDetails())
     val userUiDetails: StateFlow<UserDetails> = _userDetails.asStateFlow()
+    val auth: StateFlow<AuthState> = authRepository
+        .getUser()
+        .map {
+            if (it.isNotEmpty()) {
+                AuthState(
+                    isAuthed = it[0].token.isNotEmpty(),
+                    token = it[0].token,
+                    isLandlord = it[0].isLandlord,
+                    phone = it[0].phone
+                )
+            } else {
+                AuthState()
+            }
+        }
+        .stateIn(
+            scope = viewModelScope,
+            initialValue = AuthState(),
+            started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS)
+        )
 
     var accUiState: AccountUiState by mutableStateOf(AccountUiState.Auth())
         private set
@@ -137,6 +159,10 @@ class AccountViewModel(
 
     init {
         _userDetails.value = UserDetails()
+    }
+
+    companion object {
+        private const val TIMEOUT_MILLIS = 5_000L
     }
 }
 
