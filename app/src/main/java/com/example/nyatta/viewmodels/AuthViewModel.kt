@@ -1,5 +1,6 @@
 package com.example.nyatta.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nyatta.data.auth.OfflineAuthRepository
@@ -8,6 +9,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -19,8 +21,9 @@ class AuthViewModel(
 
     init {
         viewModelScope.launch {
-            authRepository.getUser().shareIn(
+            authRepository.getUser().stateIn(
                 scope = viewModelScope,
+                initialValue = listOf(),
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
             ).collect { user ->
                 if (user.isNotEmpty()) {

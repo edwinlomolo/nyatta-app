@@ -36,8 +36,6 @@ object NyattaViewModelProvider {
         initializer {
             HomeViewModel(
                 nyattaApplication().container.helloRepository,
-                nyattaApplication().container.authRepository,
-                nyattaApplication().container.apolloRepository
             )
         }
         // Initializer for AuthViewModel

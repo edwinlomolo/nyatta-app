@@ -86,7 +86,7 @@ class AccountViewModel(
                         val res = response.data?.signIn
                         authRepository.signUser(
                             user = User(
-                                isLandlord = res!!.user.is_landlord,
+                                isLandlord = res?.user!!.is_landlord,
                                 token = res.Token,
                                 phone = res.user.phone
                             )

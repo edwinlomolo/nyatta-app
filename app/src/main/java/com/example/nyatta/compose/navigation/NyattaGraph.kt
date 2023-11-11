@@ -79,7 +79,6 @@ fun NyattaNavHost(
     authViewModel: AuthViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
 ) {
     val auth by authViewModel.auth.collectAsState()
-    Log.d("aT", "${auth.token}")
     val onboardingUiState by onboardingViewModel.uiState.collectAsState()
     val propertyUiState by propertyViewModel.uiState.collectAsState()
     val apartmentUiState by apartmentViewModel.uiState.collectAsState()
