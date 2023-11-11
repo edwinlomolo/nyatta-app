@@ -99,7 +99,7 @@ fun NavGraphBuilder.startPropertyOnboarding(
                 bottomBar = {
                     OnboardingBottomBar(
                         validToProceed = validToProceed,
-                        navigateBack = { navController.navigate(HomeDestination.route) },
+                        navigateBack = { navController.popBackStack() },
                         onActionButtonClick = {
                             when (onboardingUiState.type) {
                                 "Apartments Building" -> navController.navigate(

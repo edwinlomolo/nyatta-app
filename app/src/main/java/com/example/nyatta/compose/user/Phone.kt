@@ -79,7 +79,7 @@ fun Phone(
                     onValueChange = {
                         accountViewModel.setPhone(it)
                     },
-                    isError = !userDetail.validDetails,
+                    isError = userDetail.phone.isNotEmpty() && !userDetail.validDetails.phone,
                     prefix = {
                         Text(
                             text = accountViewModel.countryPhoneCode[accountViewModel.defaultRegion]!!,

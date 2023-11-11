@@ -123,7 +123,8 @@ fun Mpesa(
                     onDone = {
                         keyboardController?.hide()
                     }
-                )
+                ),
+                isError = accUiState.phone.isNotEmpty() && !accUiState.validDetails.phone
             )
             TextInput(
                 readOnly = true,
@@ -141,7 +142,7 @@ fun Mpesa(
                 isLoading = (createPaymentState is ICreatePayment.Loading),
                 text = stringResource(R.string.pay),
                 onClick = {
-                    accViewModel.createPayment("Landlord subscription")
+                    accViewModel.createPayment()
                 }
             )
         }

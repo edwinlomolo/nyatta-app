@@ -1,7 +1,6 @@
-mutation CreatePayment($email: String! $amount: String! $phone: String!) {
+mutation CreatePayment($amount: String! $phone: String!) {
     createPayment(input: {
         phone: $phone
-        email: $email
         amount: $amount
     }) {
         success

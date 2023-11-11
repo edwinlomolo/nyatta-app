@@ -92,8 +92,6 @@ input CreatePaymentInput {
   phone: String!
 
   amount: String!
-
-  email: String!
 }
 
 type Gps {
@@ -402,6 +400,8 @@ type User {
   first_name: String!
 
   last_name: String!
+
+  nextRenewal: Time!
 
   phone: String!
 
