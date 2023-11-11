@@ -5,35 +5,34 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo3.exception.ApolloException
 import com.example.nyatta.data.hello.HelloRepository
 import kotlinx.coroutines.launch
-import com.apollographql.apollo3.api.Error
 
 sealed interface HomeUiState {
     data class Success(val hello: String?): HomeUiState
-    object Loading: HomeUiState
-    data class ApolloError(val errors: List<Error>): HomeUiState
-    data class ApplicationError(val error: ApolloException): HomeUiState
+    data object Loading: HomeUiState
+    data class ApolloError(val message: String?): HomeUiState
 }
 
 class HomeViewModel(
     private val helloRepository: HelloRepository,
 ): ViewModel() {
-    var homeUiState: HomeUiState by mutableStateOf(HomeUiState.Loading)
+    var homeUiState: HomeUiState by mutableStateOf(HomeUiState.Success(null))
 
     // Run hello query
     fun getHello() {
         viewModelScope.launch {
             homeUiState = try {
                 val response = helloRepository.getHello()
-                if (response.hasErrors()) {
-                    HomeUiState.ApolloError(errors = response.errors!!)
-                } else {
-                    HomeUiState.Success(response.data?.hello)
+                when {
+                    response.data != null -> {
+                        val res = response.data!!.hello
+                        HomeUiState.Success(res)
+                    }
+                    else -> HomeUiState.ApolloError(response.exception!!.localizedMessage)
                 }
-            } catch (e: ApolloException) {
-                HomeUiState.ApplicationError(e)
+            } catch (e: Throwable) {
+                HomeUiState.ApolloError(e.localizedMessage)
             }
         }
     }

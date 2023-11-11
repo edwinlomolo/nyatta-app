@@ -7,12 +7,10 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,17 +26,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.Loading
+import com.example.nyatta.compose.components.NetworkError
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.compose.listing.ListingCard
-import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.HomeUiState
 import com.example.nyatta.viewmodels.HomeViewModel
@@ -58,7 +52,7 @@ fun Home(
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val s = homeViewModel.homeUiState
     val showBars = s !is HomeUiState.Loading
-    val errored = (s is HomeUiState.ApolloError || s is HomeUiState.ApplicationError)
+    val errored = (s is HomeUiState.ApolloError)
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -75,8 +69,7 @@ fun Home(
         ) {
             when(s) {
                 HomeUiState.Loading -> Loading()
-                is HomeUiState.ApolloError -> Text(text = s.errors[0].message)
-                is HomeUiState.ApplicationError -> Text(text = "${s.error}")
+                is HomeUiState.ApolloError -> NetworkError(errorString = s.message)
                 is HomeUiState.Success -> Column(modifier = modifier.verticalScroll(rememberScrollState())) {
                     repeat(5) {
                         ListingCard(
