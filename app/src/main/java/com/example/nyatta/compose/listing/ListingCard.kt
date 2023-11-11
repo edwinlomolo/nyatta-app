@@ -15,6 +15,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -40,10 +41,10 @@ fun ListingCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         ),
-        shape = RoundedCornerShape(0.dp),
+        shape = RoundedCornerShape(8.dp),
         modifier = modifier
             .fillMaxSize()
-            .padding(top = 8.dp, bottom = 8.dp)
+            .padding(8.dp)
     ) {
         Box {
             AsyncImage(
@@ -56,7 +57,7 @@ fun ListingCard(
                 placeholder = painterResource(id = R.drawable.loading_img),
                 error = painterResource(id = R.drawable.ic_broken_image),
                 modifier = Modifier
-                    .height(280.dp)
+                    .height(200.dp)
                     .fillMaxWidth()
             )
             Column(
