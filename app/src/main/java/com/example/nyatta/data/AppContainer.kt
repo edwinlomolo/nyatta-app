@@ -65,7 +65,7 @@ class DefaultContainer(private val context: Context): AppContainer {
     }
 
     private val baseUrl =
-        "https://stagingapi.nyatta.app/api"
+        "https://80f2-102-217-127-1.ngrok-free.app/api"
 
     override val helloRepository: HelloRepository by lazy {
         GqlHelloRepository(client)

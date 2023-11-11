@@ -52,7 +52,7 @@ class AccountViewModel(
         private set
 
     fun signIn(cb: () -> Unit = {}) {
-        if (userUiDetails.value.phone.isNotEmpty() && userUiDetails.value.validDetails) {
+        if (userUiDetails.value.phone.isNotEmpty() && userUiDetails.value.validDetails.phone) {
             accUiState = AccountUiState.Loading
             viewModelScope.launch {
                 accUiState = try {
@@ -98,9 +98,10 @@ class AccountViewModel(
 
     fun setPhone(phone: String) {
         _userDetails.update {
+            val valid = it.validDetails.copy(phone = if (phone.isNotEmpty()) validatePhone(phone) else false)
             it.copy(
                 phone = phone,
-                validDetails = if (phone.isNotEmpty()) validatePhone(phone) else true
+                validDetails =  valid
             )
         }
     }
@@ -111,7 +112,7 @@ class AccountViewModel(
         }
     }
 
-    fun createPayment(reason: String) {
+    fun createPayment() {
         val phone = phoneUtil.parse(userUiDetails.value.phone, defaultRegion)
         createPaymentUiState = ICreatePayment.Loading
         viewModelScope.launch {
@@ -119,7 +120,6 @@ class AccountViewModel(
                 val response = client.mutation(
                     CreatePaymentMutation(
                         phone = phone.countryCode.toString()+phone.nationalNumber.toString(),
-                        description = reason,
                         amount = landlordSubscriptionFee,
                     )
                 ).execute()
@@ -142,6 +142,10 @@ class AccountViewModel(
 
 data class UserDetails(
     val phone: String = "",
-    val validDetails: Boolean = true,
+    val validDetails: DataValidity = DataValidity(),
     val location: LatLng = LatLng(0.0,0.0)
+)
+
+data class DataValidity(
+    val phone: Boolean = false
 )
