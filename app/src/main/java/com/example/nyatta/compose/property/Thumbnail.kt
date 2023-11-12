@@ -26,7 +26,6 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.Description
-import com.example.nyatta.compose.components.Title
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.PropertyViewModel
@@ -57,9 +56,8 @@ fun Thumbnail(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(8.dp)
+            .padding(12.dp)
     ) {
-        Title(stringResource(R.string.property_thumbnail))
         Description(stringResource(R.string.thumbnail_description))
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)

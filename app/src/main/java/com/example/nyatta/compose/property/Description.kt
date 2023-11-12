@@ -29,7 +29,6 @@ fun PropertyDescription(
     Description(
         isError = !propertyUiState.validToProceed.description,
         modifier = modifier,
-        title = stringResource(R.string.property_name),
         description = stringResource(R.string.property_name_description),
         placeholder = {
             Text(

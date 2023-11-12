@@ -44,7 +44,6 @@ import coil.request.ImageRequest
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.TextInput
-import com.example.nyatta.compose.components.Title
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.PropertyViewModel
@@ -64,10 +63,9 @@ fun Caretaker(
 
     Column(
         modifier = modifier
-            .padding(8.dp)
+            .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Title(stringResource(R.string.caretaker))
         Description(stringResource(R.string.caretaker_description))
         Column {
             Text(
@@ -139,7 +137,6 @@ fun CaretakerDetails(
 
     Column(
         modifier = modifier
-            .padding(8.dp)
             .fillMaxWidth()
     ) {
         AsyncImage(

@@ -36,9 +36,7 @@ fun NavGraphBuilder.paymentGraph(
             Scaffold(
                 topBar = {
                     TopAppBar(
-                        canNavigateBack = true,
                         title = stringResource(R.string.pay_monthly),
-                        navigateUp = { navController.popBackStack() }
                     )
                 }
             ) { innerPadding ->

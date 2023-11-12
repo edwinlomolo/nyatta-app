@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun Description(
     modifier: Modifier = Modifier,
-    title: String,
+    title: String? = null,
     description: String,
     onValueChange: (String) -> Unit = {},
     value: String,
@@ -26,9 +26,9 @@ fun Description(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
-        modifier = modifier.padding(8.dp)
+        modifier = modifier.padding(12.dp)
     ) {
-        Title(title)
+        if (title != null) Title(title)
         Description(description)
         TextInput(
             isError = isError,

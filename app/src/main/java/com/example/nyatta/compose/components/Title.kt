@@ -21,7 +21,6 @@ fun Title(
         style = TextStyle(
             fontFamily = MabryFont,
             fontSize = 18.sp,
-            lineHeight = 16.sp,
             fontWeight = FontWeight.SemiBold
         ),
         modifier = modifier.padding(4.dp)

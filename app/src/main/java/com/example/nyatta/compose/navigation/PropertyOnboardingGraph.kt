@@ -2,16 +2,20 @@ package com.example.nyatta.compose.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.nyatta.R
 import com.example.nyatta.compose.components.OnboardingBottomBar
+import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.compose.property.Caretaker
 import com.example.nyatta.compose.property.CaretakerDestination
 import com.example.nyatta.compose.property.PropertyDescription
@@ -26,6 +30,7 @@ object PropertyOnboarding: Navigation {
     override val title = "Setup property"
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.propertyOnboardingGraph(
     modifier: Modifier,
     navController: NavHostController,
@@ -47,6 +52,11 @@ fun NavGraphBuilder.propertyOnboardingGraph(
 
         composable(route = PropertyDescriptionDestination.route) {
             Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = stringResource(id = R.string.property_name)
+                    )
+                },
                 bottomBar = {
                     OnboardingBottomBar(
                         validToProceed = !emptyState,
@@ -56,7 +66,7 @@ fun NavGraphBuilder.propertyOnboardingGraph(
                         },
                         actionButtonText = {
                             Text(
-                                text = "Add thumbnail",
+                                text = stringResource(R.string.add_thumbnail),
                                 style = MaterialTheme.typography.labelSmall
                             )
                         }
@@ -76,6 +86,11 @@ fun NavGraphBuilder.propertyOnboardingGraph(
         }
         composable(route = PropertyThumbnailDestination.route) {
             Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = stringResource(id = R.string.property_thumbnail)
+                    )
+                },
                 bottomBar = {
                     OnboardingBottomBar(
                         validToProceed = thumbnailValidToProceed,
@@ -85,7 +100,7 @@ fun NavGraphBuilder.propertyOnboardingGraph(
                         },
                         actionButtonText = {
                             Text(
-                                text = "Add caretaker",
+                                text = stringResource(R.string.add_caretaker),
                                 style = MaterialTheme.typography.labelSmall
                             )
                         }
@@ -105,6 +120,11 @@ fun NavGraphBuilder.propertyOnboardingGraph(
         }
         composable(route = CaretakerDestination.route) {
             Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = stringResource(id = R.string.caretaker)
+                    )
+                },
                 bottomBar = {
                     OnboardingBottomBar(
                         validToProceed = if (!isCaretaker) validToProceed else true,
@@ -118,7 +138,7 @@ fun NavGraphBuilder.propertyOnboardingGraph(
                         },
                         actionButtonText = {
                             Text(
-                                text = "Confirm location",
+                                text = stringResource(R.string.confirm_location),
                                 style = MaterialTheme.typography.labelSmall
                             )
                         }

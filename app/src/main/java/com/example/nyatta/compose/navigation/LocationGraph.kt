@@ -2,6 +2,7 @@ package com.example.nyatta.compose.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -12,6 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.nyatta.compose.components.OnboardingBottomBar
+import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.viewmodels.OnboardingViewModel
 import com.example.nyatta.compose.location.Location
 import com.example.nyatta.compose.location.LocationDestination
@@ -26,6 +28,7 @@ object LocationGraph: Navigation {
     override val route = "location_graph"
     override val title = "Location"
 }
+@OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.locationGraph(
     modifier: Modifier = Modifier,
     onboardingViewModel: OnboardingViewModel,
@@ -40,6 +43,11 @@ fun NavGraphBuilder.locationGraph(
     ) {
         composable(route = LocationDestination.route) {
             Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = "Location"
+                    )
+                },
                 bottomBar = {
                     OnboardingBottomBar(
                         navigateBack = {

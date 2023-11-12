@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.Description
-import com.example.nyatta.compose.components.Title
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.viewmodels.OnboardingViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
@@ -44,27 +43,21 @@ fun Location(
     }
 
     Column(
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier.padding(12.dp)
     ) {
-        Title(stringResource(R.string.location))
         if (onboardingState.type == "Apartments Building") {
             Description(stringResource(R.string.location_description_property))
         } else {
             Description(stringResource(R.string.location_description_apartment))
         }
-        Box(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
+        GoogleMap(
+            modifier = Modifier.height(200.dp).padding(top = 8.dp),
+            cameraPositionState = cameraPositionState
         ) {
-            GoogleMap(
-                modifier = Modifier.height(200.dp),
-                cameraPositionState = cameraPositionState
-            ) {
-                Marker(
-                    state = MarkerState(position = userDeviceLocation),
-                    title = stringResource(R.string.current_device_location)
-                )
-            }
+            Marker(
+                state = MarkerState(position = userDeviceLocation),
+                title = stringResource(R.string.current_device_location)
+            )
         }
     }
 }

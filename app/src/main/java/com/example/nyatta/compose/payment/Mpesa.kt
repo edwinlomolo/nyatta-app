@@ -1,5 +1,6 @@
 package com.example.nyatta.compose.payment
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -64,9 +65,10 @@ fun Mpesa(
     val keyboardController = LocalSoftwareKeyboardController.current
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(paymentOptions[0]) }
 
+    BackHandler {}
     Column(
         modifier = modifier
-            .padding(8.dp)
+            .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
         Description(stringResource(R.string.first_marketing_copy))
@@ -102,10 +104,7 @@ fun Mpesa(
                 }
             }
         }
-        Column(
-            modifier = Modifier
-                .padding(8.dp)
-        ) {
+        Column {
             TextInput(
                 onValueChange = { accViewModel.setPhone(it) },
                 value = phone,

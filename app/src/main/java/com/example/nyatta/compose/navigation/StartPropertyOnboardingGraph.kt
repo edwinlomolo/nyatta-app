@@ -2,6 +2,7 @@ package com.example.nyatta.compose.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -21,7 +22,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navigation
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.OnboardingBottomBar
-import com.example.nyatta.compose.home.HomeDestination
+import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.viewmodels.OnboardingViewModel
 import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.compose.startpropertyonboarding.Type
@@ -36,6 +37,7 @@ object StartPropertyOnboardingGraph: Navigation {
     override val title = null
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.startPropertyOnboarding(
     modifier: Modifier = Modifier,
     navController: NavHostController,
@@ -53,6 +55,11 @@ fun NavGraphBuilder.startPropertyOnboarding(
     ) {
         composable(UserSignUpDestination.route) {
             Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = stringResource(id = R.string.start_your_setup)
+                    )
+                },
                 bottomBar = {
                     NavigationBar {
                         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -96,6 +103,11 @@ fun NavGraphBuilder.startPropertyOnboarding(
         }
         composable(route = StartOnboardingDestination.route) {
             Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = stringResource(id = R.string.start_your_setup)
+                    )
+                },
                 bottomBar = {
                     OnboardingBottomBar(
                         validToProceed = validToProceed,
