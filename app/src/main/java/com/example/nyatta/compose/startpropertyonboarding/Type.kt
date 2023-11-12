@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -15,10 +16,17 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.twotone.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PlainTooltipBox
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RichTooltipBox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -61,6 +69,7 @@ val typeDefinition = listOf(
     R.string.apartment_definition,
     //"House or home that is typically either a single story, or one and a half stories tall"
 )
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Type(
     modifier: Modifier = Modifier,
@@ -78,65 +87,67 @@ fun Type(
         Title(stringResource(R.string.start_your_setup))
         Description(stringResource(R.string.what_to_add))
         propertyOptions.forEachIndexed { index, option ->
-            Row(
+            Card(
                 modifier = Modifier
-                    .padding(4.dp)
                     .fillMaxWidth()
+                    .padding(8.dp)
+                    .height(100.dp)
                     .selectable(
                         selected = (option == onboardingUiState.type),
                         onClick = {
                             onboardingViewModel.setType(option)
                         },
                         role = Role.RadioButton
-                    )
+                    ),
+                colors = CardDefaults.cardColors(
+                    containerColor = if (option == onboardingUiState.type)
+                        MaterialTheme.colorScheme.surface
+                    else Color.Transparent
+                ),
+                border = BorderStroke(
+                    1.dp,
+                    color = if (option == onboardingUiState.type)
+                        MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.onSurfaceVariant
+                ),
+                shape = RoundedCornerShape(0.dp)
             ) {
-                Card(
+                Row(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = if (option == onboardingUiState.type)
-                            MaterialTheme.colorScheme.surface
-                        else Color.Transparent
-                    ),
-                    border = BorderStroke(
-                        1.dp,
-                        color = if (option == onboardingUiState.type)
-                            MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.onSurfaceVariant
-                    ),
-                    shape = RoundedCornerShape(0.dp)
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
+                    RadioButton(
+                        selected = (option == onboardingUiState.type),
+                        onClick = { onboardingViewModel.setType(option) }
+                    )
+                    Image(
+                        painterResource(optionImages[index]),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = (option == onboardingUiState.type),
-                            onClick = { onboardingViewModel.setType(option) }
-                        )
-                        Spacer(modifier = Modifier.size(24.dp))
-                        Image(
-                            painterResource(optionImages[index]),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
+                            .size(40.dp)
+                    )
+                    Spacer(modifier = Modifier.size(16.dp))
+                    Column {
+                        Text(
+                            text = option,
                             modifier = Modifier
-                                .size(60.dp)
+                                .padding(start = 8.dp),
+                            style = MaterialTheme.typography.titleSmall
                         )
-                        Column {
-                            Text(
-                                text = option,
-                                modifier = Modifier
-                                    .padding(start = 8.dp),
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                            Text(
-                                modifier = Modifier
-                                    .padding(start = 8.dp, top = 4.dp),
-                                text = stringResource(typeDefinition[index]),
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        }
+                        Text(
+                            modifier = Modifier
+                                .padding(start = 8.dp, top = 4.dp),
+                            text = stringResource(typeDefinition[index]),
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            Icons.TwoTone.Info,
+                            contentDescription = null
+                        )
                     }
                 }
             }
