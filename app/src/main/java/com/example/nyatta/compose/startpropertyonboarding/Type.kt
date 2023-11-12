@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -91,7 +92,7 @@ fun Type(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
-                    .height(100.dp)
+                    .wrapContentHeight()
                     .selectable(
                         selected = (option == onboardingUiState.type),
                         onClick = {
@@ -141,12 +142,6 @@ fun Type(
                                 .padding(start = 8.dp, top = 4.dp),
                             text = stringResource(typeDefinition[index]),
                             style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            Icons.TwoTone.Info,
-                            contentDescription = null
                         )
                     }
                 }
