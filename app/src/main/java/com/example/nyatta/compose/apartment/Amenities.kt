@@ -24,7 +24,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.compose.components.Description
-import com.example.nyatta.compose.components.Title
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.viewmodels.ApartmentViewModel
 
@@ -43,9 +42,8 @@ fun Amenities(
 
     Column(
         modifier = modifier
-            .padding(8.dp)
+            .padding(12.dp)
     ) {
-        Title("Amenities")
         Description(stringResource(R.string.select_amenities_offered))
         LazyColumn {
             items(amenities, key = { it.id }) { amenity ->
@@ -60,12 +58,12 @@ fun Amenities(
                                 text = amenity.label
                             )
                             if (apartmentUiState.selectedAmenities.any { it.id == amenity.id }) {
-                                Spacer(modifier = Modifier.size(28.dp))
                                 Icon(
                                     Icons.TwoTone.Check,
+                                    modifier = Modifier.padding(start = 8.dp),
                                     contentDescription = amenity.label
                                 )
-                            } else null
+                            }
                         }
                     }
                 )

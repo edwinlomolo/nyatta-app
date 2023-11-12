@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.Description
-import com.example.nyatta.compose.components.Title
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.ApartmentViewModel
@@ -40,9 +39,8 @@ fun Bedroom(
 
     Column(
         modifier = modifier
-            .padding(8.dp)
+            .padding(12.dp)
     ) {
-        Title(stringResource(R.string.bedroom_title))
         Description(stringResource(R.string.describe_bedrooms))
         apartmentData.bedrooms.forEachIndexed { index, bedroom ->
             Row(

@@ -127,4 +127,6 @@
     <string name="confirm_location">Confirm location</string>
     <string name="add_caretaker">Add caretaker</string>
     <string name="add_thumbnail">Add thumbnail</string>
+    <string name="pick_media">Pick media</string>
+    <string name="feature_image">Feature image</string>
 </resources>

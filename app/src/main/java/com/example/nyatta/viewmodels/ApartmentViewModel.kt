@@ -100,6 +100,12 @@ class ApartmentViewModel: ViewModel() {
         }
     }
 
+    fun updateUnitImage(category: String, image: Uri, index: Int) {
+        _uiState.update{
+            it.copy(images = it.updateUnitImage(category, image, index))
+        }
+    }
+
     private fun resetApartmentData() {
         _uiState.value = ApartmentData(
             associatedToProperty = selectProperties[0],
@@ -155,6 +161,13 @@ fun ApartmentData.addImages(category: String, categoryImages: List<Uri>): Map<St
     if (imageEntry[category] == null) imageEntry[category] = listOf()
     val keyValues = imageEntry[category]?.toMutableList()
     keyValues?.addAll(categoryImages)
+    imageEntry[category] = keyValues!!.toImmutableList()
+    return imageEntry.toImmutableMap()
+}
+fun ApartmentData.updateUnitImage(category: String, image: Uri, index: Int): Map<String, List<Uri>> {
+    val imageEntry = images.toMutableMap()
+    val keyValues = imageEntry[category]?.toMutableList()
+    keyValues?.set(index, image)
     imageEntry[category] = keyValues!!.toImmutableList()
     return imageEntry.toImmutableMap()
 }

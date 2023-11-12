@@ -30,7 +30,6 @@ fun ApartmentDescription(
     Description(
         modifier = modifier,
         isError = reportError,
-        title = stringResource(R.string.unit_name),
         description = stringResource(R.string.apartment_description),
         placeholder = {
             Text(

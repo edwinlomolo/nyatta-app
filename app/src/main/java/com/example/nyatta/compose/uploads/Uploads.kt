@@ -34,7 +34,6 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.Description
-import com.example.nyatta.compose.components.Title
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.viewmodels.ApartmentViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
@@ -60,10 +59,9 @@ fun Uploads(
 
     Column(
         modifier = modifier
-            .padding(8.dp)
+            .padding(12.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Title(stringResource(R.string.uploads))
         Description(stringResource(R.string.describe_unit_images))
         FeatureImage(
             text = stringResource(R.string.living_room),
@@ -77,7 +75,6 @@ fun Uploads(
             apartmentViewModel = apartmentViewModel,
             apartmentData = apartmentData
         )
-        // TODO if has bedroom count
         if (hasBedCount) {
             FeatureImage(
                 text = stringResource(R.string.bedrooms),
@@ -86,7 +83,6 @@ fun Uploads(
                 apartmentData = apartmentData
             )
         }
-        // TODO if has balcony/front porch
         if (hasBalcony) {
             FeatureImage(
                 text = stringResource(R.string.balcony),
@@ -124,7 +120,7 @@ fun FeatureImage(
     val imagesSize = images[text]?.size ?: 0
     val scope = rememberCoroutineScope()
     val pickMultipleMedia = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(imageCount-imagesSize)
+        contract = ActivityResultContracts.PickMultipleVisualMedia(10)
     ) {
         if (it.isNotEmpty()) {
             apartmentViewModel.setUnitImages(text, it)
@@ -133,7 +129,7 @@ fun FeatureImage(
 
     Column(
         modifier = modifier
-            .padding(8.dp)
+            .padding(4.dp)
     ) {
         Text(
             text = "$text (${imageCount-imagesSize})",
@@ -146,7 +142,14 @@ fun FeatureImage(
                 .horizontalScroll(rememberScrollState()))
         {
             if (imagesSize > 0) {
-                images[text]?.forEachIndexed { _, item ->
+                images[text]?.forEachIndexed { index, item ->
+                    val pickMedia = rememberLauncherForActivityResult(
+                        contract = ActivityResultContracts.PickVisualMedia()
+                    ) {
+                        if (it != null) {
+                            apartmentViewModel.updateUnitImage(text, it, index)
+                        }
+                    }
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
                             .data(
@@ -154,19 +157,28 @@ fun FeatureImage(
                             )
                             .crossfade(true)
                             .build(),
-                        contentDescription = "Feature image",
+                        contentDescription = stringResource(R.string.feature_image),
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .size(135.dp)
                             .padding(8.dp)
                             .clip(MaterialTheme.shapes.small)
+                            .clickable {
+                                scope.launch {
+                                    pickMedia.launch(
+                                        PickVisualMediaRequest(
+                                            ActivityResultContracts.PickVisualMedia.ImageOnly
+                                        )
+                                    )
+                                }
+                            }
                     )
                 }
             }
             if (imagesSize < imageCount) {
                 Image(
                     painterResource(R.drawable.image_gallery),
-                    contentDescription = stringResource(R.string.rottweiler_description),
+                    contentDescription = stringResource(R.string.pick_media),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(100.dp)

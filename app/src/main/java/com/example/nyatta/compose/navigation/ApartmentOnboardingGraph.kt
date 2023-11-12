@@ -2,6 +2,7 @@ package com.example.nyatta.compose.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -31,6 +32,7 @@ import com.example.nyatta.compose.apartment.Unit
 import com.example.nyatta.compose.apartment.UnitState
 import com.example.nyatta.compose.apartment.UnitTypeDestination
 import com.example.nyatta.compose.components.OnboardingBottomBar
+import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.compose.uploads.Uploads
 import com.example.nyatta.compose.uploads.UploadsDestination
 import com.example.nyatta.viewmodels.AccountViewModel
@@ -43,6 +45,7 @@ object ApartmentOnboarding: Navigation {
     override val title = "Setup apartment"
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.apartmentOnboardingGraph(
     modifier: Modifier,
     navController: NavHostController,
@@ -67,6 +70,11 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
     ) {
         composable(route = ApartmentDescriptionDestination.route) {
             Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = stringResource(id = R.string.unit_name)
+                    )
+                },
                 bottomBar = {
                     OnboardingBottomBar(
                         validToProceed = descriptionValidToProceed,
@@ -98,6 +106,11 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
         }
         composable(route = SelectPropertyDestination.route) {
             Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = stringResource(id = R.string.select_property)
+                    )
+                },
                 bottomBar = {
                     OnboardingBottomBar(
                         navigateBack = {
@@ -128,6 +141,11 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
         }
         composable(route = UnitTypeDestination.route) {
             Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = stringResource(id = R.string.unit_type)
+                    )
+                },
                 bottomBar = {
                     OnboardingBottomBar(
                         navigateBack = {
@@ -162,6 +180,11 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
         }
         composable(route = ApartmentBedroomsDestination.route) {
             Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = stringResource(id = R.string.bedroom_title)
+                    )
+                },
                 bottomBar = {
                     OnboardingBottomBar(
                         navigateBack = {
@@ -192,6 +215,11 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
         }
         composable(route = ApartmentAmenitiesDestination.route) {
             Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = stringResource(id = R.string.select_property)
+                    )
+                },
                 bottomBar = {
                     OnboardingBottomBar(
                         validToProceed = amenitiesValidToProceed,
@@ -223,6 +251,11 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
         }
         composable(route = ApartmentBathsDestination.route) {
             Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = stringResource(id = R.string.bath_label_text)
+                    )
+                },
                 bottomBar = {
                     OnboardingBottomBar(
                         validToProceed = bathroomsValidToProceed,
@@ -254,6 +287,11 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
         }
         composable(route = ApartmentStateDestination.route) {
             Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = stringResource(id = R.string.unit_state)
+                    )
+                },
                 bottomBar = {
                     OnboardingBottomBar(
                         navigateBack = {
@@ -284,6 +322,11 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
         }
         composable(route = ApartmentPriceDestination.route) {
             Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = stringResource(id = R.string.price)
+                    )
+                },
                 bottomBar = {
                     OnboardingBottomBar(
                         validToProceed = priceValidToProceed,
@@ -316,6 +359,11 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
         }
         composable(route = UploadsDestination.route) {
             Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = stringResource(id = R.string.uploads)
+                    )
+                },
                 bottomBar = {
                     OnboardingBottomBar(
                         validToProceed = imagesSelectedValidToProceed,
