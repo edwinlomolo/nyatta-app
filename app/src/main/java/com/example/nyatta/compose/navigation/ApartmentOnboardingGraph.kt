@@ -72,6 +72,8 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
             Scaffold(
                 topBar = {
                     TopAppBar(
+                        canNavigateBack = true,
+                        navigateUp = { navController.popBackStack() },
                         title = stringResource(id = R.string.unit_name)
                     )
                 },
@@ -87,7 +89,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         actionButtonText = {
                             Text(
                                 text = stringResource(R.string.associate_with_property),
-                                style = MaterialTheme.typography.labelSmall
+                                style = MaterialTheme.typography.labelSmall,
                             )
                         }
                     )
@@ -108,6 +110,8 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
             Scaffold(
                 topBar = {
                     TopAppBar(
+                        canNavigateBack = true,
+                        navigateUp = { navController.popBackStack() },
                         title = stringResource(id = R.string.select_property)
                     )
                 },
@@ -116,6 +120,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         navigateBack = {
                             navController.popBackStack()
                         },
+                        validToProceed = true,
                         onActionButtonClick = {
                             navController.navigate(UnitTypeDestination.route)
                         },
@@ -143,6 +148,8 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
             Scaffold(
                 topBar = {
                     TopAppBar(
+                        canNavigateBack = true,
+                        navigateUp = { navController.popBackStack() },
                         title = stringResource(id = R.string.unit_type)
                     )
                 },
@@ -151,6 +158,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         navigateBack = {
                             navController.popBackStack()
                         },
+                        validToProceed = true,
                         onActionButtonClick =
                         {
                             if (!hasBedCount)
@@ -182,6 +190,8 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
             Scaffold(
                 topBar = {
                     TopAppBar(
+                        canNavigateBack = true,
+                        navigateUp = { navController.popBackStack() },
                         title = stringResource(id = R.string.bedroom_title)
                     )
                 },
@@ -190,6 +200,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         navigateBack = {
                             navController.popBackStack()
                         },
+                        validToProceed = true,
                         onActionButtonClick = {
                             navController.navigate(ApartmentAmenitiesDestination.route)
                         },
@@ -217,7 +228,9 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
             Scaffold(
                 topBar = {
                     TopAppBar(
-                        title = stringResource(id = R.string.select_property)
+                        canNavigateBack = true,
+                        navigateUp = { navController.popBackStack() },
+                        title = stringResource(id = R.string.select_amenities)
                     )
                 },
                 bottomBar = {
@@ -253,6 +266,8 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
             Scaffold(
                 topBar = {
                     TopAppBar(
+                        canNavigateBack = true,
+                        navigateUp = { navController.popBackStack() },
                         title = stringResource(id = R.string.bath_label_text)
                     )
                 },
@@ -289,6 +304,8 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
             Scaffold(
                 topBar = {
                     TopAppBar(
+                        canNavigateBack = true,
+                        navigateUp = { navController.popBackStack() },
                         title = stringResource(id = R.string.unit_state)
                     )
                 },
@@ -297,6 +314,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         navigateBack = {
                             navController.popBackStack()
                         },
+                        validToProceed = true,
                         onActionButtonClick = {
                             navController.navigate(ApartmentPriceDestination.route)
                         },
@@ -324,6 +342,8 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
             Scaffold(
                 topBar = {
                     TopAppBar(
+                        canNavigateBack = true,
+                        navigateUp = { navController.popBackStack() },
                         title = stringResource(id = R.string.price)
                     )
                 },
@@ -361,6 +381,8 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
             Scaffold(
                 topBar = {
                     TopAppBar(
+                        canNavigateBack = true,
+                        navigateUp = { navController.popBackStack() },
                         title = stringResource(id = R.string.uploads)
                     )
                 },
@@ -373,6 +395,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         onActionButtonClick = {
                             if (!authData.isLandlord) navController.navigate(PaymentGraph.route)
                         },
+                        showNextIcon = false,
                         actionButtonText = {
                             Text(
                                 text = stringResource(R.string.create_unit),

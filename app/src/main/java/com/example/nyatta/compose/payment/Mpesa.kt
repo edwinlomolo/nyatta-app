@@ -14,6 +14,8 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.twotone.CheckCircle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -37,9 +39,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.ActionButton
+import com.example.nyatta.compose.components.AlertDialogExample
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.TextInput
 import com.example.nyatta.compose.navigation.Navigation
+import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.AccountViewModel
 import com.example.nyatta.viewmodels.ICreatePayment
@@ -64,6 +68,7 @@ fun Mpesa(
     val phone = accUiState.phone
     val keyboardController = LocalSoftwareKeyboardController.current
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(paymentOptions[0]) }
+    val (showDialog, onShowDialog) = remember { mutableStateOf(false) }
 
     BackHandler {}
     Column(
@@ -142,8 +147,25 @@ fun Mpesa(
                 text = stringResource(R.string.pay),
                 onClick = {
                     accViewModel.createPayment()
+                    onShowDialog(true)
                 }
             )
+        }
+        when {
+            showDialog && createPaymentState is ICreatePayment.Success && createPaymentState.success == stringResource(
+                id = R.string.create_pay_success
+            ) -> {
+                AlertDialogExample(
+                    onDismissRequest = { onShowDialog(false) },
+                    onConfirmation = {
+                        onShowDialog(false)
+                        navigateNext(StartOnboardingDestination.route)
+                    },
+                    dialogTitle = stringResource(R.string.continue_payment),
+                    dialogText = stringResource(R.string.complete_authorization),
+                    icon = Icons.TwoTone.CheckCircle
+                )
+            }
         }
     }
 }

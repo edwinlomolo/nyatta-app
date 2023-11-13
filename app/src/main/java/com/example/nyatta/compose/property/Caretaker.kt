@@ -60,6 +60,14 @@ fun Caretaker(
     propertyViewModel: PropertyViewModel = viewModel(),
 ) {
     val propertyUiState by propertyViewModel.uiState.collectAsState()
+    val scope = rememberCoroutineScope()
+    val pickMedia = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) {
+        if (it != null) {
+            propertyViewModel.setCaretakerImage(it.toString())
+        }
+    }
 
     Column(
         modifier = modifier
@@ -108,8 +116,33 @@ fun Caretaker(
                     )
                 }
             }
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(
+                        propertyUiState.caretaker.image.ifBlank { R.drawable.user }
+                    )
+                    .crossfade(true)
+                    .build(),
+                contentDescription = stringResource(R.string.caretaker_image),
+                error = painterResource(R.drawable.ic_broken_image),
+                placeholder = painterResource(R.drawable.loading_img),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 12.dp)
+                    .size(120.dp)
+                    .clip(CircleShape)
+                    .clickable {
+                        scope.launch {
+                            pickMedia.launch(
+                                PickVisualMediaRequest(
+                                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                                )
+                            )
+                        }
+                    }
+            )
         }
-        // TODO Image upload
         if (!propertyUiState.isCaretaker) {
             CaretakerDetails(
                 propertyViewModel = propertyViewModel
@@ -126,45 +159,11 @@ fun CaretakerDetails(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val propertyData by propertyViewModel.uiState.collectAsState()
-    val scope = rememberCoroutineScope()
-    val pickMedia = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia()
-    ) {
-        if (it != null) {
-            propertyViewModel.setCaretakerImage(it.toString())
-        }
-    }
 
     Column(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(
-                    propertyData.caretaker.image.ifBlank { R.drawable.user }
-                )
-                .crossfade(true)
-                .build(),
-            contentDescription = stringResource(R.string.caretaker_image),
-            error = painterResource(R.drawable.ic_broken_image),
-            placeholder = painterResource(R.drawable.loading_img),
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 4.dp)
-                .size(120.dp)
-                .clip(CircleShape)
-                .clickable {
-                    scope.launch {
-                        pickMedia.launch(
-                            PickVisualMediaRequest(
-                                ActivityResultContracts.PickVisualMedia.ImageOnly
-                            )
-                        )
-                    }
-                }
-        )
         Column {
             TextInput(
                 placeholder = {

@@ -8,10 +8,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.nyatta.R
 import com.example.nyatta.compose.components.OnboardingBottomBar
 import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.viewmodels.OnboardingViewModel
@@ -19,9 +21,8 @@ import com.example.nyatta.compose.location.Location
 import com.example.nyatta.compose.location.LocationDestination
 import com.example.nyatta.compose.location.TownDestination
 import com.example.nyatta.compose.location.Towns
-import com.example.nyatta.viewmodels.AccountViewModel
+import com.example.nyatta.viewmodels.AuthState
 import com.example.nyatta.viewmodels.TownsViewModel
-import com.example.nyatta.viewmodels.UserDetails
 import com.google.android.gms.maps.model.LatLng
 
 object LocationGraph: Navigation {
@@ -35,6 +36,7 @@ fun NavGraphBuilder.locationGraph(
     townsViewModel: TownsViewModel,
     deviceLocation: LatLng,
     propertyType: String,
+    authData: AuthState,
     navController: NavHostController
 ) {
     navigation(
@@ -45,7 +47,9 @@ fun NavGraphBuilder.locationGraph(
             Scaffold(
                 topBar = {
                     TopAppBar(
-                        title = "Location"
+                        canNavigateBack = true,
+                        navigateUp = { navController.popBackStack() },
+                        title = stringResource(id = R.string.location)
                     )
                 },
                 bottomBar = {
@@ -54,12 +58,14 @@ fun NavGraphBuilder.locationGraph(
                             navController.popBackStack()
                         },
                         onActionButtonClick = {
-                            if (propertyType == "Apartments Building") navController.navigate(PaymentGraph.route)
+                            if (!authData.isLandlord && propertyType == "Apartments Building") navController.navigate(PaymentGraph.route)
                         },
+                        validToProceed = true,
+                        showNextIcon = propertyType != "Apartments Building",
                         actionButtonText = {
                             if (propertyType === "Apartments Building") {
                                 Text(
-                                    text = "Create property",
+                                    text = stringResource(R.string.create_property),
                                     style = MaterialTheme.typography.labelSmall
                                 )
                             }

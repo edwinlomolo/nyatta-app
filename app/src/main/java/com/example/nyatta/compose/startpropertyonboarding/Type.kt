@@ -119,7 +119,7 @@ fun Type(
                             modifier = Modifier
                                 .padding(start = 8.dp, top = 4.dp),
                             text = stringResource(typeDefinition[index]),
-                            style = MaterialTheme.typography.bodySmall
+                            style = MaterialTheme.typography.bodyLarge
                         )
                     }
                 }

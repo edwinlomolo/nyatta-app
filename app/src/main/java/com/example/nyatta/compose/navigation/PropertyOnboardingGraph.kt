@@ -49,11 +49,14 @@ fun NavGraphBuilder.propertyOnboardingGraph(
                 caretaker.lastName.isNotEmpty() &&
                 caretaker.phone.isNotEmpty() &&
                 caretaker.image.isNotEmpty()
+        val validSelfCaretaker = caretaker.image.isNotEmpty()
 
         composable(route = PropertyDescriptionDestination.route) {
             Scaffold(
                 topBar = {
                     TopAppBar(
+                        canNavigateBack = true,
+                        navigateUp = { navController.popBackStack() },
                         title = stringResource(id = R.string.property_name)
                     )
                 },
@@ -88,6 +91,8 @@ fun NavGraphBuilder.propertyOnboardingGraph(
             Scaffold(
                 topBar = {
                     TopAppBar(
+                        canNavigateBack = true,
+                        navigateUp = { navController.popBackStack() },
                         title = stringResource(id = R.string.property_thumbnail)
                     )
                 },
@@ -122,19 +127,17 @@ fun NavGraphBuilder.propertyOnboardingGraph(
             Scaffold(
                 topBar = {
                     TopAppBar(
+                        canNavigateBack = true,
+                        navigateUp = { navController.popBackStack() },
                         title = stringResource(id = R.string.caretaker)
                     )
                 },
                 bottomBar = {
                     OnboardingBottomBar(
-                        validToProceed = if (!isCaretaker) validToProceed else true,
+                        validToProceed = if (isCaretaker) validSelfCaretaker else validToProceed,
                         navigateBack = { navController.popBackStack() },
                         onActionButtonClick = {
-                            if (!isCaretaker && validToProceed) {
-                                navController.navigate(LocationGraph.route)
-                            } else {
-                                navController.navigate(LocationGraph.route)
-                            }
+                            navController.navigate(LocationGraph.route)
                         },
                         actionButtonText = {
                             Text(

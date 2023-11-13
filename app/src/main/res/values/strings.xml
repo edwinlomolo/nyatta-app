@@ -129,4 +129,9 @@
     <string name="add_thumbnail">Add thumbnail</string>
     <string name="pick_media">Pick media</string>
     <string name="feature_image">Feature image</string>
+    <string name="create_pay_success">Please complete authorization process on your mobile phone</string>
+    <string name="continue_payment">Continue payment</string>
+    <string name="done">Done</string>
+    <string name="complete_authorization">Complete authorization process on your mobile phone.</string>
+    <string name="create_property">Create property</string>
 </resources>
