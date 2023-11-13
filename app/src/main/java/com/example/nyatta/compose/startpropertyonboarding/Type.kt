@@ -64,7 +64,6 @@ fun Type(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        Description(stringResource(R.string.what_to_add))
         propertyOptions.forEachIndexed { index, option ->
             Card(
                 modifier = Modifier

@@ -35,10 +35,10 @@ import com.example.nyatta.compose.components.OnboardingBottomBar
 import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.compose.uploads.Uploads
 import com.example.nyatta.compose.uploads.UploadsDestination
+import com.example.nyatta.data.model.User
 import com.example.nyatta.viewmodels.AccountViewModel
 import com.example.nyatta.viewmodels.ApartmentData
 import com.example.nyatta.viewmodels.ApartmentDataValidity
-import com.example.nyatta.viewmodels.AuthState
 
 object ApartmentOnboarding: Navigation {
     override val route = "onboarding/apartment"
@@ -53,7 +53,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
     accViewModel: AccountViewModel,
     apartmentData: ApartmentData,
     dataValidity: ApartmentDataValidity,
-    authData: AuthState
+    user: User
 ) {
     val descriptionValidToProceed = dataValidity.description
     val bathroomsValidToProceed = dataValidity.bathrooms
@@ -62,7 +62,6 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
         ?: false }
     val priceValidToProceed = dataValidity.price
     val hasBedCount: Boolean = apartmentData.unitType != "Single room" && apartmentData.unitType != "Studio"
-    val authData: AuthState = authData
 
     navigation(
         startDestination = ApartmentDescriptionDestination.route,
@@ -393,7 +392,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                             navController.popBackStack()
                         },
                         onActionButtonClick = {
-                            if (!authData.isLandlord) navController.navigate(PaymentGraph.route)
+                            if (!user.isLandlord) navController.navigate(PaymentGraph.route)
                         },
                         showNextIcon = false,
                         actionButtonText = {

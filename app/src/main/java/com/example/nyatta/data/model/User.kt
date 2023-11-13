@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class User(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val phone: String,
-    val isLandlord: Boolean,
-    val token: String
+    val phone: String = "",
+    val isLandlord: Boolean = false,
+    val token: String = ""
 )

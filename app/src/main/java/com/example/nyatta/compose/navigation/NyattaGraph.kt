@@ -1,6 +1,5 @@
 package com.example.nyatta.compose.navigation
 
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -78,13 +77,13 @@ fun NyattaNavHost(
     accountViewModel: AccountViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     authViewModel: AuthViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
 ) {
-    val auth by authViewModel.auth.collectAsState()
+    val authUiState by authViewModel.authUiState.collectAsState()
     val onboardingUiState by onboardingViewModel.uiState.collectAsState()
     val propertyUiState by propertyViewModel.uiState.collectAsState()
     val apartmentUiState by apartmentViewModel.uiState.collectAsState()
     val userUiDetails by accountViewModel.userUiDetails.collectAsState()
 
-    val authData = auth
+    val user = authUiState.user
     val onboardingUiData = onboardingUiState
     val propertyUiData = propertyUiState
     val deviceLocation = userUiDetails.location
@@ -145,7 +144,7 @@ fun NyattaNavHost(
             modifier = modifier,
             navController = navController,
             onboardingViewModel = onboardingViewModel,
-            authState = authData,
+            user = user,
             onboardingUiState = onboardingUiData
         )
         paymentGraph(
@@ -160,7 +159,7 @@ fun NyattaNavHost(
             onboardingViewModel = onboardingViewModel,
             deviceLocation = deviceLocation,
             propertyType = onboardingUiData.type,
-            authData = authData
+            user = user
         )
         listingDetailsGraph(navController)
         propertyOnboardingGraph(
@@ -175,7 +174,7 @@ fun NyattaNavHost(
             apartmentViewModel = apartmentViewModel,
             dataValidity = dataValidity,
             apartmentData = apartmentUiState,
-            authData = authData,
+            user = user,
             accViewModel = accountViewModel
         )
         loginGraph(

@@ -94,20 +94,18 @@ fun Phone(
                         }
                     )
                 )
-                if (accUiState is AccountUiState.ApolloError) {
+                if (accUiState is AccountUiState.ApolloError && accUiState.message!!.contains("Failed to execute GraphQL http network request")) {
                     Text(
-                        text = accUiState.message!!,
+                        text = stringResource(R.string.network_connection_issue),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.error
                     )
                 }
                 Button(
                     onClick = {
-                        accountViewModel.signIn {
-                            if (accUiState is AccountUiState.Auth) {
-                                navigateNext(StartOnboardingDestination.route)
-                            }
-                        }
+                        accountViewModel.signIn()
+                        navigateNext(StartOnboardingDestination.route)
+
                     },
                     shape = MaterialTheme.shapes.small,
                     modifier = Modifier.fillMaxWidth()

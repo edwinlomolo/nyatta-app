@@ -134,4 +134,5 @@
     <string name="done">Done</string>
     <string name="complete_authorization">Complete authorization process on your mobile phone.</string>
     <string name="create_property">Create property</string>
+    <string name="network_connection_issue">Failed due to network connection issue</string>
 </resources>

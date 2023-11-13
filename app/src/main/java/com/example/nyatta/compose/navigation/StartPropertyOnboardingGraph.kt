@@ -28,7 +28,7 @@ import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestina
 import com.example.nyatta.compose.startpropertyonboarding.Type
 import com.example.nyatta.compose.user.SignUp
 import com.example.nyatta.compose.user.UserSignUpDestination
-import com.example.nyatta.viewmodels.AuthState
+import com.example.nyatta.data.model.User
 import com.example.nyatta.viewmodels.OnboardingUiState
 
 
@@ -42,11 +42,11 @@ fun NavGraphBuilder.startPropertyOnboarding(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     onboardingViewModel: OnboardingViewModel,
-    authState: AuthState,
+    user: User,
     onboardingUiState: OnboardingUiState
 ) {
     val validToProceed = onboardingUiState.validToProceed.type
-    val isAuthenticated = authState.isAuthed
+    val isAuthenticated = user.token.isNotEmpty()
     val propertyType = onboardingUiState.type
 
     navigation(
@@ -105,7 +105,7 @@ fun NavGraphBuilder.startPropertyOnboarding(
             Scaffold(
                 topBar = {
                     TopAppBar(
-                        title = stringResource(id = R.string.start_your_setup)
+                        title = stringResource(id = R.string.what_to_add)
                     )
                 },
                 bottomBar = {

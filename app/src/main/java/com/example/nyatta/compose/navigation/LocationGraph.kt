@@ -21,7 +21,7 @@ import com.example.nyatta.compose.location.Location
 import com.example.nyatta.compose.location.LocationDestination
 import com.example.nyatta.compose.location.TownDestination
 import com.example.nyatta.compose.location.Towns
-import com.example.nyatta.viewmodels.AuthState
+import com.example.nyatta.data.model.User
 import com.example.nyatta.viewmodels.TownsViewModel
 import com.google.android.gms.maps.model.LatLng
 
@@ -36,7 +36,7 @@ fun NavGraphBuilder.locationGraph(
     townsViewModel: TownsViewModel,
     deviceLocation: LatLng,
     propertyType: String,
-    authData: AuthState,
+    user: User,
     navController: NavHostController
 ) {
     navigation(
@@ -58,7 +58,7 @@ fun NavGraphBuilder.locationGraph(
                             navController.popBackStack()
                         },
                         onActionButtonClick = {
-                            if (!authData.isLandlord && propertyType == "Apartments Building") navController.navigate(PaymentGraph.route)
+                            if (!user.isLandlord && propertyType == "Apartments Building") navController.navigate(PaymentGraph.route)
                         },
                         validToProceed = true,
                         showNextIcon = propertyType != "Apartments Building",

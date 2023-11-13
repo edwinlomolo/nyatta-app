@@ -47,7 +47,7 @@ class AccountViewModel(
     var createPaymentUiState: ICreatePayment by mutableStateOf(ICreatePayment.Success())
         private set
 
-    fun signIn(fn: () -> Unit = {}) {
+    fun signIn() {
         if (userUiDetails.value.phone.isNotEmpty() && userUiDetails.value.validDetails.phone) {
             accUiState = AccountUiState.Loading
             viewModelScope.launch {
