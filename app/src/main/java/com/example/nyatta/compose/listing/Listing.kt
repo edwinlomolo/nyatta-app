@@ -1,5 +1,7 @@
 package com.example.nyatta.compose.listing
 
+import android.util.Log
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -71,13 +73,29 @@ object ListingDetailsDestination: Navigation {
 }
 
 val amenities = listOf(
-    Amenity("Internet", "Safaricom home fibre"),
-    Amenity("Kitchen", "Open kitchen plan"),
-    Amenity("Outdoor", "Front porch"),
-    Amenity("Parking", "Free premises parking"),
-    Amenity("Internet", "Zuku home fibre")
-).groupBy { it.category }
+    Amenity("Internet", "Safaricom Home Fibre"),
+    Amenity("Kitchen", "Open Kitchen Plan"),
+    Amenity("Outdoor", "Front Porch"),
+    Amenity("Parking", "Free Premises Parking"),
+    Amenity("Internet", "Zuku Home Fibre")
+)
 
+val featuredAmenities = setOf(
+    "Front Porch",
+    "Balcony",
+    "Piped Water",
+    "Dining Area/Space",
+    "Kitchen",
+    "Internet"
+)
+val featuredAmenityIcon = mapOf(
+    "Front porch" to R.drawable.veranda,
+    "Balcony" to R.drawable.balcony,
+    "Kitchen" to R.drawable.open_kitchen,
+    "Piped Water" to R.drawable.tap,
+    "Dining Area/Space" to R.drawable.dining_icon,
+    "Internet" to R.drawable.internet_icon
+)
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -171,11 +189,24 @@ fun Listing(
                Section(
                    title = stringResource(R.string.features)
                ) {
+                   val featured = amenities
+                       .filter {
+                           featuredAmenities.contains(it.name) || it.name.contains("Kitchen") || (it.name == "Safaricom Home Fibre" || it.name == "Zuku Home Fibre")
+                       }
+                       .map {
+                           if (it.name == "Safaricom Home Fibre" || it.name == "Zuku Home Fibre" || it.name.contains("Kitchen")) {
+                               it.category
+                           } else {
+                               it.name
+                           }
+                       }
+                       .union(listOf())
+
                    Row(
                        modifier = Modifier.horizontalScroll(rememberScrollState())
                    ) {
-                       repeat(5) {
-                           FeaturedAmenities()
+                       featured.map {
+                           featuredAmenityIcon[it]?.let { it1 -> FeaturedAmenities(icon = it1, name = it) }
                        }
                    }
                }
@@ -229,6 +260,7 @@ fun Listing(
                    Column(
                        modifier = Modifier.padding(bottom = 8.dp)
                    ) {
+                       val amenities = amenities.groupBy { it.category }
                        amenities.keys.toList().map { amenity ->
                            Text(
                                text = amenity,
@@ -254,7 +286,9 @@ fun Listing(
 
 @Composable
 fun FeaturedAmenities(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    @DrawableRes icon: Int,
+    name: String
 ) {
     Column(
         modifier = modifier
@@ -270,15 +304,15 @@ fun FeaturedAmenities(
     ) {
         Column {
             Text(
-                text = "2",
+                text = name,
                 style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.size(12.dp))
             Icon(
-                painterResource(R.drawable.bed),
-                contentDescription = "Bed",
-                modifier = Modifier.size(32.dp)
+                painterResource(icon),
+                contentDescription = name,
+                modifier = Modifier.size(32.dp).align(Alignment.CenterHorizontally)
             )
         }
     }

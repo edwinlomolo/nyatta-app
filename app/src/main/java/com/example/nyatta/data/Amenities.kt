@@ -20,7 +20,7 @@ val amenities = listOf<Amenity>(
     Amenity("Outdoor", "Balcony"),
     Amenity("Outdoor", "Front Porch"),
     Amenity("Parking", "Free Premises Parking"),
-    Amenity("Internet", "Zuku Home"),
+    Amenity("Internet", "Zuku Home Fibre"),
     Amenity("Security", "CCTV Camera"),
     Amenity("Television", "TV Cable"),
     Amenity("Safety", "Smoke Alarm"),
