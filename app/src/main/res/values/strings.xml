@@ -135,4 +135,12 @@
     <string name="complete_authorization">Complete authorization process on your mobile phone.</string>
     <string name="create_property">Create property</string>
     <string name="network_connection_issue">Failed due to network connection issue</string>
+    <string name="you">You</string>
+    <string name="done_icon">Done Icon</string>
+    <string name="info">Info</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="not_landlord_line">I just need a meal a day, pay for servers and internet, and my rent. I will make house hunting an experience rather than a story.</string>
+    <string name="subscribed_landlord_line">I have received your property. You can continue setting up this property.</string>
+    <string name="subscribe_to_continue">Subscribe to continue</string>
+    <string name="congratulations">Congratulations!</string>
 </resources>

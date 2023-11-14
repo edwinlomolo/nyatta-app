@@ -157,9 +157,10 @@ fun NyattaNavHost(
             navController = navController,
             townsViewModel = townsViewModel,
             onboardingViewModel = onboardingViewModel,
+            propertyViewModel = propertyViewModel,
             deviceLocation = deviceLocation,
             propertyType = onboardingUiData.type,
-            user = user
+            user = user,
         )
         listingDetailsGraph(navController)
         propertyOnboardingGraph(

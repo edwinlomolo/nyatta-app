@@ -35,7 +35,7 @@ import com.example.nyatta.ui.theme.MabryFont
 fun ListingCard(
     modifier: Modifier = Modifier,
 ) {
-    val image = R.drawable.apartment_sunset_in_the_background_in_africa_and_person_c4dadd13_9720_4c7f_ad7b_86e197bfd86c
+    val image = R.drawable.vacant_unfurnished_apartment_with_a_balcony_and_african_00656184_015b_4296_8063_d4957def7a7d
 
     Card(
         colors = CardDefaults.cardColors(

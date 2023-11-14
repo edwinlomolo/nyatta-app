@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
@@ -85,7 +86,7 @@ fun Listing(
     navigateUp: () -> Unit = {},
     onNavigateToPhotos: (String) -> Unit = {}
 ) {
-    val image = R.drawable.apartment_sunset_in_the_background_in_africa_and_person_c4dadd13_9720_4c7f_ad7b_86e197bfd86c
+    val image = R.drawable.vacant_unfurnished_apartment_with_a_balcony_and_african_00656184_015b_4296_8063_d4957def7a7d
 
     Scaffold(
         topBar = {
@@ -208,13 +209,13 @@ fun Listing(
                            contentDescription = stringResource(id = R.string.caretaker_image),
                            contentScale = ContentScale.Crop,
                            modifier = Modifier
-                               .size(50.dp)
-                               .clip(CircleShape)
+                               .size(80.dp)
+                               .clip(RoundedCornerShape(8.dp))
                        )
                        Spacer(modifier = Modifier.size(18.dp))
                        Text(
                            text = "John Doe",
-                           style = MaterialTheme.typography.bodyLarge
+                           style = MaterialTheme.typography.titleSmall
                        )
                    }
                }
@@ -228,7 +229,7 @@ fun Listing(
                            Text(
                                text = amenity,
                                modifier = Modifier.padding(8.dp),
-                               style = MaterialTheme.typography.titleSmall
+                               style = MaterialTheme.typography.labelSmall
                            )
                            Column {
                                amenities[amenity]?.map {

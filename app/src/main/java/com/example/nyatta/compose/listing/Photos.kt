@@ -60,7 +60,9 @@ fun ListingPhoto(
                     items(10) {
                         AsyncImage(
                             model = ImageRequest.Builder(LocalContext.current)
-                                .data(R.drawable.rottweiler)
+                                .data(
+                                    R.drawable.vacant_unfurnished_apartment_with_a_balcony_and_african_00656184_015b_4296_8063_d4957def7a7d
+                                )
                                 .crossfade(true)
                                 .build(),
                             contentDescription = stringResource(R.string.listing_photo),

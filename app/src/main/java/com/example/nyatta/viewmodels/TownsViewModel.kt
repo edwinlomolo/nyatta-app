@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 
 sealed interface TownsUiState {
     data class Success(val towns: List<GetTownsQuery.GetTown>? = null): TownsUiState
-    object Loading: TownsUiState
+    data object Loading: TownsUiState
     data class ApolloError(val errors: List<Error>): TownsUiState
     data class ApplicationError(val error: ApolloException): TownsUiState
 }
@@ -31,7 +31,7 @@ class TownsViewModel(
     var townsUiState: TownsUiState by mutableStateOf(Loading)
         private set
     private val _townsList = MutableStateFlow(Success())
-    val townsList: StateFlow<Success> = _townsList.asStateFlow()
+    private val townsList: StateFlow<Success> = _townsList.asStateFlow()
     var searchQuery by mutableStateOf("")
         private set
 
@@ -40,7 +40,7 @@ class TownsViewModel(
         getTowns()
     }
 
-    fun getTowns() {
+    private fun getTowns() {
         viewModelScope.launch {
             townsUiState = try {
                 val response = townsRepository.getTowns()

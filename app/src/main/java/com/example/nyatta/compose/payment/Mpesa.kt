@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.ActionButton
-import com.example.nyatta.compose.components.AlertDialogExample
+import com.example.nyatta.compose.components.AlertDialog
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.TextInput
 import com.example.nyatta.compose.navigation.Navigation
@@ -155,7 +155,7 @@ fun Mpesa(
             showDialog && createPaymentState is ICreatePayment.Success && createPaymentState.success == stringResource(
                 id = R.string.create_pay_success
             ) -> {
-                AlertDialogExample(
+                AlertDialog(
                     onDismissRequest = { onShowDialog(false) },
                     onConfirmation = {
                         onShowDialog(false)

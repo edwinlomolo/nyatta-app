@@ -4,6 +4,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -116,32 +117,35 @@ fun Caretaker(
                     )
                 }
             }
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(
-                        propertyUiState.caretaker.image.ifBlank { R.drawable.user }
-                    )
-                    .crossfade(true)
-                    .build(),
-                contentDescription = stringResource(R.string.caretaker_image),
-                error = painterResource(R.drawable.ic_broken_image),
-                placeholder = painterResource(R.drawable.loading_img),
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 12.dp)
-                    .size(120.dp)
-                    .clip(CircleShape)
-                    .clickable {
-                        scope.launch {
-                            pickMedia.launch(
-                                PickVisualMediaRequest(
-                                    ActivityResultContracts.PickVisualMedia.ImageOnly
+            Box(
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            ) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(
+                            propertyUiState.caretaker.image.ifBlank { R.drawable.image_gallery }
+                        )
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = stringResource(R.string.caretaker_image),
+                    error = painterResource(R.drawable.ic_broken_image),
+                    placeholder = painterResource(R.drawable.loading_img),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .padding(top = 12.dp)
+                        .size(120.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickable {
+                            scope.launch {
+                                pickMedia.launch(
+                                    PickVisualMediaRequest(
+                                        ActivityResultContracts.PickVisualMedia.ImageOnly
+                                    )
                                 )
-                            )
+                            }
                         }
-                    }
-            )
+                )
+            }
         }
         if (!propertyUiState.isCaretaker) {
             CaretakerDetails(

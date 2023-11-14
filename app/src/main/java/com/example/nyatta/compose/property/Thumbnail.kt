@@ -63,7 +63,7 @@ fun Thumbnail(
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(
-                    propertyData.thumbnail ?: R.drawable.apartments
+                    propertyData.thumbnail ?: R.drawable.image_gallery
                 )
                 .crossfade(true)
                 .build(),
@@ -73,8 +73,8 @@ fun Thumbnail(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(top = 4.dp)
-                .size(240.dp)
+                .padding(top = 20.dp)
+                .size(120.dp)
                 .clip(RoundedCornerShape(8.dp))
                 .clickable {
                     scope.launch {

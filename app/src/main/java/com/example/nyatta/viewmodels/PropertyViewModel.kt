@@ -96,6 +96,18 @@ class PropertyViewModel: ViewModel() {
             )
         }
     }
+
+    fun createProperty() {
+        setSubmitted(true)
+    }
+
+    fun setSubmitted(submitted: Boolean) {
+        _uiState.update {
+            it.copy(
+                submitted = submitted
+            )
+        }
+    }
 }
 
 data class CaretakerData(
@@ -117,5 +129,6 @@ data class PropertyData(
     val isCaretaker: Boolean = false,
     val caretaker: CaretakerData = CaretakerData(),
     val validToProceed: PropertyDataValidity = PropertyDataValidity(),
-    val thumbnail: Uri? = null
+    val thumbnail: Uri? = null,
+    val submitted: Boolean = false
 )

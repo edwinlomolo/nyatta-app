@@ -22,6 +22,8 @@ import com.example.nyatta.compose.location.LocationDestination
 import com.example.nyatta.compose.location.TownDestination
 import com.example.nyatta.compose.location.Towns
 import com.example.nyatta.data.model.User
+import com.example.nyatta.viewmodels.PropertyData
+import com.example.nyatta.viewmodels.PropertyViewModel
 import com.example.nyatta.viewmodels.TownsViewModel
 import com.google.android.gms.maps.model.LatLng
 
@@ -33,11 +35,12 @@ object LocationGraph: Navigation {
 fun NavGraphBuilder.locationGraph(
     modifier: Modifier = Modifier,
     onboardingViewModel: OnboardingViewModel,
+    propertyViewModel: PropertyViewModel,
     townsViewModel: TownsViewModel,
     deviceLocation: LatLng,
     propertyType: String,
-    user: User,
-    navController: NavHostController
+    navController: NavHostController,
+    user: User
 ) {
     navigation(
         startDestination = LocationDestination.route,
@@ -58,7 +61,9 @@ fun NavGraphBuilder.locationGraph(
                             navController.popBackStack()
                         },
                         onActionButtonClick = {
-                            if (!user.isLandlord && propertyType == "Apartments Building") navController.navigate(PaymentGraph.route)
+                            if (/*!user.isLandlord && */propertyType == "Apartments Building") {
+                                propertyViewModel.createProperty()
+                            }
                         },
                         validToProceed = true,
                         showNextIcon = propertyType != "Apartments Building",
@@ -79,6 +84,9 @@ fun NavGraphBuilder.locationGraph(
                         .padding(innerPadding)
                 ) {
                     Location(
+                        navigateNext = { navController.navigate(it) },
+                        user = user,
+                        propertyViewModel = propertyViewModel,
                         deviceLocation = deviceLocation,
                         onboardingViewModel = onboardingViewModel
                     )
