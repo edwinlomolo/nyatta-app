@@ -163,7 +163,8 @@ fun Mpesa(
                     },
                     dialogTitle = stringResource(R.string.continue_payment),
                     dialogText = stringResource(R.string.complete_authorization),
-                    icon = Icons.TwoTone.CheckCircle
+                    icon = Icons.TwoTone.CheckCircle,
+                    confirmationText = stringResource(R.string.continue_next)
                 )
             }
         }

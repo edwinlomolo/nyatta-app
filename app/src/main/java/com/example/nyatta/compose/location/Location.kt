@@ -89,7 +89,9 @@ fun Location(
                         R.string.subscribed_landlord_line
                     ),
                     icon = Icons.TwoTone.CheckCircle,
-                    confirmationText = stringResource(R.string.subscribe)
+                    confirmationText = if (!user.isLandlord) stringResource(R.string.subscribe) else stringResource(
+                        id = R.string.continue_next
+                    )
                 )
             }
         }

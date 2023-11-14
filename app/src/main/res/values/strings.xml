@@ -143,4 +143,5 @@
     <string name="subscribed_landlord_line">I have received your property. You can continue setting up this property.</string>
     <string name="subscribe_to_continue">Subscribe to continue</string>
     <string name="congratulations">Congratulations!</string>
+    <string name="continue_next">Continue</string>
 </resources>
