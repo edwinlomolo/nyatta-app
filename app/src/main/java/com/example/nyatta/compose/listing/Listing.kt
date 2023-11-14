@@ -229,7 +229,7 @@ fun Listing(
                            Text(
                                text = amenity,
                                modifier = Modifier.padding(8.dp),
-                               style = MaterialTheme.typography.labelSmall
+                               style = MaterialTheme.typography.titleSmall
                            )
                            Column {
                                amenities[amenity]?.map {
@@ -310,7 +310,7 @@ fun Tag(
         Text(
             text = text,
             color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.labelSmall
+            style = MaterialTheme.typography.bodySmall
         )
     }
 }
