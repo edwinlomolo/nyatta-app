@@ -262,6 +262,7 @@ fun Listing(
                        modifier = Modifier.padding(bottom = 8.dp)
                    ) {
                        val amenities = amenities.groupBy { it.category }
+
                        amenities.keys.toList().map { amenity ->
                            Text(
                                text = amenity,
