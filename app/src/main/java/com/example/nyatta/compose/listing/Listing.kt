@@ -1,6 +1,7 @@
 package com.example.nyatta.compose.listing
 
-import android.util.Log
+import android.content.Intent
+import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -312,7 +313,9 @@ fun FeaturedAmenities(
             Icon(
                 painterResource(icon),
                 contentDescription = name,
-                modifier = Modifier.size(32.dp).align(Alignment.CenterHorizontally)
+                modifier = Modifier
+                    .size(32.dp)
+                    .align(Alignment.CenterHorizontally)
             )
         }
     }
@@ -332,6 +335,7 @@ fun Section(
     Divider(modifier = Modifier.padding(8.dp))
     content()
 }
+
 @Composable
 fun Tag(
     modifier: Modifier = Modifier,
@@ -357,17 +361,25 @@ fun Tag(
 fun ListingBottomBar(
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
     BottomAppBar(modifier = modifier) {
         Row {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    // TODO use caretaker phone
+                    val dialIntent = Intent(Intent.ACTION_DIAL).apply {
+                        data = Uri.parse("tel:0792921440")
+                    }
+                    context.startActivity(dialIntent)
+                },
                 shape = MaterialTheme.shapes.small,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp)
             ) {
                 Text(
-                    text = "Call",
+                    text = stringResource(R.string.call),
                     style = TextStyle(
                         fontFamily = MabryFont,
                         fontWeight = FontWeight.SemiBold
