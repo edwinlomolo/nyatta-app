@@ -20,11 +20,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -141,12 +141,16 @@ fun Listing(
                ) {
                    Button(
                        onClick = { onNavigateToPhotos(ListingPhotosDestination.route) },
+                       colors = ButtonDefaults.buttonColors(
+                           containerColor = MaterialTheme.colorScheme.background
+                       ),
                        modifier = Modifier
                            .padding(start = 16.dp, end = 16.dp),
                        shape = MaterialTheme.shapes.small
                    ) {
                        Text(
                            text = stringResource(R.string.view),
+                           color = MaterialTheme.colorScheme.primary,
                            style = MaterialTheme.typography.labelSmall
                        )
                    }
