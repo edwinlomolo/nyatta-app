@@ -27,7 +27,6 @@ import java.io.InputStream
 
 class ApartmentViewModel(
     private val restApiRepository: RestApiRepository,
-    private val nyattaGqlApiRepository: NyattaGqlApiRepository
 ): ViewModel() {
     val selectProperties = listOf(
         SelectPropertyData("87928yoihf", "Beach House Properties"),

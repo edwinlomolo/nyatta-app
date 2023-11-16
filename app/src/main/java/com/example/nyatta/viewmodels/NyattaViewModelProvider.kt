@@ -16,8 +16,7 @@ object NyattaViewModelProvider {
         // Initializer for ApartmentViewModel
         initializer {
             ApartmentViewModel(
-                nyattaApplication().container.restApiRepository,
-                nyattaApplication().container.nyattaGqlApiRepository
+                nyattaApplication().container.restApiRepository
             )
         }
         // Initializer for PropertyViewModel
