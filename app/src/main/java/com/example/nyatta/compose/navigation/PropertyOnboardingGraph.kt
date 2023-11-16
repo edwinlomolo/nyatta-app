@@ -44,14 +44,14 @@ fun NavGraphBuilder.propertyOnboardingGraph(
     ) {
         val emptyState = propertyUiState.description.isEmpty()
         val thumbnailValidToProceed =
-            propertyUiState.thumbnail is ImageState.Success && propertyUiState.thumbnail.imageUri != null
+            (propertyUiState.thumbnail is ImageState.Success) && (propertyUiState.thumbnail.imageUri != null)
         val isCaretaker = propertyUiState.isCaretaker
         val caretaker = propertyUiState.caretaker
+        val caretakerImageValid = (caretaker.image is ImageState.Success) && (caretaker.image.imageUri != null)
         val validToProceed: Boolean = caretaker.firstName.isNotEmpty() &&
                 caretaker.lastName.isNotEmpty() &&
                 caretaker.phone.isNotEmpty() &&
-                caretaker.image.isNotEmpty()
-        val validSelfCaretaker = caretaker.image.isNotEmpty()
+                caretakerImageValid
 
         composable(route = PropertyDescriptionDestination.route) {
             Scaffold(
@@ -136,7 +136,7 @@ fun NavGraphBuilder.propertyOnboardingGraph(
                 },
                 bottomBar = {
                     OnboardingBottomBar(
-                        validToProceed = if (isCaretaker) validSelfCaretaker else validToProceed,
+                        validToProceed = if (isCaretaker) caretakerImageValid else validToProceed,
                         navigateBack = { navController.popBackStack() },
                         onActionButtonClick = {
                             navController.navigate(LocationGraph.route)

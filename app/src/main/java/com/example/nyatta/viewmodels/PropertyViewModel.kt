@@ -86,40 +86,35 @@ class PropertyViewModel(
         }
     }
 
-    fun setCaretakerImage(image: String) {
+    fun setCaretakerImage(stream: InputStream) {
+        val request = stream.readBytes().toRequestBody()
+        val filePart = MultipartBody.Part.createFormData(
+            "file",
+            "photo_${System.currentTimeMillis()}.jpg",
+            request
+        )
         _uiState.update {
-            val valid = it.validToProceed.copy(caretakerImage = image.isNotEmpty())
-            val caretaker = it.caretaker.copy(image = image)
-            it.copy(
-                caretaker = caretaker,
-                validToProceed = valid
-            )
+            val caretaker = it.caretaker.copy(image = ImageState.Loading)
+            it.copy(caretaker = caretaker)
+        }
+        viewModelScope.launch {
+            try {
+                val response = restApiRepository.uploadImage(filePart)
+                _uiState.update {
+                    val caretaker = it.caretaker.copy(image = ImageState.Success(response.imageUri))
+                    it.copy(caretaker = caretaker)
+                }
+            } catch(e: IOException) {
+                _uiState.update {
+                    val caretaker = it.caretaker.copy(image = ImageState.UploadError(e.localizedMessage))
+                    it.copy(caretaker = caretaker)
+                }
+                e.localizedMessage?.let { Log.e("UploadCaretakerImageOperationError", it) }
+            }
         }
     }
 
-    fun setPropertyThumbnail(thumbnail: Uri?, stream: InputStream) {
-        _uiState.update {
-            val valid = it.validToProceed.copy(thumbnail = thumbnail != null)
-            it.copy(
-                validToProceed = valid
-            )
-        }
-        uploadImage(stream)
-    }
-
-    fun createProperty() {
-        setSubmitted(true)
-    }
-
-    fun setSubmitted(submitted: Boolean) {
-        _uiState.update {
-            it.copy(
-                submitted = submitted
-            )
-        }
-    }
-
-    private fun uploadImage(stream: InputStream) {
+    fun setPropertyThumbnail(stream: InputStream) {
         val request = stream.readBytes().toRequestBody()
         val filePart = MultipartBody.Part.createFormData(
             "file",
@@ -133,14 +128,26 @@ class PropertyViewModel(
                 _uiState.update { it.copy(thumbnail = ImageState.Success(response.imageUri)) }
             } catch(e: IOException) {
                 _uiState.update { it.copy(thumbnail = ImageState.UploadError(e.localizedMessage)) }
-                e.localizedMessage?.let { Log.e("UploadOperationError", it) }
+                e.localizedMessage?.let { Log.e("UploadPropertyThumbnailOperationError", it) }
             }
+        }
+    }
+
+    fun createProperty() {
+        setSubmitted(true)
+    }
+
+    fun setSubmitted(submitted: Boolean) {
+        _uiState.update {
+            it.copy(
+                submitted = submitted
+            )
         }
     }
 }
 
 data class CaretakerData(
-    val image: String = "",
+    val image: ImageState = ImageState.Success(),
     val firstName: String = "",
     val lastName: String = "",
     val phone: String = ""

@@ -50,16 +50,15 @@ fun Thumbnail(
         contract = ActivityResultContracts.PickVisualMedia()
     ) {
         if (it != null) {
-
             val stream = context.contentResolver.openInputStream(it)
             if (stream != null) {
-                propertyViewModel.setPropertyThumbnail(it, stream)
+                propertyViewModel.setPropertyThumbnail(stream)
             }
         }
     }
     val scope = rememberCoroutineScope()
     val propertyUiState by propertyViewModel.uiState.collectAsState()
-    var imageUri: Any? = null
+    var imageUri: Any? = R.drawable.image_gallery
     var uploadError: String? = null
     when(val s = propertyUiState.thumbnail) {
         is ImageState.Loading -> {
@@ -70,7 +69,9 @@ fun Thumbnail(
             imageUri = R.drawable.ic_broken_image
         }
         is ImageState.Success -> {
-            imageUri = s.imageUri
+            if (s.imageUri != null) {
+                imageUri = s.imageUri
+            }
         }
     }
 
@@ -85,9 +86,9 @@ fun Thumbnail(
                 .data(imageUri)
                 .crossfade(true)
                 .build(),
-            contentDescription = "Image",
+            contentDescription = stringResource(R.string.image),
             placeholder = painterResource(R.drawable.loading_img),
-            error = painterResource(R.drawable.image_gallery),
+            error = painterResource(R.drawable.ic_broken_image),
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)

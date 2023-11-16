@@ -47,6 +47,7 @@ import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.TextInput
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.ui.theme.NyattaTheme
+import com.example.nyatta.viewmodels.ImageState
 import com.example.nyatta.viewmodels.PropertyViewModel
 import kotlinx.coroutines.launch
 
@@ -60,13 +61,33 @@ fun Caretaker(
     modifier: Modifier = Modifier,
     propertyViewModel: PropertyViewModel = viewModel(),
 ) {
+    val context = LocalContext.current
     val propertyUiState by propertyViewModel.uiState.collectAsState()
     val scope = rememberCoroutineScope()
     val pickMedia = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia()
     ) {
         if (it != null) {
-            propertyViewModel.setCaretakerImage(it.toString())
+            val stream = context.contentResolver.openInputStream(it)
+            if (stream != null) {
+                propertyViewModel.setCaretakerImage(stream)
+            }
+        }
+    }
+    var imageUri: Any? = R.drawable.image_gallery
+    var uploadError: String? = null
+    when (val s = propertyUiState.caretaker.image) {
+        ImageState.Loading -> {
+            imageUri = R.drawable.loading_img
+        }
+        is ImageState.UploadError -> {
+            imageUri = R.drawable.ic_broken_image
+            uploadError = s.message
+        }
+        is ImageState.Success -> {
+            if (s.imageUri != null) {
+                imageUri = s.imageUri
+            }
         }
     }
 
@@ -122,9 +143,7 @@ fun Caretaker(
             ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(
-                            propertyUiState.caretaker.image.ifBlank { R.drawable.image_gallery }
-                        )
+                        .data(imageUri)
                         .crossfade(true)
                         .build(),
                     contentDescription = stringResource(R.string.caretaker_image),
@@ -144,6 +163,13 @@ fun Caretaker(
                                 )
                             }
                         }
+                )
+            }
+            if (uploadError != null) {
+                Text(
+                    text = uploadError,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.error
                 )
             }
         }
