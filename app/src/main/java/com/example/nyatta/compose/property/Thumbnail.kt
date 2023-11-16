@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -58,11 +60,13 @@ fun Thumbnail(
     val scope = rememberCoroutineScope()
     val propertyUiState by propertyViewModel.uiState.collectAsState()
     var imageUri: Any? = null
+    var uploadError: String? = null
     when(val s = propertyUiState.thumbnail) {
         is ImageState.Loading -> {
             imageUri = R.drawable.loading_img
         }
         is ImageState.UploadError -> {
+            uploadError = s.message
             imageUri = R.drawable.ic_broken_image
         }
         is ImageState.Success -> {
@@ -100,6 +104,13 @@ fun Thumbnail(
                     }
                 }
         )
+        if (uploadError != null) {
+            Text(
+                text = uploadError,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.error
+            )
+        }
     }
 }
 
