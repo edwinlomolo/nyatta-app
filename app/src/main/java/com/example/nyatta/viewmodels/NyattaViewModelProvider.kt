@@ -19,7 +19,9 @@ object NyattaViewModelProvider {
         }
         // Initializer for PropertyViewModel
         initializer {
-            PropertyViewModel()
+            PropertyViewModel(
+                nyattaApplication().container.restApiRepository
+            )
         }
         // Initializer for AccountViewModel
         initializer {

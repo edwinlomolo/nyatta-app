@@ -29,6 +29,7 @@ import com.example.nyatta.R
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.ui.theme.NyattaTheme
+import com.example.nyatta.viewmodels.ImageState
 import com.example.nyatta.viewmodels.PropertyViewModel
 import kotlinx.coroutines.launch
 
@@ -42,17 +43,32 @@ fun Thumbnail(
     modifier: Modifier = Modifier,
     propertyViewModel: PropertyViewModel = viewModel()
 ) {
+    val context = LocalContext.current
     val pickMedia = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia()
     ) {
         if (it != null) {
-            propertyViewModel.setPropertyThumbnail(it)
+
+            val stream = context.contentResolver.openInputStream(it)
+            if (stream != null) {
+                propertyViewModel.setPropertyThumbnail(it, stream)
+            }
         }
     }
     val scope = rememberCoroutineScope()
     val propertyUiState by propertyViewModel.uiState.collectAsState()
-
-    val propertyData = propertyUiState
+    var imageUri: Any? = null
+    when(val s = propertyUiState.thumbnail) {
+        is ImageState.Loading -> {
+            imageUri = R.drawable.loading_img
+        }
+        is ImageState.UploadError -> {
+            imageUri = R.drawable.ic_broken_image
+        }
+        is ImageState.Success -> {
+            imageUri = s.imageUri
+        }
+    }
 
     Column(
         modifier = modifier
@@ -62,9 +78,7 @@ fun Thumbnail(
         Description(stringResource(R.string.thumbnail_description))
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(
-                    propertyData.thumbnail ?: R.drawable.image_gallery
-                )
+                .data(imageUri)
                 .crossfade(true)
                 .build(),
             contentDescription = "Image",

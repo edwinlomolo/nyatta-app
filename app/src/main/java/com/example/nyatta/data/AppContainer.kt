@@ -14,11 +14,17 @@ import com.example.nyatta.data.hello.GqlHelloRepository
 import com.example.nyatta.data.hello.HelloRepository
 import com.example.nyatta.data.listings.GqlListingsRepository
 import com.example.nyatta.data.listings.ListingsRepository
+import com.example.nyatta.data.rest.RestApiRepository
 import com.example.nyatta.data.towns.GqlTownsRepository
 import com.example.nyatta.data.towns.TownsRepository
+import com.example.nyatta.network.NyattaRestApiService
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 interface AppContainer {
     val helloRepository: HelloRepository
@@ -26,7 +32,12 @@ interface AppContainer {
     val townsRepository: TownsRepository
     val authRepository: OfflineAuthRepository
     val apolloClient: ApolloClient
+    val restApiRepository: RestApiRepository
 }
+private const val baseNyattaGqlApiUrl =
+    "https://80f2-102-217-127-1.ngrok-free.app/api"
+private const val baseNyattaRestApiUrl =
+    "https://80f2-102-217-127-1.ngrok-free.app"
 
 val sqlNormalizedCacheFactory = SqlNormalizedCacheFactory("nyatta.db")
 
@@ -58,12 +69,27 @@ class AuthorizationInterceptor(
 }
 
 class DefaultContainer(private val context: Context): AppContainer {
-    private val baseUrl =
-        "https://80f2-102-217-127-1.ngrok-free.app/api"
+
+    private val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
+
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(baseNyattaRestApiUrl)
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .build()
+
+    private val nyattaRestApiService: NyattaRestApiService by lazy {
+        retrofit.create(NyattaRestApiService::class.java)
+    }
+
+    override val restApiRepository: RestApiRepository by lazy {
+        RestApiRepository(nyattaRestApiService)
+    }
 
     override val apolloClient by lazy {
         ApolloClient.Builder()
-            .serverUrl(baseUrl)
+            .serverUrl(baseNyattaGqlApiUrl)
             .addHttpInterceptor(
                 AuthorizationInterceptor(
                     NyattaDatabase.getDatabase(context).userDao()

@@ -1,15 +1,25 @@
 package com.example.nyatta.viewmodels
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.nyatta.data.rest.RestApiRepository
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import com.google.i18n.phonenumbers.Phonenumber
+import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import okio.IOException
+import java.io.InputStream
 
-class PropertyViewModel: ViewModel() {
+class PropertyViewModel(
+    private val restApiRepository: RestApiRepository
+): ViewModel() {
     private val defaultRegion = "KE"
     val countryCode = "+254"
     val phoneUtil: PhoneNumberUtil = PhoneNumberUtil.getInstance()
@@ -87,14 +97,14 @@ class PropertyViewModel: ViewModel() {
         }
     }
 
-    fun setPropertyThumbnail(thumbnail: Uri?) {
+    fun setPropertyThumbnail(thumbnail: Uri?, stream: InputStream) {
         _uiState.update {
             val valid = it.validToProceed.copy(thumbnail = thumbnail != null)
             it.copy(
-                thumbnail = thumbnail,
                 validToProceed = valid
             )
         }
+        uploadImage(stream)
     }
 
     fun createProperty() {
@@ -106,6 +116,25 @@ class PropertyViewModel: ViewModel() {
             it.copy(
                 submitted = submitted
             )
+        }
+    }
+
+    private fun uploadImage(stream: InputStream) {
+        val request = stream.readBytes().toRequestBody()
+        val filePart = MultipartBody.Part.createFormData(
+            "file",
+            "photo_${System.currentTimeMillis()}.jpg",
+            request
+        )
+        _uiState.update { it.copy(thumbnail = ImageState.Loading) }
+        viewModelScope.launch {
+            try {
+                val response = restApiRepository.uploadImage(filePart)
+                _uiState.update { it.copy(thumbnail = ImageState.Success(response.imageUri)) }
+            } catch(e: IOException) {
+                _uiState.update { it.copy(thumbnail = ImageState.UploadError(e.localizedMessage)) }
+                e.localizedMessage?.let { Log.e("UploadOperationError", it) }
+            }
         }
     }
 }
@@ -129,6 +158,11 @@ data class PropertyData(
     val isCaretaker: Boolean = false,
     val caretaker: CaretakerData = CaretakerData(),
     val validToProceed: PropertyDataValidity = PropertyDataValidity(),
-    val thumbnail: Uri? = null,
+    val thumbnail: ImageState = ImageState.Success(),
     val submitted: Boolean = false
 )
+interface ImageState {
+    data class Success(val imageUri: String? = null): ImageState
+    object Loading: ImageState
+    data class UploadError(val message: String? = null): ImageState
+}

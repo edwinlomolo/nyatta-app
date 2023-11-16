@@ -22,6 +22,7 @@ import com.example.nyatta.compose.property.PropertyDescription
 import com.example.nyatta.compose.property.PropertyDescriptionDestination
 import com.example.nyatta.compose.property.PropertyThumbnailDestination
 import com.example.nyatta.compose.property.Thumbnail
+import com.example.nyatta.viewmodels.ImageState
 import com.example.nyatta.viewmodels.PropertyData
 import com.example.nyatta.viewmodels.PropertyViewModel
 
@@ -42,7 +43,8 @@ fun NavGraphBuilder.propertyOnboardingGraph(
         route = PropertyOnboarding.route
     ) {
         val emptyState = propertyUiState.description.isEmpty()
-        val thumbnailValidToProceed = propertyUiState.validToProceed.thumbnail
+        val thumbnailValidToProceed =
+            propertyUiState.thumbnail is ImageState.Success && propertyUiState.thumbnail.imageUri != null
         val isCaretaker = propertyUiState.isCaretaker
         val caretaker = propertyUiState.caretaker
         val validToProceed: Boolean = caretaker.firstName.isNotEmpty() &&
