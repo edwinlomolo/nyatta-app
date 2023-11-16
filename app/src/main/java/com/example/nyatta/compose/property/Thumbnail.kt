@@ -83,7 +83,7 @@ fun Thumbnail(
                 .build(),
             contentDescription = "Image",
             placeholder = painterResource(R.drawable.loading_img),
-            error = painterResource(R.drawable.ic_broken_image),
+            error = painterResource(R.drawable.image_gallery),
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
