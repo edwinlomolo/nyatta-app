@@ -1,17 +1,34 @@
 package com.example.nyatta.viewmodels
 
-import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.apollographql.apollo3.api.DefaultUpload
+import com.apollographql.apollo3.exception.ApolloException
 import com.example.nyatta.data.Amenity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import com.example.nyatta.data.amenities
+import com.example.nyatta.data.rest.RestApiRepository
+import com.example.nyatta.network.NyattaGqlApiRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.internal.toImmutableList
 import okhttp3.internal.toImmutableMap
+import okio.IOException
+import okio.Okio
+import okio.buffer
+import okio.source
+import java.io.InputStream
 
-class ApartmentViewModel: ViewModel() {
+class ApartmentViewModel(
+    private val restApiRepository: RestApiRepository,
+    private val nyattaGqlApiRepository: NyattaGqlApiRepository
+): ViewModel() {
     val selectProperties = listOf(
         SelectPropertyData("87928yoihf", "Beach House Properties"),
         SelectPropertyData("209jfuf", "Mwea House Properties")
@@ -94,22 +111,82 @@ class ApartmentViewModel: ViewModel() {
         }
     }
 
-    fun setUnitImages(category: String, images: List<Uri>) {
-        _uiState.update {
-            it.copy(images = it.addImages(category, images))
+    fun setUnitImages(category: String, images: List<InputStream>) {
+        images.forEach { stream ->
+            viewModelScope.launch {
+                val request = stream.readBytes().toRequestBody()
+                val filePart = MultipartBody.Part.createFormData(
+                    "file",
+                    "photo_${System.currentTimeMillis()}.jpg",
+                    request
+                )
+                _uiState.update {
+                    val imageState = ImageState.Loading
+                    it.copy(images = it.addImage(category, imageState))
+                }
+                val addedItemIndex = _uiState.value.images[category]?.size?.minus(1)
+                viewModelScope.launch(Dispatchers.IO) {
+                    try {
+                        val response = restApiRepository.uploadImage(filePart)
+                        _uiState.update {
+                            val imageState = ImageState.Success(response.imageUri)
+                            it.copy(
+                                images = it.updateUnitImage(
+                                    category,
+                                    imageState,
+                                    addedItemIndex!!
+                                )
+                            )
+                        }
+                    } catch (e: IOException) {
+                        _uiState.update {
+                            val imageState = ImageState.UploadError(e.localizedMessage)
+                            it.copy(
+                                images = it.updateUnitImage(
+                                    category,
+                                    imageState,
+                                    addedItemIndex!!
+                                )
+                            )
+                        }
+                        e.localizedMessage?.let { Log.e("UploadUnitImageOperationError", it) }
+                    }
+                }
+            }
         }
     }
 
-    fun updateUnitImage(category: String, image: Uri, index: Int) {
-        _uiState.update{
-            it.copy(images = it.updateUnitImage(category, image, index))
+    fun updateUnitImage(category: String, image: InputStream, index: Int) {
+        val request = image.readBytes().toRequestBody()
+        val filePart = MultipartBody.Part.createFormData(
+            "file",
+            "photo_${System.currentTimeMillis()}.jpg",
+            request
+        )
+        _uiState.update {
+            val imageState = ImageState.Loading
+            it.copy(images = it.updateUnitImage(category, imageState, index))
+        }
+        viewModelScope.launch {
+            try {
+                val response = restApiRepository.uploadImage(filePart)
+                _uiState.update {
+                    val imageState = ImageState.Success(response.imageUri)
+                    it.copy(images = it.updateUnitImage(category, imageState, index))
+                }
+            } catch(e: IOException) {
+                _uiState.update {
+                    val imageState = ImageState.UploadError(e.localizedMessage)
+                    it.copy(images = it.updateUnitImage(category, imageState, index))
+                }
+            }
         }
     }
 
     private fun resetApartmentData() {
         _uiState.value = ApartmentData(
             associatedToProperty = selectProperties[0],
-            unitType = unitTypeOptions[0],
+            unitType = unitTypeOptions[0]
         )
     }
 
@@ -128,7 +205,7 @@ data class ApartmentData(
     val bathrooms: String = "",
     val state: State = State.Vacant,
     val price: String = "",
-    val images: Map<String, List<Uri>> = mapOf()
+    val images: Map<String, List<ImageState>> = mapOf()
 )
 fun ApartmentData.addAmenity(e: Amenity): List<Amenity> {
     val foundAmenityIndex = selectedAmenities.indexOfFirst { it.id == e.id }
@@ -156,16 +233,17 @@ fun ApartmentData.updateBedroomEnSuite(bedroomNumber: Int, enSuite: Boolean): Li
     mutableBedrooms[bedroomNumber] = Bedroom(number = bedroom.number, master = bedroom.master, enSuite = enSuite)
     return mutableBedrooms.toList()
 }
-fun ApartmentData.addImages(category: String, categoryImages: List<Uri>): Map<String, List<Uri>> {
+fun ApartmentData.addImage(category: String, image: ImageState): Map<String, List<ImageState>> {
     val imageEntry = images.toMutableMap()
     if (imageEntry[category] == null) imageEntry[category] = listOf()
     val keyValues = imageEntry[category]?.toMutableList()
-    keyValues?.addAll(categoryImages)
+    keyValues?.add(image)
     imageEntry[category] = keyValues!!.toImmutableList()
     return imageEntry.toImmutableMap()
 }
-fun ApartmentData.updateUnitImage(category: String, image: Uri, index: Int): Map<String, List<Uri>> {
+fun ApartmentData.updateUnitImage(category: String, image: ImageState, index: Int): Map<String, List<ImageState>> {
     val imageEntry = images.toMutableMap()
+    if (imageEntry[category] == null) imageEntry[category] = listOf()
     val keyValues = imageEntry[category]?.toMutableList()
     keyValues?.set(index, image)
     imageEntry[category] = keyValues!!.toImmutableList()

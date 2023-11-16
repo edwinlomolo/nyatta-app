@@ -144,6 +144,14 @@ class PropertyViewModel(
             )
         }
     }
+
+    private fun resetPropertyData() {
+        _uiState.value = PropertyData()
+    }
+
+    init {
+        resetPropertyData()
+    }
 }
 
 data class CaretakerData(

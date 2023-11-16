@@ -38,6 +38,7 @@ import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.viewmodels.ApartmentViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.ApartmentData
+import com.example.nyatta.viewmodels.ImageState
 import kotlinx.coroutines.launch
 
 object UploadsDestination: Navigation {
@@ -116,14 +117,16 @@ fun FeatureImage(
     apartmentViewModel: ApartmentViewModel,
     apartmentData: ApartmentData
 ) {
+    val context = LocalContext.current
     val images = apartmentData.images
     val imagesSize = images[text]?.size ?: 0
     val scope = rememberCoroutineScope()
     val pickMultipleMedia = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(10)
+        contract = ActivityResultContracts.PickMultipleVisualMedia(3)
     ) {
         if (it.isNotEmpty()) {
-            apartmentViewModel.setUnitImages(text, it)
+            val streams = it.mapNotNull { item -> context.contentResolver.openInputStream(item) }
+            apartmentViewModel.setUnitImages(text, streams)
         }
     }
 
@@ -132,7 +135,7 @@ fun FeatureImage(
             .padding(4.dp)
     ) {
         Text(
-            text = "$text (${imageCount-imagesSize})",
+            text = text,
             style = MaterialTheme.typography.titleMedium,
         )
         Row(
@@ -143,36 +146,64 @@ fun FeatureImage(
         {
             if (imagesSize > 0) {
                 images[text]?.forEachIndexed { index, item ->
+                    var imageUri: Any? = R.drawable.image_gallery
+                    var uploadError: String? = null
+                    when(item) {
+                        ImageState.Loading -> {
+                            imageUri = R.drawable.loading_img
+                        }
+                        is ImageState.UploadError -> {
+                            imageUri = R.drawable.ic_broken_image
+                            uploadError = item.message
+                        }
+                        is ImageState.Success -> {
+                            if (item.imageUri != null) {
+                                imageUri = item.imageUri
+                            }
+                        }
+                    }
                     val pickMedia = rememberLauncherForActivityResult(
                         contract = ActivityResultContracts.PickVisualMedia()
                     ) {
                         if (it != null) {
-                            apartmentViewModel.updateUnitImage(text, it, index)
+                            val stream = context.contentResolver.openInputStream(it)
+                            if (stream != null) {
+                                apartmentViewModel.updateUnitImage(text, stream, index)
+                            }
                         }
                     }
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(
-                                item
-                            )
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = stringResource(R.string.feature_image),
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(135.dp)
-                            .padding(8.dp)
-                            .clip(MaterialTheme.shapes.small)
-                            .clickable {
-                                scope.launch {
-                                    pickMedia.launch(
-                                        PickVisualMediaRequest(
-                                            ActivityResultContracts.PickVisualMedia.ImageOnly
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(imageUri)
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = stringResource(R.string.feature_image),
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .size(135.dp)
+                                .padding(8.dp)
+                                .clip(MaterialTheme.shapes.small)
+                                .clickable {
+                                    scope.launch {
+                                        pickMedia.launch(
+                                            PickVisualMediaRequest(
+                                                ActivityResultContracts.PickVisualMedia.ImageOnly
+                                            )
                                         )
-                                    )
+                                    }
                                 }
-                            }
-                    )
+                        )
+                        if (uploadError != null) {
+                            Text(
+                                text = uploadError,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
                 }
             }
             if (imagesSize < imageCount) {

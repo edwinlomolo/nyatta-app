@@ -17,14 +17,17 @@ import com.example.nyatta.data.listings.ListingsRepository
 import com.example.nyatta.data.rest.RestApiRepository
 import com.example.nyatta.data.towns.GqlTownsRepository
 import com.example.nyatta.data.towns.TownsRepository
+import com.example.nyatta.network.NyattaGqlApiRepository
 import com.example.nyatta.network.NyattaRestApiService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 
 interface AppContainer {
     val helloRepository: HelloRepository
@@ -33,6 +36,7 @@ interface AppContainer {
     val authRepository: OfflineAuthRepository
     val apolloClient: ApolloClient
     val restApiRepository: RestApiRepository
+    val nyattaGqlApiRepository: NyattaGqlApiRepository
 }
 private const val baseNyattaGqlApiUrl =
     "https://80f2-102-217-127-1.ngrok-free.app/api"
@@ -74,9 +78,16 @@ class DefaultContainer(private val context: Context): AppContainer {
         .add(KotlinJsonAdapterFactory())
         .build()
 
+    private val okhttpClient = OkHttpClient.Builder()
+        .connectTimeout(1, TimeUnit.MINUTES)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
+        .build()
+
     private val retrofit = Retrofit.Builder()
         .baseUrl(baseNyattaRestApiUrl)
         .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .client(okhttpClient)
         .build()
 
     private val nyattaRestApiService: NyattaRestApiService by lazy {
@@ -97,6 +108,10 @@ class DefaultContainer(private val context: Context): AppContainer {
             )
             .normalizedCache(sqlNormalizedCacheFactory)
             .build()
+    }
+
+    override val nyattaGqlApiRepository: NyattaGqlApiRepository by lazy {
+        NyattaGqlApiRepository(apolloClient)
     }
 
     override val helloRepository: HelloRepository by lazy {

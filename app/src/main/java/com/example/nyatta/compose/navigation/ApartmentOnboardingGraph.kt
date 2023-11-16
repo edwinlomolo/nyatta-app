@@ -39,6 +39,7 @@ import com.example.nyatta.data.model.User
 import com.example.nyatta.viewmodels.AccountViewModel
 import com.example.nyatta.viewmodels.ApartmentData
 import com.example.nyatta.viewmodels.ApartmentDataValidity
+import com.example.nyatta.viewmodels.ImageState
 
 object ApartmentOnboarding: Navigation {
     override val route = "onboarding/apartment"
@@ -58,8 +59,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
     val descriptionValidToProceed = dataValidity.description
     val bathroomsValidToProceed = dataValidity.bathrooms
     val amenitiesValidToProceed = apartmentData.selectedAmenities.isNotEmpty()
-    val imagesSelectedValidToProceed = apartmentData.images.any { (k, _) -> apartmentData.images[k]?.isNotEmpty()
-        ?: false }
+    val stillUploading = apartmentData.images.values.flatten().any { it is ImageState.Loading }
     val priceValidToProceed = dataValidity.price
     val hasBedCount: Boolean = apartmentData.unitType != "Single room" && apartmentData.unitType != "Studio"
 
@@ -387,7 +387,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                 },
                 bottomBar = {
                     OnboardingBottomBar(
-                        validToProceed = imagesSelectedValidToProceed,
+                        validToProceed = !stillUploading,
                         navigateBack = {
                             navController.popBackStack()
                         },
