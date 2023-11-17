@@ -39,9 +39,9 @@ interface AppContainer {
     val nyattaGqlApiRepository: NyattaGqlApiRepository
 }
 private const val baseNyattaGqlApiUrl =
-    "https://80f2-102-217-127-1.ngrok-free.app/api"
+    "https://abf3-102-217-127-1.ngrok-free.app/api"
 private const val baseNyattaRestApiUrl =
-    "https://80f2-102-217-127-1.ngrok-free.app"
+    "https://abf3-102-217-127-1.ngrok-free.app"
 
 val sqlNormalizedCacheFactory = SqlNormalizedCacheFactory("nyatta.db")
 
