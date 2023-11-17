@@ -128,8 +128,8 @@ class DefaultContainer(private val context: Context): AppContainer {
 
     override val authRepository: OfflineAuthRepository by lazy {
         OfflineAuthRepository(
-            NyattaDatabase.getDatabase(context).userDao(),
-            client = apolloClient
+            userDao = NyattaDatabase.getDatabase(context).userDao(),
+            nyattaGqlApiRepository = nyattaGqlApiRepository
         )
     }
 }
