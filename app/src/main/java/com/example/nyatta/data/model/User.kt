@@ -1,14 +1,19 @@
 package com.example.nyatta.data.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-// Represent a single row in the db
-@Entity(tableName = "users")
+@Entity(
+    tableName = "users",
+    indices = [
+        Index(value = ["phone"], unique = true),
+        Index(value = ["is_landlord"])
+    ]
+)
 data class User(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-    val phone: String = "",
-    val isLandlord: Boolean = false,
+    @PrimaryKey val phone: String = "",
+    @ColumnInfo(name = "is_landlord") val isLandlord: Boolean = false,
     val token: String = ""
 )

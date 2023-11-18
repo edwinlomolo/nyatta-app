@@ -29,12 +29,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.CircularProgressLoader
 import com.example.nyatta.compose.components.TextInput
+import com.example.nyatta.compose.home.HomeDestination
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.compose.home.TopAppBar
-import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.ui.theme.NyattaTheme
-import com.example.nyatta.viewmodels.AccountUiState
 import com.example.nyatta.viewmodels.AccountViewModel
+import com.example.nyatta.viewmodels.SignInUiState
 
 object UserOnboardingPhoneDestination: Navigation {
     override val route = "user/phone"
@@ -50,7 +50,7 @@ fun Phone(
     accountViewModel: AccountViewModel = viewModel()
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    val accUiState = accountViewModel.accUiState
+    val signInUiState = accountViewModel.signInUiState
     val userDetail by accountViewModel.userUiDetails.collectAsState()
 
     Scaffold(
@@ -94,7 +94,7 @@ fun Phone(
                         }
                     )
                 )
-                if (accUiState is AccountUiState.ApolloError && accUiState.message!!.contains("Failed to execute GraphQL http network request")) {
+                if (signInUiState is SignInUiState.SignInError && signInUiState.message!!.contains("Failed to execute GraphQL http network request")) {
                     Text(
                         text = stringResource(R.string.network_connection_issue),
                         style = MaterialTheme.typography.labelSmall,
@@ -104,7 +104,7 @@ fun Phone(
                 Button(
                     onClick = {
                         accountViewModel.signIn()
-                        navigateNext(StartOnboardingDestination.route)
+                        navigateNext(HomeDestination.route)
 
                     },
                     shape = MaterialTheme.shapes.small,
@@ -113,7 +113,7 @@ fun Phone(
                     Row(
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        if (accUiState is AccountUiState.Loading) {
+                        if (signInUiState is SignInUiState.Loading) {
                             CircularProgressLoader()
                         } else {
                             Text(

@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.CheckCircle
+import androidx.compose.material.icons.twotone.Info
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -18,9 +20,11 @@ import com.example.nyatta.compose.components.AlertDialog
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.compose.navigation.PaymentGraph
+import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.data.model.User
 import com.example.nyatta.viewmodels.OnboardingViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
+import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.PropertyViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -40,6 +44,7 @@ fun Location(
     navigateNext: (String) -> Unit = {},
     onboardingViewModel: OnboardingViewModel = viewModel(),
     propertyViewModel: PropertyViewModel = viewModel(),
+    authViewModel: AuthViewModel = viewModel(),
     deviceLocation: LatLng = LatLng(0.0, 0.0)
 ) {
     val propertyUiState by propertyViewModel.uiState.collectAsState()
@@ -50,6 +55,15 @@ fun Location(
         position = CameraPosition.fromLatLngZoom(userDeviceLocation, 15f)
     }
     val propertySubmitted = propertyUiState.submitted
+
+    // TODO will come back to this later
+    // Ideally I want a fresh user from this point
+    // if user comes back after buying landlord status
+    // Ideally this is the mid-point to do this for
+    // onboarding flow
+    LaunchedEffect(Unit) {
+        authViewModel.refreshUser()
+    }
 
     Column(
         modifier = Modifier.padding(12.dp)
@@ -73,10 +87,10 @@ fun Location(
         when {
             propertySubmitted -> {
                 AlertDialog(
-                    onDismissRequest = { /*TODO*/ },
+                    onDismissRequest = { return@AlertDialog },
                     onConfirmation = {
                         if (user.isLandlord) {
-                            propertyViewModel.createProperty()
+                            navigateNext(StartOnboardingDestination.route)
                         } else {
                             navigateNext(PaymentGraph.route)
                         }
@@ -87,7 +101,7 @@ fun Location(
                     dialogText = if (!user.isLandlord) stringResource(R.string.not_landlord_line) else stringResource(
                         R.string.subscribed_landlord_line
                     ),
-                    icon = Icons.TwoTone.CheckCircle,
+                    icon = if (user.isLandlord) Icons.TwoTone.CheckCircle else Icons.TwoTone.Info,
                     confirmationText = if (!user.isLandlord) stringResource(R.string.subscribe) else stringResource(
                         id = R.string.continue_next
                     )

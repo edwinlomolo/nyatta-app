@@ -122,17 +122,16 @@ fun NavGraphBuilder.startPropertyOnboarding(
                             }
                         },
                         actionButtonText = {
-                            if (propertyType == "Apartments Building") {
-                                Text(
-                                    text = stringResource(R.string.describe_this_property),
-                                    style = MaterialTheme.typography.labelSmall
-                                )
-                            } else {
-                                Text(
-                                    text = stringResource(R.string.describe_apartment_unit),
-                                    style = MaterialTheme.typography.labelSmall
-                                )
+                            val buttonText = when(propertyType) {
+                                "Apartments Building" -> R.string.describe_this_property
+                                "Unit" -> R.string.describe_apartment_unit
+                                "Condo" -> R.string.setup_condo
+                                else -> R.string.setup
                             }
+                            Text(
+                                text = stringResource(buttonText),
+                                style = MaterialTheme.typography.labelSmall
+                            )
                         }
                     )
                 }

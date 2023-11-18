@@ -159,6 +159,7 @@ fun NyattaNavHost(
             townsViewModel = townsViewModel,
             onboardingViewModel = onboardingViewModel,
             propertyViewModel = propertyViewModel,
+            authViewModel = authViewModel,
             deviceLocation = deviceLocation,
             propertyType = onboardingUiData.type,
             user = user,

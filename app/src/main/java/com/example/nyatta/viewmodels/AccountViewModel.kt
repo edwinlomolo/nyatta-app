@@ -9,6 +9,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.example.nyatta.CreatePaymentMutation
 import com.example.nyatta.data.auth.AuthRepository
 import com.example.nyatta.data.model.User
+import com.example.nyatta.network.NyattaGqlApiRepository
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,6 +25,14 @@ interface AccountUiState {
     data class ApolloError(val message: String?): AccountUiState
 }
 
+interface SignInUiState {
+    object Success: SignInUiState
+
+    object Loading: SignInUiState
+
+    data class SignInError(val message: String?): SignInUiState
+}
+
 interface ICreatePayment {
     data class Success(val success: String? = null): ICreatePayment
     object Loading: ICreatePayment
@@ -32,7 +41,7 @@ interface ICreatePayment {
 
 class AccountViewModel(
     private val authRepository: AuthRepository,
-    private val client: ApolloClient
+    private val nyattaGqlApiRepository: NyattaGqlApiRepository
 ): ViewModel() {
     val landlordSubscriptionFee = "1500"
     val countryPhoneCode = mapOf("KE" to "+254")
@@ -44,40 +53,25 @@ class AccountViewModel(
     private val _userDetails = MutableStateFlow(UserDetails())
     val userUiDetails: StateFlow<UserDetails> = _userDetails.asStateFlow()
 
-    var accUiState: AccountUiState by mutableStateOf(AccountUiState.Auth())
+    var createPaymentUiState: ICreatePayment by mutableStateOf(ICreatePayment.Success())
         private set
 
-    var createPaymentUiState: ICreatePayment by mutableStateOf(ICreatePayment.Success())
+    var signInUiState: SignInUiState by mutableStateOf(SignInUiState.Success)
         private set
 
     fun signIn() {
         if (userUiDetails.value.phone.isNotEmpty() && userUiDetails.value.validDetails.phone) {
-            accUiState = AccountUiState.Loading
+            signInUiState = SignInUiState.Loading
             viewModelScope.launch {
-                accUiState = try {
+                signInUiState = try {
                     val phone = phoneUtil.parse(userUiDetails.value.phone, defaultRegion)
-                    val response = authRepository
-                        .signUp(
+                    authRepository
+                        .signIn(
                             phone.countryCode.toString()+phone.nationalNumber.toString()
                         )
-                        .dataOrThrow()
-                    val res = response.signIn
-                    authRepository.signUser(
-                        user = User(
-                            isLandlord = res.user.is_landlord,
-                            token = res.Token,
-                            phone = res.user.phone
-                        )
-                    )
-                    AccountUiState.Auth(
-                        user = User(
-                            phone = res.user.phone,
-                            isLandlord = res.user.is_landlord,
-                            token = res.Token
-                        )
-                    )
+                    SignInUiState.Success
                 } catch (e: Throwable) {
-                    AccountUiState.ApolloError(e.localizedMessage)
+                    SignInUiState.SignInError(e.localizedMessage)
                 }
             }
         }
@@ -115,12 +109,11 @@ class AccountViewModel(
         createPaymentUiState = ICreatePayment.Loading
         viewModelScope.launch {
             createPaymentUiState = try {
-                val response = client.mutation(
-                    CreatePaymentMutation(
+                val response = nyattaGqlApiRepository
+                    .createPayment(
                         phone = phone.countryCode.toString()+phone.nationalNumber.toString(),
-                        amount = landlordSubscriptionFee,
-                    )
-                ).execute().dataOrThrow()
+                        amount = landlordSubscriptionFee
+                    ).dataOrThrow()
                 ICreatePayment.Success(response.createPayment.success)
             } catch (e: Throwable) {
                 ICreatePayment.ApolloError(e.localizedMessage)

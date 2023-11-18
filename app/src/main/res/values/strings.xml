@@ -77,7 +77,7 @@
     <string name="back">Back</string>
     <string name="start_your_setup">Let\'s start your setup</string>
     <string name="what_to_add">What do you want to add?</string>
-    <string name="describe_unit_images">Describe unit using images</string>
+    <string name="describe_unit_images">Setup images</string>
     <string name="uploads">Uploads</string>
     <string name="account">Account</string>
     <string name="explore">Explore</string>
@@ -99,15 +99,15 @@
     <string name="first_name">First name</string>
     <string name="first_marketing_copy">One step away to becoming a digital landlord. No more sign boards or posters by the road side. Reach more and wide with location aware properties.</string>
     <string name="next">Next</string>
-    <string name="describe_this_property">Describe this property</string>
-    <string name="describe_apartment_unit">Describe apartment unit</string>
-    <string name="describe_amenities">Describe amenities</string>
+    <string name="describe_this_property">Setup property</string>
+    <string name="describe_apartment_unit">Setup apartment unit</string>
+    <string name="describe_amenities">Setup amenities</string>
     <string name="add_bedrooms">Add bedrooms</string>
-    <string name="describe_unit_type">Describe unit type</string>
+    <string name="describe_unit_type">Setup unit type</string>
     <string name="associate_with_property">Associate with property</string>
-    <string name="describe_bathrooms">Describe bathrooms</string>
+    <string name="describe_bathrooms">Setup bathrooms</string>
     <string name="add_images">Add images</string>
-    <string name="describe_unit_state">Describe unit state</string>
+    <string name="describe_unit_state">Setup unit state</string>
     <string name="add_unit_price">Add unit price</string>
     <string name="create_unit">Create unit</string>
     <string name="property_thumbnail">Property face/thumbnail</string>
@@ -139,11 +139,14 @@
     <string name="done_icon">Done Icon</string>
     <string name="info">Info</string>
     <string name="subscribe">Subscribe</string>
-    <string name="not_landlord_line">I just need a meal a day, pay for servers and internet, and my rent. I will make house hunting an experience rather than a story.</string>
+    <string name="not_landlord_line">I have servers and internet bills. Let\'s make house or home hunting an experience rather than a story.</string>
     <string name="subscribed_landlord_line">I have received your property. You can continue setting up this property.</string>
     <string name="subscribe_to_continue">Subscribe to continue</string>
     <string name="congratulations">Congratulations!</string>
     <string name="continue_next">Continue</string>
     <string name="call">Call</string>
     <string name="image">Image</string>
+    <string name="condo_definition">Individual owned unit in a building complex</string>
+    <string name="setup_condo">Setup condo</string>
+    <string name="setup">Setup</string>
 </resources>

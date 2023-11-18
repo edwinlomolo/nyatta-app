@@ -1,7 +1,7 @@
 package com.example.nyatta.data.auth
 
-import com.apollographql.apollo3.api.ApolloResponse
-import com.example.nyatta.SignUpMutation
+import android.util.Log
+import com.apollographql.apollo3.exception.ApolloException
 import com.example.nyatta.data.daos.UserDao
 import com.example.nyatta.data.model.User
 import com.example.nyatta.network.NyattaGqlApiRepository
@@ -9,8 +9,12 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
     suspend fun signUser(user: User)
+
     fun getUser(): Flow<List<User>>
-    suspend fun signUp(phone: String): ApolloResponse<SignUpMutation.Data>
+
+    suspend fun signIn(phone: String)
+
+    suspend fun recycleUser(phone: String)
 }
 
 class OfflineAuthRepository(
@@ -22,7 +26,33 @@ class OfflineAuthRepository(
 
     override fun getUser(): Flow<List<User>> = userDao.getUser()
 
-    override suspend fun signUp(phone: String): ApolloResponse<SignUpMutation.Data> {
-        return nyattaGqlApiRepository.signUp(phone)
+    override suspend fun signIn(phone: String) {
+        try {
+            val res = nyattaGqlApiRepository.signIn(phone).dataOrThrow()
+            userDao.insert(
+                user = User(
+                    phone =res.signIn.user.phone,
+                    token = res.signIn.Token,
+                    isLandlord = res.signIn.user.is_landlord
+                )
+            )
+        } catch(e: ApolloException) {
+            e.localizedMessage?.let { Log.e("SignInUserOperationError", it) }
+        }
+    }
+
+    override suspend fun recycleUser(phone: String) {
+        try {
+            val res = nyattaGqlApiRepository.signIn(phone).dataOrThrow()
+            userDao.updateUser(
+                user = User(
+                    phone =res.signIn.user.phone,
+                    token = res.signIn.Token,
+                    isLandlord = res.signIn.user.is_landlord
+                )
+            )
+        } catch(e: ApolloException) {
+            e.localizedMessage?.let { Log.e("SignInUserOperationError", it) }
+        }
     }
 }

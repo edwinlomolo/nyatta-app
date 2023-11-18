@@ -22,6 +22,7 @@ import com.example.nyatta.compose.location.LocationDestination
 import com.example.nyatta.compose.location.TownDestination
 import com.example.nyatta.compose.location.Towns
 import com.example.nyatta.data.model.User
+import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.PropertyViewModel
 import com.example.nyatta.viewmodels.TownsViewModel
 import com.google.android.gms.maps.model.LatLng
@@ -36,6 +37,7 @@ fun NavGraphBuilder.locationGraph(
     onboardingViewModel: OnboardingViewModel,
     propertyViewModel: PropertyViewModel,
     townsViewModel: TownsViewModel,
+    authViewModel: AuthViewModel,
     deviceLocation: LatLng,
     propertyType: String,
     navController: NavHostController,
@@ -87,11 +89,16 @@ fun NavGraphBuilder.locationGraph(
                         .padding(innerPadding)
                 ) {
                     Location(
-                        navigateNext = { navController.navigate(it) },
+                        navigateNext = {
+                            navController.navigate(it) {
+                                popUpTo(LocationGraph.route) { inclusive = true }
+                            }
+                        },
                         user = user,
                         propertyViewModel = propertyViewModel,
                         deviceLocation = deviceLocation,
-                        onboardingViewModel = onboardingViewModel
+                        onboardingViewModel = onboardingViewModel,
+                        authViewModel = authViewModel
                     )
                 }
             }

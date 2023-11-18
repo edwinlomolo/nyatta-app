@@ -1,4 +1,4 @@
-mutation SignUp(
+mutation SignIn(
     $phone: String!
 ) {
     signIn(input: {

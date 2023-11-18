@@ -29,7 +29,7 @@ object NyattaViewModelProvider {
         initializer {
             AccountViewModel(
                 nyattaApplication().container.authRepository,
-                nyattaApplication().container.apolloClient
+                nyattaApplication().container.nyattaGqlApiRepository
             )
         }
         // Initializer for TownsViewModel

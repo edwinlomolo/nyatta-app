@@ -43,10 +43,11 @@ object StartOnboardingDestination: Navigation {
 }
 
 
-val optionImages = listOf(R.drawable.apartments, R.drawable.apartment, R.drawable.bungalow)
+val optionImages = listOf(R.drawable.apartments, R.drawable.apartment, R.drawable.unit_icon)
 val typeDefinition = listOf(
     R.string.apartments_building_definition,
     R.string.apartment_definition,
+    R.string.condo_definition,
     //"House or home that is typically either a single story, or one and a half stories tall"
 )
 @Composable
