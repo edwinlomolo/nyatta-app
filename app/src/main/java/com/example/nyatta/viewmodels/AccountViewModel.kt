@@ -53,27 +53,26 @@ class AccountViewModel(
             viewModelScope.launch {
                 accUiState = try {
                     val phone = phoneUtil.parse(userUiDetails.value.phone, defaultRegion)
-                    val response = authRepository.signUp(phone.countryCode.toString()+phone.nationalNumber.toString())
-                    when {
-                        response.data != null -> {
-                            val res = response.data?.signIn
-                            authRepository.signUser(
-                                user = User(
-                                    isLandlord = res!!.user.is_landlord,
-                                    token = res.Token,
-                                    phone = res.user.phone
-                                )
-                            )
-                            AccountUiState.Auth(
-                                user = User(
-                                    phone = res.user.phone,
-                                    isLandlord = res.user.is_landlord,
-                                    token = res.Token
-                                )
-                            )
-                        }
-                        else -> AccountUiState.ApolloError(response.exception?.localizedMessage)
-                    }
+                    val response = authRepository
+                        .signUp(
+                            phone.countryCode.toString()+phone.nationalNumber.toString()
+                        )
+                        .dataOrThrow()
+                    val res = response.signIn
+                    authRepository.signUser(
+                        user = User(
+                            isLandlord = res.user.is_landlord,
+                            token = res.Token,
+                            phone = res.user.phone
+                        )
+                    )
+                    AccountUiState.Auth(
+                        user = User(
+                            phone = res.user.phone,
+                            isLandlord = res.user.is_landlord,
+                            token = res.Token
+                        )
+                    )
                 } catch (e: Throwable) {
                     AccountUiState.ApolloError(e.localizedMessage)
                 }
@@ -118,18 +117,20 @@ class AccountViewModel(
                         phone = phone.countryCode.toString()+phone.nationalNumber.toString(),
                         amount = landlordSubscriptionFee,
                     )
-                ).execute()
-                when {
-                    response.data != null -> {
-                        val res = response.data!!.createPayment
-                        ICreatePayment.Success(res.success)
-                    }
-                    else -> ICreatePayment.ApolloError(response.exception!!.localizedMessage)
-                }
+                ).execute().dataOrThrow()
+                ICreatePayment.Success(response.createPayment.success)
             } catch (e: Throwable) {
                 ICreatePayment.ApolloError(e.localizedMessage)
             }
         }
+    }
+
+    fun resetAccountState() {
+        _userDetails.value = UserDetails()
+    }
+
+    init {
+        resetAccountState()
     }
 }
 

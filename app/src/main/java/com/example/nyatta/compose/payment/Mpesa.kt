@@ -1,6 +1,5 @@
 package com.example.nyatta.compose.payment
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -70,7 +69,6 @@ fun Mpesa(
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(paymentOptions[0]) }
     val (showDialog, onShowDialog) = remember { mutableStateOf(false) }
 
-    BackHandler {}
     Column(
         modifier = modifier
             .padding(16.dp)
@@ -142,6 +140,13 @@ fun Mpesa(
                 },
                 enabled = false
             )
+            if (createPaymentState is ICreatePayment.ApolloError && createPaymentState.message != null && createPaymentState.message.contains("Failed to execute GraphQL http network request")) {
+                Text(
+                    text = stringResource(id = R.string.network_connection_issue),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
             ActionButton(
                 isLoading = (createPaymentState is ICreatePayment.Loading),
                 text = stringResource(R.string.pay),
@@ -152,17 +157,16 @@ fun Mpesa(
             )
         }
         when {
-            showDialog && createPaymentState is ICreatePayment.Success && createPaymentState.success == stringResource(
-                id = R.string.create_pay_success
-            ) -> {
+            showDialog && createPaymentState is ICreatePayment.Success && createPaymentState.success != null -> {
                 AlertDialog(
-                    onDismissRequest = { onShowDialog(false) },
+                    onDismissRequest = { return@AlertDialog },
                     onConfirmation = {
+                        // TODO create property in this call
                         onShowDialog(false)
                         navigateNext(StartOnboardingDestination.route)
                     },
                     dialogTitle = stringResource(R.string.continue_payment),
-                    dialogText = stringResource(R.string.complete_authorization),
+                    dialogText = createPaymentState.success,
                     icon = Icons.TwoTone.CheckCircle,
                     confirmationText = stringResource(R.string.continue_next)
                 )

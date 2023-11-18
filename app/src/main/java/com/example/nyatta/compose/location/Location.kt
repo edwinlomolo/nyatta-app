@@ -75,11 +75,10 @@ fun Location(
                 AlertDialog(
                     onDismissRequest = { /*TODO*/ },
                     onConfirmation = {
-                        if (!user.isLandlord) {
-                            propertyViewModel.setSubmitted(false)
-                            navigateNext(PaymentGraph.route)
+                        if (user.isLandlord) {
+                            propertyViewModel.createProperty()
                         } else {
-                            propertyViewModel.setSubmitted(false)
+                            navigateNext(PaymentGraph.route)
                         }
                     },
                     dialogTitle = if (!user.isLandlord) stringResource(R.string.subscribe_to_continue) else stringResource(

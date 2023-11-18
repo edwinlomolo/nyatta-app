@@ -22,7 +22,6 @@ import com.example.nyatta.compose.location.LocationDestination
 import com.example.nyatta.compose.location.TownDestination
 import com.example.nyatta.compose.location.Towns
 import com.example.nyatta.data.model.User
-import com.example.nyatta.viewmodels.PropertyData
 import com.example.nyatta.viewmodels.PropertyViewModel
 import com.example.nyatta.viewmodels.TownsViewModel
 import com.google.android.gms.maps.model.LatLng
@@ -61,8 +60,12 @@ fun NavGraphBuilder.locationGraph(
                             navController.popBackStack()
                         },
                         onActionButtonClick = {
-                            if (/*!user.isLandlord && */propertyType == "Apartments Building") {
-                                propertyViewModel.createProperty()
+                            if (user.isLandlord) {
+                                if (propertyType == "Apartments Building") {
+                                    propertyViewModel.createProperty()
+                                }
+                            } else {
+                                navController.navigate(PaymentGraph.route) { launchSingleTop = true }
                             }
                         },
                         validToProceed = true,

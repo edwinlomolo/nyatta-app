@@ -134,7 +134,13 @@ class PropertyViewModel(
     }
 
     fun createProperty() {
-        setSubmitted(true)
+        try {
+            setSubmitted(true)
+        } catch(e: Throwable) {
+            e.localizedMessage?.let {
+                Log.e("CreatingPropertyOperationError", it)
+            }
+        }
     }
 
     fun setSubmitted(submitted: Boolean) {
@@ -145,7 +151,7 @@ class PropertyViewModel(
         }
     }
 
-    private fun resetPropertyData() {
+    fun resetPropertyData() {
         _uiState.value = PropertyData()
     }
 

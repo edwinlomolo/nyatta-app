@@ -150,7 +150,8 @@ fun NyattaNavHost(
         paymentGraph(
             modifier = modifier,
             navController = navController,
-            accViewModel = accountViewModel
+            accViewModel = accountViewModel,
+            propertyViewModel = propertyViewModel
         )
         locationGraph(
             modifier = modifier,
