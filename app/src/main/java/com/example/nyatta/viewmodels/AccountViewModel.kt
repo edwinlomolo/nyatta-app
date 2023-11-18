@@ -38,12 +38,15 @@ class AccountViewModel(
     val countryPhoneCode = mapOf("KE" to "+254")
     val countryCurrencyCode = mapOf("KE" to "KES")
     val defaultRegion = "KE"
+
     private val phoneUtil = PhoneNumberUtil.getInstance()
+
     private val _userDetails = MutableStateFlow(UserDetails())
     val userUiDetails: StateFlow<UserDetails> = _userDetails.asStateFlow()
 
     var accUiState: AccountUiState by mutableStateOf(AccountUiState.Auth())
         private set
+
     var createPaymentUiState: ICreatePayment by mutableStateOf(ICreatePayment.Success())
         private set
 
