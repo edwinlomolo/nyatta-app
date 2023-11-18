@@ -1,0 +1,15 @@
+mutation CreateProperty($name: String! $type: String! $lat: Float! $lng: Float! $thumbnail: String!) {
+    createProperty(input: {
+        name: $name
+        location: {lat: $lat, lng: $lng}
+        thumbnail: $thumbnail
+        type: $type
+    }) {
+        id
+        name
+        location {
+            lat
+            lng
+        }
+    }
+}

@@ -21,11 +21,11 @@ type AnyUpload {
 
   category: String!
 
-  propertyId: ID!
+  propertyId: ID
 
-  userId: ID!
+  userId: ID
 
-  unitId: ID!
+  unitId: ID
 
   createdAt: Time
 
@@ -171,7 +171,7 @@ input NewProperty {
 
   location: GpsInput!
 
-  thumbnail: Upload!
+  thumbnail: String!
 }
 
 input NewUser {
@@ -401,15 +401,13 @@ type User {
 
   last_name: String!
 
-  nextRenewal: Time!
-
   phone: String!
+
+  is_landlord: Boolean!
 
   uploads: [AnyUpload!]!
 
   onboarding: Boolean!
-
-  is_landlord: Boolean!
 
   properties: [Property!]!
 
