@@ -175,7 +175,8 @@ fun NyattaNavHost(
             dataValidity = dataValidity,
             apartmentData = apartmentUiState,
             user = user,
-            authViewModel = authViewModel
+            authViewModel = authViewModel,
+            onboardingViewModel = onboardingViewModel
         )
         loginGraph(
             authViewModel = authViewModel,

@@ -60,6 +60,7 @@ val optionsIcon = listOf(R.drawable.mpesa)
 fun Mpesa(
     modifier: Modifier = Modifier,
     navigateNext: (String) -> Unit = {},
+    navigateUp: () -> Unit = {},
     authViewModel: AuthViewModel = viewModel()
 ) {
     val accUiState by authViewModel.userUiDetails.collectAsState()
@@ -161,9 +162,9 @@ fun Mpesa(
                 AlertDialog(
                     onDismissRequest = { return@AlertDialog },
                     onConfirmation = {
-                        // TODO create property in this call
+                        // TODO send back to create property/unit
                         onShowDialog(false)
-                        navigateNext(StartOnboardingDestination.route)
+                        navigateUp()
                     },
                     dialogTitle = stringResource(R.string.continue_payment),
                     dialogText = createPaymentState.success,

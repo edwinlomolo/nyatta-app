@@ -23,6 +23,7 @@ import com.example.nyatta.compose.location.TownDestination
 import com.example.nyatta.compose.location.Towns
 import com.example.nyatta.data.model.User
 import com.example.nyatta.viewmodels.AuthViewModel
+import com.example.nyatta.viewmodels.ICreateProperty
 import com.example.nyatta.viewmodels.PropertyViewModel
 import com.example.nyatta.viewmodels.TownsViewModel
 import com.google.android.gms.maps.model.LatLng
@@ -43,6 +44,8 @@ fun NavGraphBuilder.locationGraph(
     navController: NavHostController,
     user: User
 ) {
+    val createPropertyState = propertyViewModel.createPropertyState
+
     navigation(
         startDestination = LocationDestination.route,
         route = LocationGraph.route
@@ -64,12 +67,15 @@ fun NavGraphBuilder.locationGraph(
                         onActionButtonClick = {
                             if (user.isLandlord) {
                                 if (propertyType == "Apartments Building") {
-                                    propertyViewModel.createProperty()
+                                    if (createPropertyState !is ICreateProperty.Loading) {
+                                        propertyViewModel.createProperty()
+                                    }
                                 }
                             } else {
                                 navController.navigate(PaymentGraph.route) { launchSingleTop = true }
                             }
                         },
+                        isLoading = createPropertyState is ICreateProperty.Loading,
                         validToProceed = true,
                         showNextIcon = propertyType != "Apartments Building",
                         actionButtonText = {
@@ -91,7 +97,10 @@ fun NavGraphBuilder.locationGraph(
                     Location(
                         navigateNext = {
                             navController.navigate(it) {
-                                popUpTo(LocationGraph.route) { inclusive = true }
+                                popUpTo(LocationGraph.route) {
+                                    saveState = false
+                                    inclusive = true
+                                }
                             }
                         },
                         user = user,

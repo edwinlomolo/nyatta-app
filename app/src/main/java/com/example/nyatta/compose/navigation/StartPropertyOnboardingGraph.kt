@@ -22,6 +22,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navigation
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.OnboardingBottomBar
+import com.example.nyatta.compose.home.HomeDestination
 import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.viewmodels.OnboardingViewModel
 import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination

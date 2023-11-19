@@ -14,7 +14,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.nyatta.R
 
 @Composable
 fun OnboardingBottomBar(
@@ -23,7 +25,8 @@ fun OnboardingBottomBar(
     navigateBack: () -> Unit = {},
     actionButtonText: @Composable() (RowScope.() -> Unit),
     onActionButtonClick: () -> Unit = {},
-    validToProceed: Boolean = false
+    validToProceed: Boolean = false,
+    isLoading: Boolean = false
 ) {
     BottomAppBar {
         Row(
@@ -31,16 +34,22 @@ fun OnboardingBottomBar(
             horizontalArrangement = Arrangement.Center
         ) {
             Button(
-                modifier = Modifier.fillMaxWidth().height(48.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
                 onClick = { if (validToProceed) onActionButtonClick() },
                 shape = MaterialTheme.shapes.small
             ) {
-                actionButtonText()
-                if (showNextIcon) {
-                    Icon(
-                        Icons.TwoTone.ArrowForward,
-                        contentDescription = "Proceed"
-                    )
+                if (!isLoading) {
+                    actionButtonText()
+                    if (showNextIcon) {
+                        Icon(
+                            Icons.TwoTone.ArrowForward,
+                            contentDescription = stringResource(id = R.string.proceed)
+                        )
+                    }
+                } else {
+                    CircularProgressLoader()
                 }
             }
         }

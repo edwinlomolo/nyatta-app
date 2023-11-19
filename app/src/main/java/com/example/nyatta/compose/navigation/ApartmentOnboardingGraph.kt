@@ -33,13 +33,16 @@ import com.example.nyatta.compose.apartment.UnitState
 import com.example.nyatta.compose.apartment.UnitTypeDestination
 import com.example.nyatta.compose.components.OnboardingBottomBar
 import com.example.nyatta.compose.home.TopAppBar
+import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.compose.uploads.Uploads
 import com.example.nyatta.compose.uploads.UploadsDestination
 import com.example.nyatta.data.model.User
 import com.example.nyatta.viewmodels.ApartmentData
 import com.example.nyatta.viewmodels.ApartmentDataValidity
 import com.example.nyatta.viewmodels.AuthViewModel
+import com.example.nyatta.viewmodels.ICreateUnit
 import com.example.nyatta.viewmodels.ImageState
+import com.example.nyatta.viewmodels.OnboardingViewModel
 
 object ApartmentOnboarding: Navigation {
     override val route = "onboarding/apartment"
@@ -52,6 +55,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
     navController: NavHostController,
     apartmentViewModel: ApartmentViewModel,
     authViewModel: AuthViewModel,
+    onboardingViewModel: OnboardingViewModel,
     apartmentData: ApartmentData,
     dataValidity: ApartmentDataValidity,
     user: User
@@ -62,6 +66,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
     val stillUploading = apartmentData.images.values.flatten().any { it is ImageState.Loading }
     val priceValidToProceed = dataValidity.price
     val hasBedCount: Boolean = apartmentData.unitType != "Single room" && apartmentData.unitType != "Studio"
+    val createUnitState: ICreateUnit = apartmentViewModel.createUnitState
 
     navigation(
         startDestination = ApartmentDescriptionDestination.route,
@@ -392,8 +397,18 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                             navController.popBackStack()
                         },
                         onActionButtonClick = {
-                            if (!user.isLandlord) navController.navigate(PaymentGraph.route)
+                            // TODO call submission endpoint depending on unit type
+                            if (!user.isLandlord) {
+                                navController.navigate(PaymentGraph.route) {
+                                    launchSingleTop = true
+                                }
+                            } else {
+                                if (createUnitState !is ICreateUnit.Loading) {
+                                    apartmentViewModel.createUnit()
+                                }
+                            }
                         },
+                        isLoading = createUnitState is ICreateUnit.Loading,
                         showNextIcon = false,
                         actionButtonText = {
                             Text(
@@ -411,6 +426,13 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                 ) {
                     Uploads(
                         apartmentViewModel = apartmentViewModel,
+                        onboardingViewModel = onboardingViewModel,
+                        navigateNext = { navController.navigate(StartOnboardingDestination.route) {
+                            popUpTo(UploadsDestination.route) {
+                                inclusive = true
+                                saveState = false
+                            }
+                        } }
                     )
                 }
             }

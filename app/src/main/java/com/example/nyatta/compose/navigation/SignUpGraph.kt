@@ -29,14 +29,28 @@ fun NavGraphBuilder.loginGraph(
     ) {
         composable(UserSignUpDestination.route) {
             SignUp(
-                navigateNext = { navController.navigate(it) }
+                navigateNext = {
+                    navController.navigate(it) {
+                        popUpTo(UserSignUpDestination.route) {
+                            inclusive = true
+                            saveState = false
+                        }
+                    }
+                }
             )
         }
         composable(UserOnboardingPhoneDestination.route) {
             Phone(
                 authViewModel = authViewModel,
                 navigateUp = { navController.navigateUp() },
-                navigateNext = { navController.navigate(it) }
+                navigateNext = {
+                    navController.navigate(it) {
+                        popUpTo(UserOnboardingPhoneDestination.route) {
+                            inclusive = true
+                            saveState = false
+                        }
+                    }
+                }
             )
         }
         composable(UserOnboardingPhoneVerifyDestination.route) {

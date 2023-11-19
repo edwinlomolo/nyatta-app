@@ -1,10 +1,11 @@
 package com.example.nyatta.viewmodels
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo3.api.DefaultUpload
-import com.apollographql.apollo3.exception.ApolloException
 import com.example.nyatta.data.Amenity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +13,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import com.example.nyatta.data.amenities
 import com.example.nyatta.data.rest.RestApiRepository
-import com.example.nyatta.network.NyattaGqlApiRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -20,9 +20,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.internal.toImmutableList
 import okhttp3.internal.toImmutableMap
 import okio.IOException
-import okio.Okio
-import okio.buffer
-import okio.source
 import java.io.InputStream
 
 class ApartmentViewModel(
@@ -34,8 +31,12 @@ class ApartmentViewModel(
     )
     val defaultAmenities = amenities
     val unitTypeOptions = listOf("Single room", "Studio", "1", "2", "3", "4")
+
     private val _uiState = MutableStateFlow(ApartmentData())
     val uiState: StateFlow<ApartmentData> = _uiState.asStateFlow()
+
+    var createUnitState: ICreateUnit by mutableStateOf(ICreateUnit.Success())
+        private set
 
     fun setName(name: String) {
         _uiState.update {
@@ -182,6 +183,30 @@ class ApartmentViewModel(
         }
     }
 
+    private fun unitSubmitted(submitted: Boolean) {
+        _uiState.update {
+            it.copy(submitted = submitted)
+        }
+    }
+
+    fun createUnit() {
+        createUnitState = ICreateUnit.Loading
+        viewModelScope.launch {
+            createUnitState = try {
+                resetApartmentData()
+                ICreateUnit.Success(true)
+            } catch(e: Throwable) {
+                unitSubmitted(false)
+                e.localizedMessage?.let { Log.e("CreateUnitOperationError", it) }
+                ICreateUnit.CreateUnitError(e.localizedMessage)
+            } finally {
+                if (createUnitState is ICreateUnit.Success) {
+                    unitSubmitted(true)
+                }
+            }
+        }
+    }
+
     private fun resetApartmentData() {
         _uiState.value = ApartmentData(
             associatedToProperty = selectProperties[0],
@@ -204,7 +229,8 @@ data class ApartmentData(
     val bathrooms: String = "",
     val state: State = State.Vacant,
     val price: String = "",
-    val images: Map<String, List<ImageState>> = mapOf()
+    val images: Map<String, List<ImageState>> = mapOf(),
+    val submitted: Boolean = false
 )
 fun ApartmentData.addAmenity(e: Amenity): List<Amenity> {
     val foundAmenityIndex = selectedAmenities.indexOfFirst { it.id == e.id }
@@ -266,3 +292,9 @@ data class Bedroom(
     val enSuite: Boolean = false
 )
 enum class State { Vacant, Occupied }
+
+interface ICreateUnit {
+    data class Success(val success: Boolean = false): ICreateUnit
+    object Loading: ICreateUnit
+    data class CreateUnitError(val message: String? = null): ICreateUnit
+}

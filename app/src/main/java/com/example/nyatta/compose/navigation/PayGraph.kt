@@ -49,9 +49,13 @@ fun NavGraphBuilder.paymentGraph(
                 ) {
                     Mpesa(
                         authViewModel = authViewModel,
+                        navigateUp = { navController.popBackStack() },
                         navigateNext = {
                             navController.navigate(it) {
-                                popUpTo(PaymentGraph.route) { inclusive = true }
+                                popUpTo(PaymentGraph.route) {
+                                    inclusive = true
+                                    saveState = false
+                                }
                                 authViewModel.resetAuthState()
                                 propertyViewModel.resetPropertyData()
                             }

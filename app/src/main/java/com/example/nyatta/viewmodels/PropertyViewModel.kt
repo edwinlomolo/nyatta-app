@@ -1,7 +1,9 @@
 package com.example.nyatta.viewmodels
 
-import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nyatta.data.rest.RestApiRepository
@@ -25,6 +27,9 @@ class PropertyViewModel(
     val phoneUtil: PhoneNumberUtil = PhoneNumberUtil.getInstance()
     private val _uiState = MutableStateFlow(PropertyData())
     val uiState: StateFlow<PropertyData> = _uiState.asStateFlow()
+
+    var createPropertyState: ICreateProperty by mutableStateOf(ICreateProperty.Success())
+        private set
 
     fun setName(name: String) {
         _uiState.update {
@@ -133,21 +138,30 @@ class PropertyViewModel(
         }
     }
 
-    fun createProperty() {
-        try {
-            setSubmitted(true)
-        } catch(e: Throwable) {
-            e.localizedMessage?.let {
-                Log.e("CreatingPropertyOperationError", it)
-            }
-        }
-    }
-
-    fun setSubmitted(submitted: Boolean) {
+    private fun propertySubmitted(submitted: Boolean) {
         _uiState.update {
             it.copy(
                 submitted = submitted
             )
+        }
+    }
+
+    fun createProperty() {
+        createPropertyState = ICreateProperty.Loading
+        viewModelScope.launch {
+            createPropertyState = try {
+                ICreateProperty.Success(true)
+            } catch(e: Throwable) {
+                e.localizedMessage?.let {
+                    Log.e("CreatingPropertyOperationError", it)
+                }
+                propertySubmitted(false)
+                ICreateProperty.CreatePropertyError(e.localizedMessage)
+            } finally {
+                if (createPropertyState is ICreateProperty.Success) {
+                    propertySubmitted(true)
+                }
+            }
         }
     }
 
@@ -186,4 +200,9 @@ interface ImageState {
     data class Success(val imageUri: String? = null): ImageState
     object Loading: ImageState
     data class UploadError(val message: String? = null): ImageState
+}
+interface ICreateProperty {
+    data class Success(val success: Boolean = false): ICreateProperty
+    object Loading: ICreateProperty
+    data class CreatePropertyError(val message: String? = null): ICreateProperty
 }
