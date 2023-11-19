@@ -7,10 +7,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.AddCircle
 import androidx.compose.material.icons.twotone.LocationOn
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,6 +35,9 @@ import com.example.nyatta.compose.home.Home
 import com.example.nyatta.compose.home.HomeDestination
 import com.example.nyatta.viewmodels.HomeViewModel
 import com.example.nyatta.compose.listing.ListingDetailsDestination
+import com.example.nyatta.compose.user.Account
+import com.example.nyatta.compose.user.AccountDestination
+import com.example.nyatta.compose.user.SignUp
 import com.example.nyatta.viewmodels.TownsViewModel
 import com.example.nyatta.viewmodels.PropertyViewModel
 import com.google.android.gms.maps.model.LatLng
@@ -124,7 +129,7 @@ fun NyattaNavHost(
                 }
             ) { innerPadding ->
                 Surface(
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxSize()
                         .padding(innerPadding)
                 ) {
@@ -134,6 +139,38 @@ fun NyattaNavHost(
                         },
                         homeViewModel = homeViewModel
                     )
+                }
+            }
+        }
+        composable(route = AccountDestination.route) {
+            Scaffold {innerPadding ->
+                Surface(
+                   modifier = modifier
+                       .fillMaxSize()
+                       .padding(innerPadding)
+                ) {
+                    if (user.token.isNotEmpty()) {
+                        Account(
+                            //authViewModel = authViewModel
+                        )
+                    } else {
+                        SignUp(
+                            navigateNext = {
+                                navController.navigate(it) {
+                                    popUpTo(AccountDestination.route) {
+                                        inclusive = true
+                                        saveState = false
+                                    }
+                                }
+                            },
+                            text = {
+                                Text(
+                                    text = stringResource(id = R.string.create_account),
+                                    style = MaterialTheme.typography.titleSmall
+                                )
+                            }
+                        )
+                    }
                 }
             }
         }

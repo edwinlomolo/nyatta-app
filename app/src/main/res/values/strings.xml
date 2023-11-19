@@ -150,4 +150,6 @@
     <string name="setup_condo">Setup condo</string>
     <string name="setup">Setup</string>
     <string name="listing_saved">Listing saved</string>
+    <string name="properties">Properties</string>
+    <string name="thumbnail">thumbnail</string>
 </resources>
