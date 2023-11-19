@@ -182,7 +182,7 @@ fun NyattaNavHost(
                 ) {
                     if (user.token.isNotEmpty()) {
                         Account(
-                            //authViewModel = authViewModel
+                            authViewModel = authViewModel
                         )
                     } else {
                         SignUp(

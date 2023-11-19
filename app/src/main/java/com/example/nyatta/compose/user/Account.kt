@@ -1,6 +1,5 @@
 package com.example.nyatta.compose.user
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,9 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -24,7 +21,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -49,9 +45,9 @@ val properties = listOf(
 @Composable
 fun Account(
     modifier: Modifier = Modifier,
-    //authViewModel: AuthViewModel = viewModel()
+    authViewModel: AuthViewModel = viewModel()
 ) {
-    //val authUiState by authViewModel.authUiState.collectAsState()
+    val authUiState by authViewModel.authUiState.collectAsState()
     val imageUri: Any? = R.drawable.image_gallery
 
     Column(
