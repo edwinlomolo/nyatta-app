@@ -34,6 +34,8 @@ class OfflineAuthRepository(
             val res = nyattaGqlApiRepository.signIn(phone).dataOrThrow()
             userDao.insert(
                 user = User(
+                    firstName = res.signIn.user.first_name,
+                    lastName = res.signIn.user.last_name,
                     phone =res.signIn.user.phone,
                     token = res.signIn.Token,
                     isLandlord = res.signIn.user.is_landlord
@@ -49,6 +51,8 @@ class OfflineAuthRepository(
             val res = nyattaGqlApiRepository.signIn(user.phone).dataOrThrow()
             userDao.updateUser(
                 user = User(
+                    firstName = res.signIn.user.first_name,
+                    lastName = res.signIn.user.last_name,
                     phone =res.signIn.user.phone,
                     token = res.signIn.Token,
                     isLandlord = res.signIn.user.is_landlord,
@@ -65,6 +69,8 @@ class OfflineAuthRepository(
         try {
             userDao.updateUser(
                 user = User(
+                    firstName = user.firstName,
+                    lastName = user.lastName,
                     phone = user.phone,
                     lat = gps.latitude,
                     lng = gps.longitude,

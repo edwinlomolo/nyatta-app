@@ -9,6 +9,8 @@ mutation SignIn(
             id
             createdAt
             phone
+            first_name
+            last_name
         }
         Token
     }

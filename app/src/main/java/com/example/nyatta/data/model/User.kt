@@ -16,6 +16,8 @@ data class User(
     @PrimaryKey val phone: String = "",
     @ColumnInfo(name = "is_landlord") val isLandlord: Boolean = false,
     val token: String = "",
+    @ColumnInfo(name = "first_name") val firstName: String = "",
+    @ColumnInfo(name = "last_name") val lastName: String = "",
     val lat: Double = 0.0,
     val lng: Double = 0.0
 )
