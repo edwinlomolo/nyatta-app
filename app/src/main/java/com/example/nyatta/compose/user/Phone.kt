@@ -33,7 +33,7 @@ import com.example.nyatta.compose.home.HomeDestination
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.ui.theme.NyattaTheme
-import com.example.nyatta.viewmodels.AccountViewModel
+import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.SignInUiState
 
 object UserOnboardingPhoneDestination: Navigation {
@@ -47,11 +47,11 @@ fun Phone(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
     navigateNext: (String) -> Unit = {},
-    accountViewModel: AccountViewModel = viewModel()
+    authViewModel: AuthViewModel = viewModel()
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    val signInUiState = accountViewModel.signInUiState
-    val userDetail by accountViewModel.userUiDetails.collectAsState()
+    val signInUiState = authViewModel.signInUiState
+    val userDetail by authViewModel.userUiDetails.collectAsState()
 
     Scaffold(
         topBar = {
@@ -74,12 +74,12 @@ fun Phone(
                 TextInput(
                     value = userDetail.phone,
                     onValueChange = {
-                        accountViewModel.setPhone(it)
+                        authViewModel.setPhone(it)
                     },
                     isError = userDetail.phone.isNotEmpty() && !userDetail.validDetails.phone,
                     prefix = {
                         Text(
-                            text = accountViewModel.countryPhoneCode[accountViewModel.defaultRegion]!!,
+                            text = authViewModel.countryPhoneCode[authViewModel.defaultRegion]!!,
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.primary
                         )
@@ -103,7 +103,7 @@ fun Phone(
                 }
                 Button(
                     onClick = {
-                        accountViewModel.signIn()
+                        authViewModel.signIn()
                         navigateNext(HomeDestination.route)
 
                     },

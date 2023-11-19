@@ -44,7 +44,7 @@ import com.example.nyatta.compose.components.TextInput
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.ui.theme.NyattaTheme
-import com.example.nyatta.viewmodels.AccountViewModel
+import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.ICreatePayment
 
 object PayDestination: Navigation {
@@ -60,10 +60,10 @@ val optionsIcon = listOf(R.drawable.mpesa)
 fun Mpesa(
     modifier: Modifier = Modifier,
     navigateNext: (String) -> Unit = {},
-    accViewModel: AccountViewModel = viewModel()
+    authViewModel: AuthViewModel = viewModel()
 ) {
-    val accUiState by accViewModel.userUiDetails.collectAsState()
-    val createPaymentState = accViewModel.createPaymentUiState
+    val accUiState by authViewModel.userUiDetails.collectAsState()
+    val createPaymentState = authViewModel.createPaymentUiState
     val phone = accUiState.phone
     val keyboardController = LocalSoftwareKeyboardController.current
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(paymentOptions[0]) }
@@ -109,11 +109,11 @@ fun Mpesa(
         }
         Column {
             TextInput(
-                onValueChange = { accViewModel.setPhone(it) },
+                onValueChange = { authViewModel.setPhone(it) },
                 value = phone,
                 prefix = {
                     Text(
-                        text = accViewModel.countryPhoneCode[accViewModel.defaultRegion]!!,
+                        text = authViewModel.countryPhoneCode[authViewModel.defaultRegion]!!,
                         color = MaterialTheme.colorScheme.primary
                     )
                 },
@@ -131,10 +131,10 @@ fun Mpesa(
             TextInput(
                 readOnly = true,
                 onValueChange = {},
-                value = accViewModel.landlordSubscriptionFee,
+                value = authViewModel.landlordSubscriptionFee,
                 prefix = {
                     Text(
-                        text = accViewModel.countryCurrencyCode[accViewModel.defaultRegion]!!,
+                        text = authViewModel.countryCurrencyCode[authViewModel.defaultRegion]!!,
                         color = MaterialTheme.colorScheme.primary
                     )
                 },
@@ -151,7 +151,7 @@ fun Mpesa(
                 isLoading = (createPaymentState is ICreatePayment.Loading),
                 text = stringResource(R.string.pay),
                 onClick = {
-                    accViewModel.createPayment()
+                    authViewModel.createPayment()
                     onShowDialog(true)
                 }
             )

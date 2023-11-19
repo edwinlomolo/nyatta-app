@@ -15,9 +15,9 @@ interface AuthRepository {
 
     suspend fun signIn(phone: String)
 
-    suspend fun recycleUser(phone: String)
+    suspend fun recycleUser(user: User)
 
-    suspend fun storeUserLocation(phone: String, gps: LatLng)
+    suspend fun storeUserLocation(user: User, gps: LatLng)
 }
 
 class OfflineAuthRepository(
@@ -44,14 +44,16 @@ class OfflineAuthRepository(
         }
     }
 
-    override suspend fun recycleUser(phone: String) {
+    override suspend fun recycleUser(user: User) {
         try {
-            val res = nyattaGqlApiRepository.signIn(phone).dataOrThrow()
+            val res = nyattaGqlApiRepository.signIn(user.phone).dataOrThrow()
             userDao.updateUser(
                 user = User(
                     phone =res.signIn.user.phone,
                     token = res.signIn.Token,
-                    isLandlord = res.signIn.user.is_landlord
+                    isLandlord = res.signIn.user.is_landlord,
+                    lat = user.lat,
+                    lng = user.lng
                 )
             )
         } catch(e: ApolloException) {
@@ -59,13 +61,15 @@ class OfflineAuthRepository(
         }
     }
 
-    override suspend fun storeUserLocation(phone: String, gps: LatLng) {
+    override suspend fun storeUserLocation(user: User, gps: LatLng) {
         try {
             userDao.updateUser(
                 user = User(
-                    phone = phone,
+                    phone = user.phone,
                     lat = gps.latitude,
-                    lng = gps.longitude
+                    lng = gps.longitude,
+                    isLandlord = user.isLandlord,
+                    token = user.token
                 )
             )
         } catch(e: Throwable) {

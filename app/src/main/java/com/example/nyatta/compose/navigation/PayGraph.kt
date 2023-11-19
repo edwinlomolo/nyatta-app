@@ -15,7 +15,7 @@ import com.example.nyatta.R
 import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.compose.payment.Mpesa
 import com.example.nyatta.compose.payment.PayDestination
-import com.example.nyatta.viewmodels.AccountViewModel
+import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.PropertyViewModel
 
 object PaymentGraph: Navigation {
@@ -27,7 +27,7 @@ object PaymentGraph: Navigation {
 fun NavGraphBuilder.paymentGraph(
     modifier: Modifier,
     navController: NavHostController,
-    accViewModel: AccountViewModel,
+    authViewModel: AuthViewModel,
     propertyViewModel: PropertyViewModel
 ) {
     navigation(
@@ -48,11 +48,11 @@ fun NavGraphBuilder.paymentGraph(
                         .padding(innerPadding)
                 ) {
                     Mpesa(
-                        accViewModel = accViewModel,
+                        authViewModel = authViewModel,
                         navigateNext = {
                             navController.navigate(it) {
                                 popUpTo(PaymentGraph.route) { inclusive = true }
-                                accViewModel.resetAccountState()
+                                authViewModel.resetAuthState()
                                 propertyViewModel.resetPropertyData()
                             }
                         }

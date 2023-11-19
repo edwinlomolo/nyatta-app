@@ -68,7 +68,6 @@ fun NavGraphBuilder.startPropertyOnboarding(
                         navigationItems.forEach { screen ->
                             NavigationBarItem(
                                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
-                                label = { Text(stringResource(screen.nameResourceId)) },
                                 icon = { Icon(screen.icon, contentDescription = stringResource(screen.nameResourceId)) },
                                 onClick = {
                                     navController.navigate(screen.route) {

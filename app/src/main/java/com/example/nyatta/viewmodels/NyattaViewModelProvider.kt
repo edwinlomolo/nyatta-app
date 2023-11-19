@@ -25,13 +25,6 @@ object NyattaViewModelProvider {
                 nyattaApplication().container.restApiRepository
             )
         }
-        // Initializer for AccountViewModel
-        initializer {
-            AccountViewModel(
-                nyattaApplication().container.authRepository,
-                nyattaApplication().container.nyattaGqlApiRepository
-            )
-        }
         // Initializer for TownsViewModel
         initializer {
             TownsViewModel(nyattaApplication().container.townsRepository)
@@ -44,7 +37,10 @@ object NyattaViewModelProvider {
         }
         // Initializer for AuthViewModel
         initializer {
-            AuthViewModel(nyattaApplication().container.authRepository)
+            AuthViewModel(
+                nyattaApplication().container.authRepository,
+                nyattaApplication().container.nyattaGqlApiRepository
+            )
         }
     }
 }

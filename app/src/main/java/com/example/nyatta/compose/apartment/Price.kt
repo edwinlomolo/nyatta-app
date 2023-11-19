@@ -23,8 +23,8 @@ import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.TextInput
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.ui.theme.NyattaTheme
-import com.example.nyatta.viewmodels.AccountViewModel
 import com.example.nyatta.viewmodels.ApartmentViewModel
+import com.example.nyatta.viewmodels.AuthViewModel
 
 object ApartmentPriceDestination: Navigation {
     override val route = "apartment/price"
@@ -36,7 +36,7 @@ object ApartmentPriceDestination: Navigation {
 fun Price(
     modifier: Modifier = Modifier,
     apartmentViewModel: ApartmentViewModel = viewModel(),
-    accViewModel: AccountViewModel = viewModel()
+    authViewModel: AuthViewModel = viewModel()
 ) {
     val apartmentUiState by apartmentViewModel.uiState.collectAsState()
 
@@ -55,7 +55,7 @@ fun Price(
                 .padding(8.dp),
             prefix = {
                 Text(
-                    text = accViewModel.countryCurrencyCode[accViewModel.defaultRegion]!!,
+                    text = authViewModel.countryCurrencyCode[authViewModel.defaultRegion]!!,
                     color = MaterialTheme.colorScheme.primary
                 )
             },

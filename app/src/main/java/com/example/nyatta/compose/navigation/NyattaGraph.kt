@@ -28,7 +28,6 @@ import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.NyattaViewModelProvider
 import com.example.nyatta.R
 import com.example.nyatta.viewmodels.OnboardingViewModel
-import com.example.nyatta.viewmodels.AccountViewModel
 import com.example.nyatta.viewmodels.ApartmentViewModel
 import com.example.nyatta.compose.home.Home
 import com.example.nyatta.compose.home.HomeDestination
@@ -36,6 +35,7 @@ import com.example.nyatta.viewmodels.HomeViewModel
 import com.example.nyatta.compose.listing.ListingDetailsDestination
 import com.example.nyatta.viewmodels.TownsViewModel
 import com.example.nyatta.viewmodels.PropertyViewModel
+import com.google.android.gms.maps.model.LatLng
 
 sealed class Screen(
     val route: String,
@@ -74,19 +74,17 @@ fun NyattaNavHost(
     apartmentViewModel: ApartmentViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     homeViewModel: HomeViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     townsViewModel: TownsViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
-    accountViewModel: AccountViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     authViewModel: AuthViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
 ) {
     val authUiState by authViewModel.authUiState.collectAsState()
     val onboardingUiState by onboardingViewModel.uiState.collectAsState()
     val propertyUiState by propertyViewModel.uiState.collectAsState()
     val apartmentUiState by apartmentViewModel.uiState.collectAsState()
-    val userUiDetails by accountViewModel.userUiDetails.collectAsState()
 
     val user = authUiState.user
     val onboardingUiData = onboardingUiState
     val propertyUiData = propertyUiState
-    val deviceLocation = userUiDetails.location
+    val deviceLocation = LatLng(authUiState.user.lat, authUiState.user.lng)
     val dataValidity = apartmentUiState.dataValidity
 
     NavHost(
@@ -104,7 +102,6 @@ fun NyattaNavHost(
                         navigationItems.forEach { screen ->
                             NavigationBarItem(
                                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
-                                //label = { Text(stringResource(screen.nameResourceId)) },
                                 icon = { Icon(screen.icon, contentDescription = stringResource(screen.nameResourceId)) },
                                 onClick = {
                                     navController.navigate(screen.route) {
@@ -150,7 +147,7 @@ fun NyattaNavHost(
         paymentGraph(
             modifier = modifier,
             navController = navController,
-            accViewModel = accountViewModel,
+            authViewModel = authViewModel,
             propertyViewModel = propertyViewModel
         )
         locationGraph(
@@ -178,10 +175,10 @@ fun NyattaNavHost(
             dataValidity = dataValidity,
             apartmentData = apartmentUiState,
             user = user,
-            accViewModel = accountViewModel
+            authViewModel = authViewModel
         )
         loginGraph(
-            accountViewModel = accountViewModel,
+            authViewModel = authViewModel,
             navController = navController
         )
     }
