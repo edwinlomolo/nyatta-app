@@ -36,6 +36,7 @@ import com.example.nyatta.compose.home.Home
 import com.example.nyatta.compose.home.HomeDestination
 import com.example.nyatta.viewmodels.HomeViewModel
 import com.example.nyatta.compose.listing.ListingDetailsDestination
+import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.compose.user.Account
 import com.example.nyatta.compose.user.AccountDestination
 import com.example.nyatta.compose.user.SignUp
@@ -49,17 +50,17 @@ sealed class Screen(
     val icon: ImageVector
 ) {
     data object Home: Screen(
-        "home",
+        HomeDestination.route,
         R.string.explore,
         Icons.TwoTone.LocationOn
     )
     data object Add: Screen(
-        "onboarding/start",
+        StartOnboardingDestination.route,
         R.string.add,
         Icons.TwoTone.AddCircle
     )
     data object Account: Screen(
-        "signup_graph",
+        AccountDestination.route,
         R.string.account,
         Icons.TwoTone.AccountCircle
     )
@@ -68,7 +69,7 @@ sealed class Screen(
 val navigationItems = listOf(
     Screen.Home,
     Screen.Add,
-    //Screen.Account
+    Screen.Account
 )
 
 @Composable
