@@ -37,11 +37,6 @@ object AccountDestination: Navigation {
     override val title = null
 }
 
-val properties = listOf(
-    "Beach front",
-    "Ngong hills",
-    "Lurambi ventures"
-)
 @Composable
 fun Account(
     modifier: Modifier = Modifier,
