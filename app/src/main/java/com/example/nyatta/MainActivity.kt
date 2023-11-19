@@ -38,7 +38,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.example.nyatta.ui.theme.NyattaTheme
-import com.example.nyatta.viewmodels.AccountViewModel
 import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.NyattaViewModelProvider
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -55,7 +54,6 @@ import java.util.concurrent.TimeUnit
 class MainActivity : ComponentActivity() {
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private var locationPriority: Int? = null
-    private val accViewModel: AccountViewModel by viewModels { NyattaViewModelProvider.Factory }
     private val authViewModel: AuthViewModel by viewModels { NyattaViewModelProvider.Factory }
 
     @SuppressLint("MissingPermission")
