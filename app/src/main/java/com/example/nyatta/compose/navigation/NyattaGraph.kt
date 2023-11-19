@@ -3,6 +3,7 @@ package com.example.nyatta.compose.navigation
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.AccountCircle
 import androidx.compose.material.icons.twotone.AddCircle
@@ -20,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -47,22 +49,26 @@ import com.google.android.gms.maps.model.LatLng
 sealed class Screen(
     val route: String,
     @StringRes val nameResourceId: Int,
-    val icon: ImageVector
+    val icon: ImageVector,
+    val modifier: Modifier
 ) {
     data object Home: Screen(
         HomeDestination.route,
         R.string.explore,
-        Icons.TwoTone.LocationOn
+        Icons.TwoTone.LocationOn,
+        Modifier
     )
     data object Add: Screen(
         StartOnboardingDestination.route,
         R.string.add,
-        Icons.TwoTone.AddCircle
+        Icons.TwoTone.AddCircle,
+        modifier = Modifier.size(36.dp)
     )
     data object Account: Screen(
         AccountDestination.route,
         R.string.account,
-        Icons.TwoTone.AccountCircle
+        Icons.TwoTone.AccountCircle,
+        Modifier
     )
 }
 
@@ -109,7 +115,7 @@ fun NyattaNavHost(
                         navigationItems.forEach { screen ->
                             NavigationBarItem(
                                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
-                                icon = { Icon(screen.icon, contentDescription = stringResource(screen.nameResourceId)) },
+                                icon = { Icon(screen.icon, modifier = screen.modifier, contentDescription = stringResource(screen.nameResourceId)) },
                                 onClick = {
                                     navController.navigate(screen.route) {
                                         // Pop up to the start destination of the graph to
@@ -154,7 +160,7 @@ fun NyattaNavHost(
                         navigationItems.forEach { screen ->
                             NavigationBarItem(
                                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
-                                icon = { Icon(screen.icon, contentDescription = stringResource(screen.nameResourceId)) },
+                                icon = { Icon(screen.icon, modifier = screen.modifier, contentDescription = stringResource(screen.nameResourceId)) },
                                 onClick = {
                                     navController.navigate(screen.route) {
                                         // Pop up to the start destination of the graph to
