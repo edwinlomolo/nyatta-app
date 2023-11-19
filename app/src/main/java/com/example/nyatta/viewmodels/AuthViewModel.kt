@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nyatta.data.auth.OfflineAuthRepository
 import com.example.nyatta.data.model.User
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
@@ -37,6 +38,19 @@ class AuthViewModel(
                 authRepository.recycleUser(authUiState.value.user.phone)
             } catch(e: Throwable) {
                 e.localizedMessage?.let { Log.e("RefreshUserOperationError", it) }
+            }
+        }
+    }
+
+    fun updateDeviceLocation(gps: LatLng) {
+        viewModelScope.launch {
+            try {
+                authRepository.storeUserLocation(
+                    phone = authUiState.value.user.phone,
+                    gps = gps
+                )
+            } catch(e: Throwable) {
+                e.localizedMessage?.let { Log.e("UpdateDeviceLocationOperationError", it) }
             }
         }
     }

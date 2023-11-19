@@ -15,5 +15,7 @@ import androidx.room.PrimaryKey
 data class User(
     @PrimaryKey val phone: String = "",
     @ColumnInfo(name = "is_landlord") val isLandlord: Boolean = false,
-    val token: String = ""
+    val token: String = "",
+    val lat: Double = 0.0,
+    val lng: Double = 0.0
 )

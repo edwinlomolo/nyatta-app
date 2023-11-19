@@ -5,6 +5,7 @@ import com.apollographql.apollo3.exception.ApolloException
 import com.example.nyatta.data.daos.UserDao
 import com.example.nyatta.data.model.User
 import com.example.nyatta.network.NyattaGqlApiRepository
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
@@ -15,6 +16,8 @@ interface AuthRepository {
     suspend fun signIn(phone: String)
 
     suspend fun recycleUser(phone: String)
+
+    suspend fun storeUserLocation(phone: String, gps: LatLng)
 }
 
 class OfflineAuthRepository(
@@ -53,6 +56,20 @@ class OfflineAuthRepository(
             )
         } catch(e: ApolloException) {
             e.localizedMessage?.let { Log.e("SignInUserOperationError", it) }
+        }
+    }
+
+    override suspend fun storeUserLocation(phone: String, gps: LatLng) {
+        try {
+            userDao.updateUser(
+                user = User(
+                    phone = phone,
+                    lat = gps.latitude,
+                    lng = gps.longitude
+                )
+            )
+        } catch(e: Throwable) {
+            e.localizedMessage?.let { Log.e("UpdateUserLocationOperationError", it) }
         }
     }
 }
