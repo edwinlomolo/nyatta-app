@@ -13,6 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.nyatta.R
 import com.example.nyatta.data.model.User
+import com.example.nyatta.viewmodels.Auth
 
 @Composable
 fun AlertDialog(
@@ -21,10 +22,10 @@ fun AlertDialog(
     dialogTitle: String,
     dialogText: String,
     icon: ImageVector,
-    user: User = User(),
+    user: Auth = Auth(),
     confirmationText: String? = null,
 ) {
-    val isLandlord = user.isLandlord
+    val isLandlord = user.token.isLandlord
 
     AlertDialog(
         icon = {

@@ -6,8 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.nyatta.GetUserQuery
 import com.example.nyatta.data.auth.OfflineAuthRepository
+import com.example.nyatta.data.model.Token
 import com.example.nyatta.data.model.User
+import com.example.nyatta.data.rest.RestApiRepository
 import com.example.nyatta.network.NyattaGqlApiRepository
 import com.google.android.gms.maps.model.LatLng
 import com.google.i18n.phonenumbers.PhoneNumberUtil
@@ -25,6 +28,7 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel(
     private val authRepository: OfflineAuthRepository,
+    private val restApiRepository: RestApiRepository,
     private val nyattaGqlApiRepository: NyattaGqlApiRepository
 ): ViewModel() {
     val landlordSubscriptionFee = "1500"
@@ -41,7 +45,7 @@ class AuthViewModel(
         private set
 
     val authUiState: StateFlow<Auth> = authRepository
-        .getUser()
+        .getAuthToken()
         .filterNotNull()
         .map {
             if (it.isNotEmpty()) {
@@ -56,8 +60,19 @@ class AuthViewModel(
             started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS)
         )
 
+    var firstName by mutableStateOf("")
+        private set
+    var lastName by mutableStateOf("")
+        private set
+    var avatar by mutableStateOf("")
+        private set
+
     private val _userDetails = MutableStateFlow(UserDetails())
     val userUiDetails: StateFlow<UserDetails> = _userDetails.asStateFlow()
+
+    fun updateFirstname(name: String) { firstName = name }
+    fun updateLastname(name: String) { lastName = name }
+    fun updateAvatar(upload: String) { avatar = upload }
 
     fun signIn() {
         if (userUiDetails.value.phone.isNotEmpty() && userUiDetails.value.validDetails.phone) {
@@ -97,7 +112,10 @@ class AuthViewModel(
     fun refreshUser() {
         viewModelScope.launch {
             try {
-                authRepository.recycleUser(authUiState.value.user)
+                authRepository.recycleUser(
+                    isLandlord = authUiState.value.token.isLandlord,
+                    gps = LatLng(authUiState.value.token.lat, authUiState.value.token.lng)
+                )
             } catch(e: Throwable) {
                 e.localizedMessage?.let { Log.e("RefreshUserOperationError", it) }
             }
@@ -109,7 +127,7 @@ class AuthViewModel(
             viewModelScope.launch {
                 try {
                     authRepository.storeUserLocation(
-                        user = authUiState.value.user,
+                        token = authUiState.value.token,
                         gps = gps
                     )
                 } catch(e: Throwable) {
@@ -144,6 +162,8 @@ class AuthViewModel(
         _userDetails.value = UserDetails()
     }
 
+    suspend fun getUser() =  nyattaGqlApiRepository.getUser().dataOrThrow()
+
     init {
         resetAuthState()
     }
@@ -153,7 +173,7 @@ class AuthViewModel(
     }
 }
 
-data class Auth(val user: User = User())
+data class Auth(val token: Token = Token())
 
 data class UserDetails(
     val phone: String = "",

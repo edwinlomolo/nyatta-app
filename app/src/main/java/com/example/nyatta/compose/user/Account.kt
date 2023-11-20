@@ -1,5 +1,6 @@
 package com.example.nyatta.compose.user
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,8 +15,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -23,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,10 +35,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.apollographql.apollo3.exception.ApolloException
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.ActionButton
+import com.example.nyatta.compose.components.ErrorContainer
+import com.example.nyatta.compose.components.Loading
 import com.example.nyatta.compose.components.TextInput
 import com.example.nyatta.compose.navigation.Navigation
+import com.example.nyatta.data.model.User
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.AuthViewModel
 
@@ -42,15 +51,61 @@ object AccountDestination: Navigation {
     override val title = null
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
+private sealed interface GetUserDetailsState {
+    data object Loading: GetUserDetailsState
+    data class ApolloError(val message: String? = null): GetUserDetailsState
+    data class Success(val user: User? = null): GetUserDetailsState
+}
+
 @Composable
 fun Account(
     modifier: Modifier = Modifier,
     authViewModel: AuthViewModel = viewModel()
 ) {
+    var state by remember { mutableStateOf<GetUserDetailsState>(GetUserDetailsState.Loading) }
+
+    LaunchedEffect(Unit) {
+        state = try {
+            val response = authViewModel.getUser()
+            GetUserDetailsState.Success(
+                user = User(
+                    firstName = response.getUser.first_name,
+                    lastName = response.getUser.last_name,
+                    avatar = response.getUser.avatar?.upload ?: User().avatar)
+            )
+        } catch(e: ApolloException) {
+            GetUserDetailsState.ApolloError(e.localizedMessage)
+        }
+    }
+
+    when(val s = state) {
+        GetUserDetailsState.Loading -> {
+            Loading()
+        }
+        is GetUserDetailsState.ApolloError -> {
+            ErrorContainer(message = s.message!!)
+        }
+        is GetUserDetailsState.Success -> {
+            authViewModel.updateFirstname(s.user!!.firstName)
+            authViewModel.updateLastname(s.user.lastName)
+            authViewModel.updateAvatar(s.user.avatar)
+            FaceCard(
+                modifier = modifier,
+                authViewModel = authViewModel
+            )
+        }
+    }
+
+
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun FaceCard(
+    modifier: Modifier = Modifier,
+    authViewModel: AuthViewModel = viewModel(),
+) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    val authUiState by authViewModel.authUiState.collectAsState()
-    val userUiState by authViewModel.userUiDetails.collectAsState()
 
     Column(
         modifier = modifier
@@ -67,35 +122,42 @@ fun Account(
                 // TODO avatar upload
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(authUiState.user.avatar)
+                        .data(authViewModel.avatar)
                         .crossfade(true)
                         .build(),
+                    placeholder = painterResource(R.drawable.loading_img),
+                    error = painterResource(R.drawable.ic_broken_image),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .padding(start = 8.dp, end = 32.dp)
                         .clip(MaterialTheme.shapes.small)
-                        .size(120.dp),
+                        .size(100.dp)
+                        .clickable {},
                     contentDescription = "user_avatar"
                 )
             }
             Column {
                 TextInput(
-                    isError = if (userUiState.firstName.isNotEmpty()) !userUiState.validDetails.firstName else false,
+                    value = authViewModel.firstName,
+                    isError = authViewModel.firstName.isEmpty(),
                     placeholder = {
                         Text(stringResource(R.string.first_name))
                     },
                     onValueChange = {
+                        authViewModel.updateFirstname(it)
                     },
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next
                     )
                 )
                 TextInput(
-                    isError = if (userUiState.lastName.isNotEmpty()) !userUiState.validDetails.lastName else false,
+                    value = authViewModel.lastName,
+                    isError = authViewModel.lastName.isEmpty(),
                     placeholder = {
                         Text(stringResource(R.string.last_name))
                     },
                     onValueChange = {
+                        authViewModel.updateLastname(it)
                     },
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Done
@@ -108,7 +170,6 @@ fun Account(
                 )
                 TextInput(
                     enabled = false,
-                    value = authUiState.user.phone,
                     readOnly = true,
                     onValueChange = {}
                 )

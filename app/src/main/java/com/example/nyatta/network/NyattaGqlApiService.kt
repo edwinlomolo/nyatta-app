@@ -2,7 +2,11 @@ package com.example.nyatta.network
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
+import com.apollographql.apollo3.cache.normalized.FetchPolicy
+import com.apollographql.apollo3.cache.normalized.fetchPolicy
 import com.example.nyatta.CreatePaymentMutation
+import com.example.nyatta.GetUserQuery
+import com.example.nyatta.RefreshTokenQuery
 import com.example.nyatta.SignInMutation
 import com.example.nyatta.UpdateUserInfoMutation
 import com.example.nyatta.data.model.User
@@ -13,6 +17,10 @@ interface NyattaGqlApiService {
     suspend fun createPayment(phone: String, amount: String): ApolloResponse<CreatePaymentMutation.Data>
 
     suspend fun updateUser(user: User): ApolloResponse<UpdateUserInfoMutation.Data>
+
+    suspend fun refreshUser(): ApolloResponse<RefreshTokenQuery.Data>
+
+    suspend fun getUser(): ApolloResponse<GetUserQuery.Data>
 }
 
 class NyattaGqlApiRepository(
@@ -40,5 +48,13 @@ class NyattaGqlApiRepository(
                 )
             )
             .execute()
+    }
+
+    override suspend fun refreshUser(): ApolloResponse<RefreshTokenQuery.Data> {
+        return apolloClient.query(RefreshTokenQuery()).execute()
+    }
+
+    override suspend fun getUser(): ApolloResponse<GetUserQuery.Data> {
+        return apolloClient.query(GetUserQuery()).fetchPolicy(FetchPolicy.NetworkOnly).execute()
     }
 }

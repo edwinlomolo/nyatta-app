@@ -36,9 +36,11 @@ import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.compose.uploads.Uploads
 import com.example.nyatta.compose.uploads.UploadsDestination
+import com.example.nyatta.data.model.Token
 import com.example.nyatta.data.model.User
 import com.example.nyatta.viewmodels.ApartmentData
 import com.example.nyatta.viewmodels.ApartmentDataValidity
+import com.example.nyatta.viewmodels.Auth
 import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.ICreateUnit
 import com.example.nyatta.viewmodels.ImageState
@@ -58,7 +60,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
     onboardingViewModel: OnboardingViewModel,
     apartmentData: ApartmentData,
     dataValidity: ApartmentDataValidity,
-    user: User
+    user: Token
 ) {
     val descriptionValidToProceed = dataValidity.description
     val bathroomsValidToProceed = dataValidity.bathrooms

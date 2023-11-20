@@ -39,6 +39,7 @@ object NyattaViewModelProvider {
         initializer {
             AuthViewModel(
                 nyattaApplication().container.authRepository,
+                nyattaApplication().container.restApiRepository,
                 nyattaApplication().container.nyattaGqlApiRepository
             )
         }

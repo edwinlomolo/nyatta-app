@@ -1,25 +1,21 @@
 package com.example.nyatta.data.daos
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.nyatta.data.model.User
+import com.example.nyatta.data.model.Token
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface UserDao {
+interface TokenDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(user: User)
+    suspend fun insertToken(token: Token)
 
-    @Query("SELECT * FROM users LIMIT 1")
-    fun getUser(): Flow<List<User>>
+    @Query("SELECT * FROM tokens LIMIT 1")
+    fun getAuthToken(): Flow<List<Token>>
 
     @Update
-    suspend fun updateUser(user: User)
-
-    @Delete
-    suspend fun deleteUser(user: User)
+    suspend fun updateAuthToken(token: Token)
 }

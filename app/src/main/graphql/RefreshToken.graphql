@@ -1,0 +1,16 @@
+query RefreshToken {
+    refreshToken{
+        user {
+            is_landlord
+            id
+            createdAt
+            phone
+            first_name
+            last_name
+            avatar {
+                upload
+            }
+        }
+        Token
+    }
+}

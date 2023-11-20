@@ -21,9 +21,9 @@ import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.compose.navigation.PaymentGraph
 import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
-import com.example.nyatta.data.model.User
 import com.example.nyatta.viewmodels.OnboardingViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
+import com.example.nyatta.viewmodels.Auth
 import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.PropertyViewModel
 import com.google.android.gms.maps.model.CameraPosition
@@ -40,13 +40,14 @@ object LocationDestination: Navigation {
 
 @Composable
 fun Location(
-    user: User = User(),
+    auth: Auth = Auth(),
     navigateNext: (String) -> Unit = {},
     onboardingViewModel: OnboardingViewModel = viewModel(),
     propertyViewModel: PropertyViewModel = viewModel(),
     authViewModel: AuthViewModel = viewModel(),
     deviceLocation: LatLng = LatLng(0.0, 0.0)
 ) {
+    val user = auth.token
     val propertyUiState by propertyViewModel.uiState.collectAsState()
     val onboardingUiState by onboardingViewModel.uiState.collectAsState()
     val onboardingState = onboardingUiState

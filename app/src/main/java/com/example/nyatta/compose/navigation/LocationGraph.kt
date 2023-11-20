@@ -21,7 +21,9 @@ import com.example.nyatta.compose.location.Location
 import com.example.nyatta.compose.location.LocationDestination
 import com.example.nyatta.compose.location.TownDestination
 import com.example.nyatta.compose.location.Towns
+import com.example.nyatta.data.model.Token
 import com.example.nyatta.data.model.User
+import com.example.nyatta.viewmodels.Auth
 import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.ICreateProperty
 import com.example.nyatta.viewmodels.PropertyViewModel
@@ -42,7 +44,7 @@ fun NavGraphBuilder.locationGraph(
     deviceLocation: LatLng,
     propertyType: String,
     navController: NavHostController,
-    user: User
+    user: Auth
 ) {
     val createPropertyState = propertyViewModel.createPropertyState
 
@@ -65,7 +67,7 @@ fun NavGraphBuilder.locationGraph(
                             navController.popBackStack()
                         },
                         onActionButtonClick = {
-                            if (user.isLandlord) {
+                            if (user.token.isLandlord) {
                                 if (propertyType == "Apartments Building") {
                                     if (createPropertyState !is ICreateProperty.Loading) {
                                         propertyViewModel.createProperty()
@@ -103,7 +105,7 @@ fun NavGraphBuilder.locationGraph(
                                 }
                             }
                         },
-                        user = user,
+                        auth = user,
                         propertyViewModel = propertyViewModel,
                         deviceLocation = deviceLocation,
                         onboardingViewModel = onboardingViewModel,

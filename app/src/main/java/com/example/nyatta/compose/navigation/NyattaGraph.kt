@@ -94,10 +94,10 @@ fun NyattaNavHost(
     val propertyUiState by propertyViewModel.uiState.collectAsState()
     val apartmentUiState by apartmentViewModel.uiState.collectAsState()
 
-    val user = authUiState.user
+    val user = authUiState
     val onboardingUiData = onboardingUiState
     val propertyUiData = propertyUiState
-    val deviceLocation = LatLng(authUiState.user.lat, authUiState.user.lng)
+    val deviceLocation = LatLng(authUiState.token.lat, authUiState.token.lng)
     val dataValidity = apartmentUiState.dataValidity
 
     NavHost(
@@ -186,7 +186,7 @@ fun NyattaNavHost(
                        .fillMaxSize()
                        .padding(innerPadding)
                 ) {
-                    if (user.token.isNotEmpty()) {
+                    if (user.token.token.isNotEmpty()) {
                         Account(
                             authViewModel = authViewModel
                         )
@@ -248,7 +248,7 @@ fun NyattaNavHost(
             apartmentViewModel = apartmentViewModel,
             dataValidity = dataValidity,
             apartmentData = apartmentUiState,
-            user = user,
+            user = user.token,
             authViewModel = authViewModel,
             onboardingViewModel = onboardingViewModel
         )

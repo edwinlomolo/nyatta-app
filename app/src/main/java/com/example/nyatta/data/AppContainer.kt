@@ -9,7 +9,7 @@ import com.apollographql.apollo3.cache.normalized.sql.SqlNormalizedCacheFactory
 import com.apollographql.apollo3.network.http.HttpInterceptor
 import com.apollographql.apollo3.network.http.HttpInterceptorChain
 import com.example.nyatta.data.auth.OfflineAuthRepository
-import com.example.nyatta.data.daos.UserDao
+import com.example.nyatta.data.daos.TokenDao
 import com.example.nyatta.data.hello.GqlHelloRepository
 import com.example.nyatta.data.hello.HelloRepository
 import com.example.nyatta.data.listings.GqlListingsRepository
@@ -46,7 +46,7 @@ private const val baseNyattaRestApiUrl =
 val sqlNormalizedCacheFactory = SqlNormalizedCacheFactory("nyatta.db")
 
 class AuthorizationInterceptor(
-    private val authRepository: UserDao
+    private val authRepository: TokenDao
 ): HttpInterceptor {
     private val mutex = Mutex()
 
@@ -55,7 +55,7 @@ class AuthorizationInterceptor(
         chain: HttpInterceptorChain
     ): HttpResponse {
         val token = mutex.withLock {
-            authRepository.getUser()
+            authRepository.getAuthToken()
                 .firstOrNull()
         }
 
@@ -103,7 +103,7 @@ class DefaultContainer(private val context: Context): AppContainer {
             .serverUrl(baseNyattaGqlApiUrl)
             .addHttpInterceptor(
                 AuthorizationInterceptor(
-                    NyattaDatabase.getDatabase(context).userDao()
+                    NyattaDatabase.getDatabase(context).tokenDao()
                 )
             )
             .normalizedCache(sqlNormalizedCacheFactory)
@@ -128,7 +128,7 @@ class DefaultContainer(private val context: Context): AppContainer {
 
     override val authRepository: OfflineAuthRepository by lazy {
         OfflineAuthRepository(
-            userDao = NyattaDatabase.getDatabase(context).userDao(),
+            tokenDao = NyattaDatabase.getDatabase(context).tokenDao(),
             nyattaGqlApiRepository = nyattaGqlApiRepository
         )
     }
