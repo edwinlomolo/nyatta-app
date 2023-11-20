@@ -1,5 +1,5 @@
 type Amenity {
-  id: ID!
+  id: UUID!
 
   name: String!
 
@@ -7,7 +7,7 @@ type Amenity {
 
   category: String!
 
-  unitId: ID
+  unitId: UUID
 
   createdAt: Time
 
@@ -15,17 +15,17 @@ type Amenity {
 }
 
 type AnyUpload {
-  id: ID!
+  id: UUID!
 
   upload: String!
 
   category: String!
 
-  propertyId: ID
+  propertyId: UUID
 
-  userId: ID
+  userId: UUID
 
-  unitId: ID
+  unitId: UUID
 
   createdAt: Time
 
@@ -33,9 +33,9 @@ type AnyUpload {
 }
 
 type Bedroom {
-  id: ID!
+  id: UUID!
 
-  propertyUnitId: ID!
+  propertyUnitId: UUID!
 
   bedroomNumber: Int!
 
@@ -49,7 +49,7 @@ type Bedroom {
 }
 
 type Caretaker {
-  id: ID!
+  id: UUID!
 
   first_name: String!
 
@@ -111,7 +111,7 @@ input HandshakeInput {
 }
 
 type Invoice {
-  id: ID!
+  id: UUID!
 
   msid: String!
 
@@ -181,7 +181,7 @@ input NewUser {
 }
 
 type Property {
-  id: ID!
+  id: UUID!
 
   name: String!
 
@@ -193,11 +193,11 @@ type Property {
 
   units: [PropertyUnit!]!
 
-  createdBy: ID!
+  createdBy: UUID!
 
   caretaker: Caretaker!
 
-  caretakerId: ID!
+  caretakerId: UUID!
 
   owner: User!
 
@@ -213,19 +213,17 @@ enum PropertyType {
 }
 
 type PropertyUnit {
-  id: ID!
+  id: UUID!
 
   name: String!
 
   bedrooms: [Bedroom!]!
 
-  propertyId: ID!
+  propertyId: UUID!
 
   property: Property!
 
   price: String!
-
-  amenityCount: Int!
 
   bathrooms: Int!
 
@@ -245,7 +243,7 @@ type PropertyUnit {
 }
 
 input PropertyUnitInput {
-  propertyId: ID!
+  propertyId: UUID!
 
   baths: Int!
 
@@ -267,7 +265,7 @@ input PropertyUnitInput {
 type Query {
   getUser(email: String!): User!
 
-  getProperty(id: ID!): Property!
+  getProperty(id: UUID!): Property!
 
   hello: String!
 
@@ -275,19 +273,19 @@ type Query {
 
   getTowns: [Town!]!
 
-  getPropertyUnits(propertyId: ID!): [PropertyUnit!]!
+  getPropertyUnits(propertyId: UUID!): [PropertyUnit!]!
 
-  getPropertyTenancy(propertyId: ID!): [Tenant!]!
+  getPropertyTenancy(propertyId: UUID!): [Tenant!]!
 
   getUserProperties: [Property!]!
 
-  listingOverview(propertyId: ID!): ListingOverview!
+  listingOverview(propertyId: UUID!): ListingOverview!
 
   getListings: [Property!]!
 }
 
 type Shoot {
-  id: ID!
+  id: UUID!
 
   propertyId: String!
 
@@ -323,11 +321,11 @@ type Status {
 input TenancyInput {
   startDate: Time!
 
-  propertyUnitId: ID!
+  propertyUnitId: UUID!
 }
 
 type Tenant {
-  id: ID!
+  id: UUID!
 
   startDate: Time!
 
@@ -335,7 +333,7 @@ type Tenant {
 
   upload: [AnyUpload!]!
 
-  propertyUnitId: ID!
+  propertyUnitId: UUID!
 
   createdAt: Time
 
@@ -355,6 +353,8 @@ type Town {
 
   postalCode: String!
 }
+
+scalar UUID
 
 input UnitAmenityInput {
   name: String!
@@ -395,7 +395,7 @@ input UploadImages {
 }
 
 type User {
-  id: ID!
+  id: UUID!
 
   email: String!
 
@@ -429,6 +429,167 @@ input VerificationInput {
 
   verifyCode: String
 }
+
+# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
+# noinspection GraphQLTypeRedefinition
+type __Directive {
+  name: String!
+
+  description: String
+
+  locations: [__DirectiveLocation!]!
+
+  args: [__InputValue!]!
+
+  isRepeatable: Boolean!
+}
+
+# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
+# noinspection GraphQLTypeRedefinition
+enum __DirectiveLocation {
+  QUERY
+
+  MUTATION
+
+  SUBSCRIPTION
+
+  FIELD
+
+  FRAGMENT_DEFINITION
+
+  FRAGMENT_SPREAD
+
+  INLINE_FRAGMENT
+
+  VARIABLE_DEFINITION
+
+  SCHEMA
+
+  SCALAR
+
+  OBJECT
+
+  FIELD_DEFINITION
+
+  ARGUMENT_DEFINITION
+
+  INTERFACE
+
+  UNION
+
+  ENUM
+
+  ENUM_VALUE
+
+  INPUT_OBJECT
+
+  INPUT_FIELD_DEFINITION
+}
+
+# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
+# noinspection GraphQLTypeRedefinition
+type __EnumValue {
+  name: String!
+
+  description: String
+
+  isDeprecated: Boolean!
+
+  deprecationReason: String
+}
+
+# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
+# noinspection GraphQLTypeRedefinition
+type __Field {
+  name: String!
+
+  description: String
+
+  args: [__InputValue!]!
+
+  type: __Type!
+
+  isDeprecated: Boolean!
+
+  deprecationReason: String
+}
+
+# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
+# noinspection GraphQLTypeRedefinition
+type __InputValue {
+  name: String!
+
+  description: String
+
+  type: __Type!
+
+  defaultValue: String
+}
+
+# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
+# noinspection GraphQLTypeRedefinition
+type __Schema {
+  description: String
+
+  types: [__Type!]!
+
+  queryType: __Type!
+
+  mutationType: __Type
+
+  subscriptionType: __Type
+
+  directives: [__Directive!]!
+}
+
+# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
+# noinspection GraphQLTypeRedefinition
+type __Type {
+  kind: __TypeKind!
+
+  name: String
+
+  description: String
+
+  fields(includeDeprecated: Boolean = false): [__Field!]
+
+  interfaces: [__Type!]
+
+  possibleTypes: [__Type!]
+
+  enumValues(includeDeprecated: Boolean = false): [__EnumValue!]
+
+  inputFields: [__InputValue!]
+
+  ofType: __Type
+
+  specifiedByURL: String
+}
+
+# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
+# noinspection GraphQLTypeRedefinition
+enum __TypeKind {
+  SCALAR
+
+  OBJECT
+
+  INTERFACE
+
+  UNION
+
+  ENUM
+
+  INPUT_OBJECT
+
+  LIST
+
+  NON_NULL
+}
+
+"""
+The @defer directive may be specified on a fragment spread to imply de-prioritization, that causes the fragment to be omitted in the initial response, and delivered as a subsequent response afterward. A query with @defer directive will cause the request to potentially return multiple responses, where non-deferred data is delivered in the initial response and data deferred delivered in a subsequent response. @include and @skip take precedence over @defer.
+"""
+directive @defer (if: Boolean = true, label: String) on FRAGMENT_SPREAD|INLINE_FRAGMENT
 
 # See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
 # noinspection GraphQLTypeRedefinition
