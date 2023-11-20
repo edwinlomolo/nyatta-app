@@ -18,6 +18,7 @@ data class User(
     val token: String = "",
     @ColumnInfo(name = "first_name") val firstName: String = "",
     @ColumnInfo(name = "last_name") val lastName: String = "",
+    val avatar: String = "",
     val lat: Double = 0.0,
     val lng: Double = 0.0
 )

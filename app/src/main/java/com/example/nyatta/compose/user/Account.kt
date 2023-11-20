@@ -8,7 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material3.Button
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -16,17 +17,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.nyatta.R
+import com.example.nyatta.compose.components.ActionButton
 import com.example.nyatta.compose.components.TextInput
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.ui.theme.NyattaTheme
@@ -37,13 +42,15 @@ object AccountDestination: Navigation {
     override val title = null
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Account(
     modifier: Modifier = Modifier,
     authViewModel: AuthViewModel = viewModel()
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     val authUiState by authViewModel.authUiState.collectAsState()
-    val imageUri: Any? = R.drawable.image_gallery
+    val userUiState by authViewModel.userUiDetails.collectAsState()
 
     Column(
         modifier = modifier
@@ -53,56 +60,62 @@ fun Account(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxWidth()
+                .padding(top = 40.dp),
         ) {
-            Box(
-                modifier = Modifier
-                    .padding(20.dp)
-            ) {
+            Box {
                 // TODO avatar upload
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(imageUri)
+                        .data(authUiState.user.avatar)
                         .crossfade(true)
                         .build(),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .padding(8.dp)
+                        .padding(start = 8.dp, end = 32.dp)
                         .clip(MaterialTheme.shapes.small)
-                        .size(100.dp),
+                        .size(120.dp),
                     contentDescription = "user_avatar"
                 )
             }
             Column {
                 TextInput(
+                    isError = if (userUiState.firstName.isNotEmpty()) !userUiState.validDetails.firstName else false,
                     placeholder = {
                         Text(stringResource(R.string.first_name))
                     },
-                    onValueChange = {}
+                    onValueChange = {
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Next
+                    )
                 )
                 TextInput(
+                    isError = if (userUiState.lastName.isNotEmpty()) !userUiState.validDetails.lastName else false,
                     placeholder = {
                         Text(stringResource(R.string.last_name))
                     },
-                    onValueChange = {}
+                    onValueChange = {
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                        }
+                    )
                 )
                 TextInput(
                     enabled = false,
-                    value = "254792921440",
+                    value = authUiState.user.phone,
                     readOnly = true,
                     onValueChange = {}
                 )
                 // TODO show only if user data changed
-                Button(
-                    onClick = { /*TODO*/ },
-                    shape = MaterialTheme.shapes.small
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.save),
-                        style = MaterialTheme.typography.labelSmall
-                    )
-                }
+                ActionButton(
+                    text = stringResource(id = R.string.save)
+                )
             }
         }
         Row(

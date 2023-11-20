@@ -12,6 +12,7 @@ import com.example.nyatta.network.NyattaGqlApiRepository
 import com.google.android.gms.maps.model.LatLng
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -32,9 +33,6 @@ class AuthViewModel(
     val defaultRegion = "KE"
 
     private val phoneUtil = PhoneNumberUtil.getInstance()
-
-    private val _userDetails = MutableStateFlow(UserDetails())
-    val userUiDetails: StateFlow<UserDetails> = _userDetails.asStateFlow()
 
     var createPaymentUiState: ICreatePayment by mutableStateOf(ICreatePayment.Success())
         private set
@@ -57,6 +55,9 @@ class AuthViewModel(
             initialValue = Auth(),
             started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS)
         )
+
+    private val _userDetails = MutableStateFlow(UserDetails())
+    val userUiDetails: StateFlow<UserDetails> = _userDetails.asStateFlow()
 
     fun signIn() {
         if (userUiDetails.value.phone.isNotEmpty() && userUiDetails.value.validDetails.phone) {
@@ -156,11 +157,16 @@ data class Auth(val user: User = User())
 
 data class UserDetails(
     val phone: String = "",
+    val firstName: String = "",
+    val lastName: String = "",
+    val avatar: String = "",
     val validDetails: DataValidity = DataValidity(),
 )
 
 data class DataValidity(
-    val phone: Boolean = false
+    val phone: Boolean = false,
+    val firstName: Boolean = false,
+    val lastName: Boolean = false
 )
 
 interface SignInUiState {

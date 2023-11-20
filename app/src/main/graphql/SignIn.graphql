@@ -11,6 +11,9 @@ mutation SignIn(
             phone
             first_name
             last_name
+            avatar {
+                upload
+            }
         }
         Token
     }

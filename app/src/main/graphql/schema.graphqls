@@ -57,7 +57,7 @@ type Caretaker {
 
   phone: String!
 
-  uploads: [AnyUpload!]!
+  avatar: AnyUpload
 
   verified: Boolean!
 
@@ -162,6 +162,8 @@ type Mutation {
   saveMailing(email: String): Status!
 
   createPayment(input: CreatePaymentInput!): Status!
+
+  updateUserInfo(firstName: String!, lastName: String!, avatar: String!): User!
 }
 
 input NewProperty {
@@ -187,7 +189,7 @@ type Property {
 
   location: Gps!
 
-  uploads: [AnyUpload!]!
+  thumbnail: AnyUpload
 
   units: [PropertyUnit!]!
 
@@ -381,9 +383,9 @@ scalar Upload
 enum UploadCategory {
   PROFILE_IMG
 
-  UNIT_IMAGE
+  UNIT_IMAGES
 
-  CARETAKER_IMG
+  PROPERTY_THUMBNAIL
 }
 
 input UploadImages {
@@ -405,7 +407,7 @@ type User {
 
   is_landlord: Boolean!
 
-  uploads: [AnyUpload!]!
+  avatar: AnyUpload
 
   onboarding: Boolean!
 
