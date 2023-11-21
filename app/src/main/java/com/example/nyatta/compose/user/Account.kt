@@ -4,16 +4,19 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -41,7 +44,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.apollographql.apollo3.exception.ApolloException
 import com.example.nyatta.R
-import com.example.nyatta.compose.components.ActionButton
+import com.example.nyatta.compose.components.CircularProgressLoader
 import com.example.nyatta.compose.components.ErrorContainer
 import com.example.nyatta.compose.components.Loading
 import com.example.nyatta.compose.components.TextInput
@@ -169,7 +172,7 @@ private fun FaceCard(
                     contentDescription = "user_avatar"
                 )
             }
-            Column {
+            Column(verticalArrangement = Arrangement.Center) {
                 TextInput(
                     value = authViewModel.firstName,
                     isError = authViewModel.firstName.isEmpty(),
@@ -208,11 +211,20 @@ private fun FaceCard(
                     onValueChange = {}
                 )
                 // TODO show only if user data changed
-                ActionButton(
-                    isLoading = authViewModel.updateUserDetailsState is IUpdateUserDetails.Loading,
-                    text = stringResource(id = R.string.save),
-                    onClick = { authViewModel.updateUser() }
-                )
+                if (authViewModel.updateUserDetailsState is IUpdateUserDetails.Loading) {
+                    CircularProgressLoader()
+                } else {
+                    Button(
+                        onClick = { authViewModel.updateUser() },
+                        shape = MaterialTheme.shapes.small,
+                        modifier = Modifier.height(50.dp)
+                    ) {
+                       Text(
+                           text = stringResource(id = R.string.save),
+                           style = MaterialTheme.typography.labelSmall,
+                       )
+                    }
+                }
             }
         }
         if (isLandlord) {
