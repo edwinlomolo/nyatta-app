@@ -8,6 +8,7 @@ data class Token(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val token: String = "",
     val isLandlord: Boolean = false,
+    val subscribeRetries: Int = 0,
     val lat: Double = 0.0,
     val lng: Double = 0.0
 )

@@ -10,6 +10,7 @@ mutation SignIn(
             createdAt
             phone
             first_name
+            subscribe_retries
             last_name
             avatar {
                 upload

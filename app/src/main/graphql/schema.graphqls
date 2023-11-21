@@ -409,6 +409,8 @@ type User {
 
   avatar: AnyUpload
 
+  subscribe_retries: Int!
+
   onboarding: Boolean!
 
   properties: [Property!]!

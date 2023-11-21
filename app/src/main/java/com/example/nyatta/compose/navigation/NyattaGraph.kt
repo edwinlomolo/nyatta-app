@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.AccountCircle
 import androidx.compose.material.icons.twotone.AddCircle
 import androidx.compose.material.icons.twotone.LocationOn
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -36,6 +37,7 @@ import com.example.nyatta.viewmodels.OnboardingViewModel
 import com.example.nyatta.viewmodels.ApartmentViewModel
 import com.example.nyatta.compose.home.Home
 import com.example.nyatta.compose.home.HomeDestination
+import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.viewmodels.HomeViewModel
 import com.example.nyatta.compose.listing.ListingDetailsDestination
 import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
@@ -78,6 +80,7 @@ val navigationItems = listOf(
     Screen.Account
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NyattaNavHost(
     navController: NavHostController,
@@ -99,6 +102,7 @@ fun NyattaNavHost(
     val propertyUiData = propertyUiState
     val deviceLocation = LatLng(authUiState.token.lat, authUiState.token.lng)
     val dataValidity = apartmentUiState.dataValidity
+    val isAuthenticated = user.token.token.isNotEmpty()
 
     NavHost(
         modifier = modifier,
@@ -152,6 +156,15 @@ fun NyattaNavHost(
         }
         composable(route = AccountDestination.route) {
             Scaffold(
+                topBar = {
+                    if (!isAuthenticated) {
+                        TopAppBar(
+                            title = stringResource(id = R.string.create_account),
+                            canNavigateBack = true,
+                            navigateUp = { navController.popBackStack() }
+                        )
+                    }
+                },
                 bottomBar = {
                     NavigationBar {
                         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -186,7 +199,7 @@ fun NyattaNavHost(
                        .fillMaxSize()
                        .padding(innerPadding)
                 ) {
-                    if (user.token.token.isNotEmpty()) {
+                    if (isAuthenticated) {
                         Account(
                             authViewModel = authViewModel,
                             isLandlord = user.token.isLandlord
@@ -200,12 +213,6 @@ fun NyattaNavHost(
                                         saveState = false
                                     }
                                 }
-                            },
-                            text = {
-                                Text(
-                                    text = stringResource(id = R.string.create_account),
-                                    style = MaterialTheme.typography.titleSmall
-                                )
                             }
                         )
                     }

@@ -7,6 +7,7 @@ query RefreshToken {
             phone
             first_name
             last_name
+            subscribe_retries
             avatar {
                 upload
             }
