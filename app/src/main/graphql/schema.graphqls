@@ -75,7 +75,7 @@ input CaretakerInput {
 
   phone: String!
 
-  image: Upload!
+  image: String!
 }
 
 input CaretakerVerificationInput {
@@ -174,6 +174,10 @@ input NewProperty {
   location: GpsInput!
 
   thumbnail: String!
+
+  isCaretaker: Boolean!
+
+  caretaker: CaretakerInput
 }
 
 input NewUser {
@@ -223,6 +227,8 @@ type PropertyUnit {
 
   property: Property!
 
+  tenant: Tenant
+
   price: String!
 
   bathrooms: Int!
@@ -233,7 +239,7 @@ type PropertyUnit {
 
   type: String!
 
-  uploads: [AnyUpload!]!
+  images: [AnyUpload!]!
 
   tenancy: [Tenant!]!
 
@@ -248,8 +254,6 @@ input PropertyUnitInput {
   baths: Int!
 
   name: String!
-
-  location: GpsInput!
 
   type: String!
 
@@ -333,9 +337,13 @@ type Tenant {
 
   endDate: Time
 
-  upload: [AnyUpload!]!
-
   propertyUnitId: UUID!
+
+  userId: UUID!
+
+  user: User!
+
+  propertyUnit: PropertyUnit
 
   createdAt: Time
 
@@ -414,6 +422,8 @@ type User {
   onboarding: Boolean!
 
   properties: [Property!]!
+
+  tenancy: [Tenant!]!
 
   createdAt: Time
 
