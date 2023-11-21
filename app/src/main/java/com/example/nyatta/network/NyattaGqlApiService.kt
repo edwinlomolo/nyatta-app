@@ -4,6 +4,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.cache.normalized.FetchPolicy
 import com.apollographql.apollo3.cache.normalized.fetchPolicy
+import com.apollographql.apollo3.cache.normalized.optimisticUpdates
 import com.example.nyatta.CreatePaymentMutation
 import com.example.nyatta.GetUserQuery
 import com.example.nyatta.RefreshTokenQuery
@@ -55,6 +56,6 @@ class NyattaGqlApiRepository(
     }
 
     override suspend fun getUser(): ApolloResponse<GetUserQuery.Data> {
-        return apolloClient.query(GetUserQuery()).fetchPolicy(FetchPolicy.NetworkOnly).execute()
+        return apolloClient.query(GetUserQuery()).fetchPolicy(FetchPolicy.NetworkFirst).execute()
     }
 }

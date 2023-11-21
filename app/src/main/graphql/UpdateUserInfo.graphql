@@ -1,5 +1,10 @@
 mutation UpdateUserInfo($firstName: String! $lastName: String! $avatar: String!){
     updateUserInfo(firstName: $firstName lastName: $lastName avatar: $avatar){
        id
+        first_name
+        last_name
+        avatar {
+            upload
+        }
     }
 }

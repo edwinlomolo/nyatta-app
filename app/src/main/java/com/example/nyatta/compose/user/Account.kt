@@ -1,5 +1,8 @@
 package com.example.nyatta.compose.user
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -45,6 +49,8 @@ import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.data.model.User
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.AuthViewModel
+import com.example.nyatta.viewmodels.IUpdateUserDetails
+import kotlinx.coroutines.launch
 
 object AccountDestination: Navigation {
     override val route = "account"
@@ -60,18 +66,26 @@ private sealed interface GetUserDetailsState {
 @Composable
 fun Account(
     modifier: Modifier = Modifier,
-    authViewModel: AuthViewModel = viewModel()
+    authViewModel: AuthViewModel = viewModel(),
+    isLandlord: Boolean = false
 ) {
     var state by remember { mutableStateOf<GetUserDetailsState>(GetUserDetailsState.Loading) }
 
     LaunchedEffect(Unit) {
         state = try {
             val response = authViewModel.getUser()
+            authViewModel.updateFirstname(response.getUser.first_name)
+            authViewModel.updateLastname(response.getUser.last_name)
+            authViewModel.updateAvatar(response.getUser.avatar?.upload ?: User().avatar)
+            authViewModel.updateUserPhone(response.getUser.phone)
+            authViewModel.updateUserId(response.getUser.id)
             GetUserDetailsState.Success(
                 user = User(
+                    id = response.getUser.id,
+                    phone = response.getUser.phone,
                     firstName = response.getUser.first_name,
                     lastName = response.getUser.last_name,
-                    avatar = response.getUser.avatar?.upload ?: User().avatar)
+                    avatar = response.getUser.avatar?.upload ?: User().avatar),
             )
         } catch(e: ApolloException) {
             GetUserDetailsState.ApolloError(e.localizedMessage)
@@ -86,12 +100,10 @@ fun Account(
             ErrorContainer(message = s.message!!)
         }
         is GetUserDetailsState.Success -> {
-            authViewModel.updateFirstname(s.user!!.firstName)
-            authViewModel.updateLastname(s.user.lastName)
-            authViewModel.updateAvatar(s.user.avatar)
             FaceCard(
                 modifier = modifier,
-                authViewModel = authViewModel
+                authViewModel = authViewModel,
+                isLandlord = isLandlord
             )
         }
     }
@@ -101,11 +113,24 @@ fun Account(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun FaceCard(
+private fun FaceCard(
     modifier: Modifier = Modifier,
     authViewModel: AuthViewModel = viewModel(),
+    isLandlord: Boolean = false
 ) {
+    val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
+    val pickMedia = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) {
+        if (it != null) {
+            val stream = context.contentResolver.openInputStream(it)
+            if (stream != null) {
+                authViewModel.uploadUserAvatar(stream)
+            }
+        }
+    }
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = modifier
@@ -122,7 +147,7 @@ fun FaceCard(
                 // TODO avatar upload
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(authViewModel.avatar)
+                        .data(authViewModel.userAvatar)
                         .crossfade(true)
                         .build(),
                     placeholder = painterResource(R.drawable.loading_img),
@@ -132,7 +157,15 @@ fun FaceCard(
                         .padding(start = 8.dp, end = 32.dp)
                         .clip(MaterialTheme.shapes.small)
                         .size(100.dp)
-                        .clickable {},
+                        .clickable {
+                            scope.launch {
+                                pickMedia.launch(
+                                    PickVisualMediaRequest(
+                                        ActivityResultContracts.PickVisualMedia.ImageOnly
+                                    )
+                                )
+                            }
+                        },
                     contentDescription = "user_avatar"
                 )
             }
@@ -169,69 +202,81 @@ fun FaceCard(
                     )
                 )
                 TextInput(
+                    value = authViewModel.userPhone,
                     enabled = false,
                     readOnly = true,
                     onValueChange = {}
                 )
                 // TODO show only if user data changed
                 ActionButton(
-                    text = stringResource(id = R.string.save)
+                    isLoading = authViewModel.updateUserDetailsState is IUpdateUserDetails.Loading,
+                    text = stringResource(id = R.string.save),
+                    onClick = { authViewModel.updateUser() }
                 )
             }
         }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-        ) {
-            Column {
-                Text(
-                    text = stringResource(R.string.properties),
-                    modifier = Modifier.padding(bottom = 8.dp),
-                    style = MaterialTheme.typography.titleMedium
-                )
-                LazyRow {
-                    // TODO if user has listed properties
-                    if (true) {
-                        item {
-                            Text(
-                                text = "No properties",
-                                style = MaterialTheme.typography.bodySmall
-                            )
-                        }
-                    } else {
-                        items(5) {
-                            PropertyCard()
-                        }
+        if (isLandlord) {
+            UserListings()
+        }
+    }
+}
+
+@Composable
+fun UserListings(
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp),
+    ) {
+        Column {
+            Text(
+                text = stringResource(R.string.properties),
+                modifier = Modifier.padding(bottom = 8.dp),
+                style = MaterialTheme.typography.titleMedium
+            )
+            LazyRow {
+                // TODO if user has listed properties
+                if (true) {
+                    item {
+                        Text(
+                            text = "No properties",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                } else {
+                    items(5) {
+                        PropertyCard()
                     }
                 }
             }
         }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-        ) {
-            Column {
-                Text(
-                    text = "Owned Units",
-                    modifier = Modifier
-                        .padding(bottom = 8.dp),
-                    style = MaterialTheme.typography.titleMedium
-                )
-                LazyRow {
-                    // TODO if user has owned units(condo)
-                    if (true) {
-                        item {
-                            Text(
-                                text = "No owned units",
-                                style = MaterialTheme.typography.bodySmall
-                            )
-                        }
-                    } else {
-                        items(5) {
-                            PropertyCard()
-                        }
+    }
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp),
+    ) {
+        Column {
+            Text(
+                text = "Owned Units",
+                modifier = Modifier
+                    .padding(bottom = 8.dp),
+                style = MaterialTheme.typography.titleMedium
+            )
+            LazyRow {
+                // TODO if user has owned units(condo)
+                if (true) {
+                    item {
+                        Text(
+                            text = "No owned units",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                } else {
+                    items(5) {
+                        PropertyCard()
                     }
                 }
             }

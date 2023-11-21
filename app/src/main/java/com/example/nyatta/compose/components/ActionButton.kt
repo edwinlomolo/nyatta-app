@@ -24,7 +24,7 @@ fun ActionButton(
             .padding(top = 4.dp)
             .fillMaxWidth(),
         shape = MaterialTheme.shapes.small,
-        onClick = { onClick() }
+        onClick = { if (!isLoading) onClick() }
     ) {
         Row(
             horizontalArrangement = Arrangement.Center

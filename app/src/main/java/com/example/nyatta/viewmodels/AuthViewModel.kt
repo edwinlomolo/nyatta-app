@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nyatta.GetUserQuery
+import com.example.nyatta.R
 import com.example.nyatta.data.auth.OfflineAuthRepository
 import com.example.nyatta.data.model.Token
 import com.example.nyatta.data.model.User
@@ -25,6 +26,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import okio.IOException
+import java.io.InputStream
 
 class AuthViewModel(
     private val authRepository: OfflineAuthRepository,
@@ -39,6 +44,8 @@ class AuthViewModel(
     private val phoneUtil = PhoneNumberUtil.getInstance()
 
     var createPaymentUiState: ICreatePayment by mutableStateOf(ICreatePayment.Success())
+        private set
+    var updateUserDetailsState: IUpdateUserDetails by mutableStateOf(IUpdateUserDetails.Success())
         private set
 
     var signInUiState: SignInUiState by mutableStateOf(SignInUiState.Success)
@@ -62,17 +69,40 @@ class AuthViewModel(
 
     var firstName by mutableStateOf("")
         private set
+    fun updateFirstname(name: String) { firstName = name }
+    var userPhone by mutableStateOf("")
+        private set
+    fun updateUserPhone(phone: String) { userPhone = phone }
     var lastName by mutableStateOf("")
         private set
-    var avatar by mutableStateOf("")
+    fun updateLastname(name: String) { lastName = name }
+    var userAvatar: Any? by mutableStateOf(null)
         private set
+    fun updateAvatar(upload: String) { userAvatar = upload }
+    var userId by mutableStateOf("")
+        private set
+    fun updateUserId(id: Any) { userId = id.toString() }
 
     private val _userDetails = MutableStateFlow(UserDetails())
     val userUiDetails: StateFlow<UserDetails> = _userDetails.asStateFlow()
 
-    fun updateFirstname(name: String) { firstName = name }
-    fun updateLastname(name: String) { lastName = name }
-    fun updateAvatar(upload: String) { avatar = upload }
+    fun uploadUserAvatar(stream: InputStream) {
+        val request = stream.readBytes().toRequestBody()
+        val filePart = MultipartBody.Part.createFormData(
+            "file",
+            "photo_${System.currentTimeMillis()}.jpg",
+            request
+        )
+        userAvatar = R.drawable.loading_img
+        viewModelScope.launch {
+            userAvatar = try {
+                val response = restApiRepository.uploadImage(filePart)
+                response.imageUri
+            } catch(e: IOException) {
+                null
+            }
+        }
+    }
 
     fun signIn() {
         if (userUiDetails.value.phone.isNotEmpty() && userUiDetails.value.validDetails.phone) {
@@ -164,6 +194,25 @@ class AuthViewModel(
 
     suspend fun getUser() =  nyattaGqlApiRepository.getUser().dataOrThrow()
 
+    fun updateUser() {
+        updateUserDetailsState = IUpdateUserDetails.Loading
+        viewModelScope.launch {
+            updateUserDetailsState = try {
+                nyattaGqlApiRepository.updateUser(
+                    user = User(
+                        id = userId,
+                        firstName = firstName,
+                        lastName = lastName,
+                        avatar = userAvatar.toString()
+                    )
+                )
+                IUpdateUserDetails.Success("success")
+            } catch (e: Throwable) {
+                IUpdateUserDetails.ApolloError(e.localizedMessage)
+            }
+        }
+    }
+
     init {
         resetAuthState()
     }
@@ -201,4 +250,10 @@ interface ICreatePayment {
     data class Success(val success: String? = null): ICreatePayment
     object Loading: ICreatePayment
     data class ApolloError(val message: String?): ICreatePayment
+}
+
+interface IUpdateUserDetails {
+    object Loading: IUpdateUserDetails
+    data class ApolloError(val message: String? = null): IUpdateUserDetails
+    data class Success(val success: String? = null): IUpdateUserDetails
 }

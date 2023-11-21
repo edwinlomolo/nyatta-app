@@ -13,6 +13,6 @@ fun CircularProgressLoader(
 ) {
     CircularProgressIndicator(
         modifier = modifier.size(18.dp),
-        color = MaterialTheme.colorScheme.primary
+        color = MaterialTheme.colorScheme.onPrimaryContainer
     )
 }

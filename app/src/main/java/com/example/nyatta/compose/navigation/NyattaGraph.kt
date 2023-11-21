@@ -188,7 +188,8 @@ fun NyattaNavHost(
                 ) {
                     if (user.token.token.isNotEmpty()) {
                         Account(
-                            authViewModel = authViewModel
+                            authViewModel = authViewModel,
+                            isLandlord = user.token.isLandlord
                         )
                     } else {
                         SignUp(
