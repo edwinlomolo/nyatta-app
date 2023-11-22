@@ -14,6 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.nyatta.R
+import com.example.nyatta.compose.apartment.UnitTypeDestination
 import com.example.nyatta.compose.components.OnboardingBottomBar
 import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.compose.property.Caretaker
@@ -36,6 +37,7 @@ fun NavGraphBuilder.propertyOnboardingGraph(
     modifier: Modifier,
     navController: NavHostController,
     propertyViewModel: PropertyViewModel,
+    propertyType: String,
     propertyUiState: PropertyData
 ) {
     navigation(
@@ -139,7 +141,11 @@ fun NavGraphBuilder.propertyOnboardingGraph(
                         validToProceed = if (isCaretaker) caretakerImageValid else validToProceed,
                         navigateBack = { navController.popBackStack() },
                         onActionButtonClick = {
-                            navController.navigate(LocationGraph.route)
+                            if (propertyType == "Apartments Building") {
+                                navController.navigate(LocationGraph.route)
+                            } else {
+                                navController.navigate(UnitTypeDestination.route)
+                            }
                         },
                         actionButtonText = {
                             Text(

@@ -14,6 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.nyatta.R
+import com.example.nyatta.compose.apartment.UnitTypeDestination
 import com.example.nyatta.compose.components.OnboardingBottomBar
 import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.viewmodels.OnboardingViewModel
@@ -21,6 +22,7 @@ import com.example.nyatta.compose.location.Location
 import com.example.nyatta.compose.location.LocationDestination
 import com.example.nyatta.compose.location.TownDestination
 import com.example.nyatta.compose.location.Towns
+import com.example.nyatta.compose.property.CaretakerDestination
 import com.example.nyatta.data.model.Token
 import com.example.nyatta.data.model.User
 import com.example.nyatta.viewmodels.Auth
@@ -67,14 +69,20 @@ fun NavGraphBuilder.locationGraph(
                             navController.popBackStack()
                         },
                         onActionButtonClick = {
-                            if (user.token.isLandlord) {
-                                if (propertyType == "Apartments Building") {
+                            if (propertyType == "Apartments Building") {
+                                if (user.token.isLandlord) {
                                     if (createPropertyState !is ICreateProperty.Loading) {
                                         propertyViewModel.createProperty()
                                     }
+                                } else {
+                                    navController.navigate(PaymentGraph.route) {
+                                        launchSingleTop = true
+                                    }
                                 }
+                            } else if (propertyType == "Unit") {
+                                navController.navigate(UnitTypeDestination.route)
                             } else {
-                                navController.navigate(PaymentGraph.route) { launchSingleTop = true }
+                                navController.navigate(CaretakerDestination.route)
                             }
                         },
                         isLoading = createPropertyState is ICreateProperty.Loading,
@@ -84,6 +92,11 @@ fun NavGraphBuilder.locationGraph(
                             if (propertyType === "Apartments Building") {
                                 Text(
                                     text = stringResource(R.string.create_property),
+                                    style = MaterialTheme.typography.labelSmall
+                                )
+                            } else {
+                                Text(
+                                    text = "Confirm location",
                                     style = MaterialTheme.typography.labelSmall
                                 )
                             }

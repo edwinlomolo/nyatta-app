@@ -60,7 +60,8 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
     onboardingViewModel: OnboardingViewModel,
     apartmentData: ApartmentData,
     dataValidity: ApartmentDataValidity,
-    user: Token
+    user: Token,
+    propertyType: String
 ) {
     val descriptionValidToProceed = dataValidity.description
     val bathroomsValidToProceed = dataValidity.bathrooms
@@ -90,7 +91,11 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                             navController.popBackStack()
                         },
                         onActionButtonClick = {
-                            navController.navigate(SelectPropertyDestination.route)
+                            if (propertyType == "Unit") {
+                                navController.navigate(SelectPropertyDestination.route)
+                            } else {
+                                navController.navigate(LocationGraph.route)
+                            }
                         },
                         actionButtonText = {
                             Text(

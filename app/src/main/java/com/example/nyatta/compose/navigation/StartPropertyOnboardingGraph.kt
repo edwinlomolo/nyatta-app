@@ -77,6 +77,7 @@ fun NavGraphBuilder.startPropertyOnboarding(
                                     "Apartments Building" -> R.string.describe_this_property
                                     "Unit" -> R.string.describe_apartment_unit
                                     "Condo" -> R.string.setup_condo
+                                    "Homestead" -> R.string.setup_home
                                     else -> R.string.setup
                                 }
                                 Text(

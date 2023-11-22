@@ -101,7 +101,7 @@ class MainActivity : ComponentActivity() {
                         )
                             ?.addOnSuccessListener { location: Location ->
                                 authViewModel
-                                    .updateDeviceLocation(
+                                    .setDeviceLocation(
                                         LatLng(
                                             location.latitude,
                                             location.longitude
@@ -129,7 +129,7 @@ class MainActivity : ComponentActivity() {
                     override fun onLocationResult(p0: LocationResult) {
                         for (location in p0.locations) {
                             authViewModel
-                                .updateDeviceLocation(LatLng(location.latitude, location.longitude))
+                                .setDeviceLocation(LatLng(location.latitude, location.longitude))
                         }
                     }
                 }

@@ -96,11 +96,12 @@ fun NyattaNavHost(
     val onboardingUiState by onboardingViewModel.uiState.collectAsState()
     val propertyUiState by propertyViewModel.uiState.collectAsState()
     val apartmentUiState by apartmentViewModel.uiState.collectAsState()
+    val deviceDetails by authViewModel.deviceDetails.collectAsState()
 
     val user = authUiState
     val onboardingUiData = onboardingUiState
     val propertyUiData = propertyUiState
-    val deviceLocation = LatLng(authUiState.token.lat, authUiState.token.lng)
+    val deviceLocation = deviceDetails.gps
     val dataValidity = apartmentUiState.dataValidity
     val isAuthenticated = user.token.token.isNotEmpty()
 
@@ -249,6 +250,7 @@ fun NyattaNavHost(
             modifier = modifier,
             propertyViewModel = propertyViewModel,
             navController = navController,
+            propertyType = onboardingUiData.type,
             propertyUiState = propertyUiData
         )
         apartmentOnboardingGraph(
@@ -259,7 +261,8 @@ fun NyattaNavHost(
             apartmentData = apartmentUiState,
             user = user.token,
             authViewModel = authViewModel,
-            onboardingViewModel = onboardingViewModel
+            onboardingViewModel = onboardingViewModel,
+            propertyType = onboardingUiState.type
         )
         loginGraph(
             authViewModel = authViewModel,

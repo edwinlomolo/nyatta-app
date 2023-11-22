@@ -57,7 +57,7 @@
     <string name="_254">+254</string>
     <string name="apartment_name_example">e.g Harambee</string>
     <string name="apartment_description">This is what your apartment will be referred to as on the platform.</string>
-    <string name="unit_name">Unit name</string>
+    <string name="unit_name">Name</string>
     <string name="associate_unit_property">Associate to one of your listed properties.</string>
     <string name="select_property">Select property</string>
     <string name="apartment_property_save">Save</string>
@@ -153,4 +153,5 @@
     <string name="properties">Properties</string>
     <string name="thumbnail">thumbnail</string>
     <string name="homestead">An isolated dwelling, especially a farmhouse, and adjacent outbuildings</string>
+    <string name="setup_home">Setup home</string>
 </resources>

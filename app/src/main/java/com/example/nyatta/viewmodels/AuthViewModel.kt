@@ -84,6 +84,9 @@ class AuthViewModel(
     private val _userDetails = MutableStateFlow(UserDetails())
     val userUiDetails: StateFlow<UserDetails> = _userDetails.asStateFlow()
 
+    private val _deviceDetails = MutableStateFlow(DeviceDetails())
+    val deviceDetails: StateFlow<DeviceDetails> = _deviceDetails.asStateFlow()
+
     fun uploadUserAvatar(stream: InputStream) {
         val request = stream.readBytes().toRequestBody()
         val filePart = MultipartBody.Part.createFormData(
@@ -150,8 +153,13 @@ class AuthViewModel(
         }
     }
 
+    fun setDeviceLocation(gps: LatLng) {
+        _deviceDetails.update {
+            it.copy(gps = gps)
+        }
+    }
+
     fun updateDeviceLocation(gps: LatLng) {
-        if(gps.latitude != 0.0 && gps.longitude != 0.0) {
             viewModelScope.launch {
                 try {
                     authRepository.storeUserLocation(
@@ -162,7 +170,6 @@ class AuthViewModel(
                     e.localizedMessage?.let { Log.e("UpdateDeviceLocationOperationError", it) }
                 }
             }
-        }
     }
 
     private fun validatePhone(phoneNumber: String): Boolean {
@@ -228,6 +235,10 @@ data class UserDetails(
     val lastName: String = "",
     val avatar: String = "",
     val validDetails: DataValidity = DataValidity(),
+)
+
+data class DeviceDetails(
+    val gps: LatLng = LatLng(0.0, 0.0)
 )
 
 data class DataValidity(
