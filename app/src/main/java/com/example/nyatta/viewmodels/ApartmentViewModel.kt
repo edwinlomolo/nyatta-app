@@ -199,10 +199,6 @@ class ApartmentViewModel(
                 unitSubmitted(false)
                 e.localizedMessage?.let { Log.e("CreateUnitOperationError", it) }
                 ICreateUnit.CreateUnitError(e.localizedMessage)
-            } finally {
-                if (createUnitState is ICreateUnit.Success) {
-                    unitSubmitted(true)
-                }
             }
         }
     }
@@ -227,7 +223,7 @@ data class ApartmentData(
     val selectedAmenities: List<Amenity> = listOf(),
     val bedrooms: List<Bedroom> = listOf(),
     val bathrooms: String = "",
-    val state: State = State.Vacant,
+    val state: State = State.VACANT,
     val price: String = "",
     val images: Map<String, List<ImageState>> = mapOf(),
     val submitted: Boolean = false
@@ -291,7 +287,7 @@ data class Bedroom(
     val master: Boolean = false,
     val enSuite: Boolean = false
 )
-enum class State { Vacant, Occupied }
+enum class State { VACANT, OCCUPIED }
 
 interface ICreateUnit {
     data class Success(val success: Boolean = false): ICreateUnit
