@@ -16,7 +16,7 @@ data class OnboardingDataValidity(
 )
 
 class OnboardingViewModel: ViewModel() {
-    val propertyOptions = listOf("Apartments Building", "Unit", "Condo"/*, "Bungalow"*/)
+    val propertyOptions = listOf("Apartments Building", "Unit", "Condo", "Homestead")
     private val _uiState = MutableStateFlow(OnboardingUiState())
     val uiState: StateFlow<OnboardingUiState> = _uiState.asStateFlow()
 

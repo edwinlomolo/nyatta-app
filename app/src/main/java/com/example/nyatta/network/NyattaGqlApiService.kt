@@ -52,7 +52,7 @@ class NyattaGqlApiRepository(
     }
 
     override suspend fun refreshUser(): ApolloResponse<RefreshTokenQuery.Data> {
-        return apolloClient.query(RefreshTokenQuery()).execute()
+        return apolloClient.query(RefreshTokenQuery()).fetchPolicy(FetchPolicy.NetworkFirst).execute()
     }
 
     override suspend fun getUser(): ApolloResponse<GetUserQuery.Data> {

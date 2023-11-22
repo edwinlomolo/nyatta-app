@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nyatta.GetUserQuery
 import com.example.nyatta.R
 import com.example.nyatta.data.auth.OfflineAuthRepository
 import com.example.nyatta.data.model.Token
@@ -16,7 +15,6 @@ import com.example.nyatta.network.NyattaGqlApiRepository
 import com.google.android.gms.maps.model.LatLng
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

@@ -5,6 +5,10 @@ mutation CreateProperty(
     $lng: Float!
     $thumbnail: String!
     $isCaretaker: Boolean!
+    $caretakerFirstname: String!
+    $caretakerLastname: String!
+    $caretakerPhone: String!
+    $caretakerImage: String!
 ) {
     createProperty(input: {
         name: $name
@@ -12,12 +16,13 @@ mutation CreateProperty(
         thumbnail: $thumbnail
         type: $type
         isCaretaker: $isCaretaker
+        caretaker: {
+            first_name: $caretakerFirstname
+            last_name: $caretakerLastname
+            phone: $caretakerPhone
+            image: $caretakerImage
+        }
     }) {
         id
-        name
-        location {
-            lat
-            lng
-        }
     }
 }

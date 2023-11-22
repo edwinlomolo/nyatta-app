@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -36,6 +37,7 @@ import com.example.nyatta.R
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.viewmodels.OnboardingViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
+import com.example.nyatta.viewmodels.AuthViewModel
 
 object StartOnboardingDestination: Navigation {
     override val route = "add"
@@ -43,20 +45,30 @@ object StartOnboardingDestination: Navigation {
 }
 
 
-val optionImages = listOf(R.drawable.apartments, R.drawable.apartment, R.drawable.unit_icon)
+val optionImages = listOf(R.drawable.apartments, R.drawable.apartment, R.drawable.unit_icon, R.drawable.homestead_icon)
 val typeDefinition = listOf(
     R.string.apartments_building_definition,
     R.string.apartment_definition,
     R.string.condo_definition,
-    //"House or home that is typically either a single story, or one and a half stories tall"
+    R.string.homestead
 )
 @Composable
 fun Type(
     modifier: Modifier = Modifier,
-    onboardingViewModel: OnboardingViewModel = viewModel()
+    onboardingViewModel: OnboardingViewModel = viewModel(),
+    authViewModel: AuthViewModel = viewModel()
 ) {
     val onboardingUiState by onboardingViewModel.uiState.collectAsState()
     val propertyOptions = onboardingViewModel.propertyOptions
+
+    // TODO will come back to this later
+    // Ideally I want a fresh user from this point
+    // if user comes back after buying landlord status
+    // Ideally this is the mid-point to do this for
+    // onboarding flow
+    LaunchedEffect(Unit) {
+        authViewModel.refreshUser()
+    }
 
     Column(
         modifier = modifier

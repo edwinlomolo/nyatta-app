@@ -1,0 +1,23 @@
+mutation AddUnit(
+    $propertyId: UUID!
+    $name: String!
+    $baths: Int!
+    $type: String!
+    $price: String!
+    $amenities: [UnitAmenityInput!]!
+    $bedrooms: [UnitBedroomInput!]!
+    $uploads: [UploadImages!]!
+){
+    addPropertyUnit(input: {
+        propertyId: $propertyId
+        name: $name
+        baths: $baths
+        type: $type
+        price: $price
+        amenities: $amenities
+        bedrooms: $bedrooms
+        uploads: $uploads
+    }) {
+        id
+    }
+}
