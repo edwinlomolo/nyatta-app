@@ -327,6 +327,8 @@ type Status {
 input TenancyInput {
   startDate: Time!
 
+  userId: UUID!
+
   propertyUnitId: UUID!
 }
 
