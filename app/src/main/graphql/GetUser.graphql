@@ -9,14 +9,6 @@ query GetUser{
             name
         }
         first_name
-        tenancy {
-            id
-            startDate
-            user{
-                id
-                phone
-            }
-        }
         avatar {
             upload
         }

@@ -1,0 +1,10 @@
+query GetUserProperties{
+    getUserProperties{
+        id
+        name
+        location {
+            lat
+            lng
+        }
+    }
+}

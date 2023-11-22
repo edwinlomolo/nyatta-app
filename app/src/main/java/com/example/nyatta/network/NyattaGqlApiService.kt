@@ -6,6 +6,7 @@ import com.apollographql.apollo3.cache.normalized.FetchPolicy
 import com.apollographql.apollo3.cache.normalized.fetchPolicy
 import com.apollographql.apollo3.cache.normalized.optimisticUpdates
 import com.example.nyatta.CreatePaymentMutation
+import com.example.nyatta.GetUserPropertiesQuery
 import com.example.nyatta.GetUserQuery
 import com.example.nyatta.RefreshTokenQuery
 import com.example.nyatta.SignInMutation
@@ -22,6 +23,8 @@ interface NyattaGqlApiService {
     suspend fun refreshUser(): ApolloResponse<RefreshTokenQuery.Data>
 
     suspend fun getUser(): ApolloResponse<GetUserQuery.Data>
+
+    suspend fun getUserProperties(): ApolloResponse<GetUserPropertiesQuery.Data>
 }
 
 class NyattaGqlApiRepository(
@@ -57,5 +60,9 @@ class NyattaGqlApiRepository(
 
     override suspend fun getUser(): ApolloResponse<GetUserQuery.Data> {
         return apolloClient.query(GetUserQuery()).fetchPolicy(FetchPolicy.NetworkFirst).execute()
+    }
+
+    override suspend fun getUserProperties(): ApolloResponse<GetUserPropertiesQuery.Data> {
+        return apolloClient.query(GetUserPropertiesQuery()).fetchPolicy(FetchPolicy.NetworkFirst).execute()
     }
 }

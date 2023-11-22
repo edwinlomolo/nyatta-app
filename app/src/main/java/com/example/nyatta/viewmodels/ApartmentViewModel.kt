@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.nyatta.GetUserPropertiesQuery
 import com.example.nyatta.data.Amenity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import com.example.nyatta.data.amenities
 import com.example.nyatta.data.rest.RestApiRepository
+import com.example.nyatta.network.NyattaGqlApiRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -24,11 +26,8 @@ import java.io.InputStream
 
 class ApartmentViewModel(
     private val restApiRepository: RestApiRepository,
+    private val nyattaGqlApiRepository: NyattaGqlApiRepository
 ): ViewModel() {
-    val selectProperties = listOf(
-        SelectPropertyData("87928yoihf", "Beach House Properties"),
-        SelectPropertyData("209jfuf", "Mwea House Properties")
-    )
     val defaultAmenities = amenities
     val unitTypeOptions = listOf("Single room", "Studio", "1", "2", "3", "4")
 
@@ -48,7 +47,7 @@ class ApartmentViewModel(
         }
     }
 
-    fun setAssociatedTo(associate: SelectPropertyData) {
+    fun setAssociatedTo(associate: GetUserPropertiesQuery.GetUserProperty) {
         _uiState.update {
             it.copy(associatedToProperty = associate)
         }
@@ -205,10 +204,11 @@ class ApartmentViewModel(
 
     private fun resetApartmentData() {
         _uiState.value = ApartmentData(
-            associatedToProperty = selectProperties[0],
             unitType = unitTypeOptions[0]
         )
     }
+
+    suspend fun getUserProperties() = nyattaGqlApiRepository.getUserProperties()
 
     init {
         resetApartmentData()
@@ -217,7 +217,7 @@ class ApartmentViewModel(
 
 data class ApartmentData(
     val description: String = "",
-    val associatedToProperty: SelectPropertyData = SelectPropertyData(),
+    val associatedToProperty: GetUserPropertiesQuery.GetUserProperty? = null,
     val dataValidity: ApartmentDataValidity = ApartmentDataValidity(),
     val unitType: String = "",
     val selectedAmenities: List<Amenity> = listOf(),

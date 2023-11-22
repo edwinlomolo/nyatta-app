@@ -129,7 +129,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         navigateBack = {
                             navController.popBackStack()
                         },
-                        validToProceed = true,
+                        validToProceed = apartmentData.associatedToProperty != null,
                         onActionButtonClick = {
                             navController.navigate(UnitTypeDestination.route)
                         },

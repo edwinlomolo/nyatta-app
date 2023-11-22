@@ -154,4 +154,5 @@
     <string name="thumbnail">thumbnail</string>
     <string name="homestead">An isolated dwelling, especially a farmhouse, and adjacent outbuildings</string>
     <string name="setup_home">Setup home</string>
+    <string name="create_property_for_unit">Create property to add units to it</string>
 </resources>
