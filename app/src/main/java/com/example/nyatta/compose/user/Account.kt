@@ -175,7 +175,6 @@ private fun FaceCard(
             Column(verticalArrangement = Arrangement.Center) {
                 TextInput(
                     value = authViewModel.firstName,
-                    isError = authViewModel.firstName.isEmpty(),
                     placeholder = {
                         Text(stringResource(R.string.first_name))
                     },
@@ -188,7 +187,6 @@ private fun FaceCard(
                 )
                 TextInput(
                     value = authViewModel.lastName,
-                    isError = authViewModel.lastName.isEmpty(),
                     placeholder = {
                         Text(stringResource(R.string.last_name))
                     },

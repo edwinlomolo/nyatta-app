@@ -1,12 +1,26 @@
 query GetUser{
     getUser{
         id
-        first_name
-        last_name
         phone
+        subscribe_retries
+        is_landlord
+        properties{
+            id
+            name
+        }
+        first_name
+        tenancy {
+            id
+            startDate
+            user{
+                id
+                phone
+            }
+        }
         avatar {
             upload
         }
+        last_name
         createdAt
         updatedAt
     }
