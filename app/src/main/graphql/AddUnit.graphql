@@ -8,7 +8,7 @@ mutation AddUnit(
     $bedrooms: [UnitBedroomInput!]!
     $uploads: [UploadImages!]!
 ){
-    addPropertyUnit(input: {
+    addUnit(input: {
         propertyId: $propertyId
         name: $name
         baths: $baths

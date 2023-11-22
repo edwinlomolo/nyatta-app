@@ -31,7 +31,7 @@ fun NavGraphBuilder.loginGraph(
             SignUp(
                 navigateNext = {
                     navController.navigate(it) {
-                        popUpTo(UserSignUpDestination.route) {
+                        popUpTo(it) {
                             inclusive = true
                             saveState = false
                         }

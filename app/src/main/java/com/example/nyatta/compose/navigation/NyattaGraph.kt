@@ -10,12 +10,10 @@ import androidx.compose.material.icons.twotone.AddCircle
 import androidx.compose.material.icons.twotone.LocationOn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -46,7 +44,6 @@ import com.example.nyatta.compose.user.AccountDestination
 import com.example.nyatta.compose.user.SignUp
 import com.example.nyatta.viewmodels.TownsViewModel
 import com.example.nyatta.viewmodels.PropertyViewModel
-import com.google.android.gms.maps.model.LatLng
 
 sealed class Screen(
     val route: String,
@@ -225,6 +222,7 @@ fun NyattaNavHost(
             navController = navController,
             onboardingViewModel = onboardingViewModel,
             authViewModel = authViewModel,
+            propertyViewModel = propertyViewModel,
             user = user,
             onboardingUiState = onboardingUiData
         )
@@ -242,6 +240,7 @@ fun NyattaNavHost(
             propertyViewModel = propertyViewModel,
             authViewModel = authViewModel,
             deviceLocation = deviceLocation,
+            createPropertyState = propertyViewModel.createPropertyState,
             propertyType = onboardingUiData.type,
             user = user,
         )

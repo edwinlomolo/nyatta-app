@@ -14,6 +14,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.twotone.CheckCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -34,10 +36,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
+import com.example.nyatta.compose.components.AlertDialog
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.viewmodels.OnboardingViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.AuthViewModel
+import com.example.nyatta.viewmodels.PropertyViewModel
 
 object StartOnboardingDestination: Navigation {
     override val route = "add"
@@ -56,9 +60,11 @@ val typeDefinition = listOf(
 fun Type(
     modifier: Modifier = Modifier,
     onboardingViewModel: OnboardingViewModel = viewModel(),
+    propertyViewModel: PropertyViewModel = viewModel(),
     authViewModel: AuthViewModel = viewModel()
 ) {
     val onboardingUiState by onboardingViewModel.uiState.collectAsState()
+    val propertyUiState by propertyViewModel.uiState.collectAsState()
     val propertyOptions = onboardingViewModel.propertyOptions
 
     // TODO will come back to this later
@@ -69,7 +75,22 @@ fun Type(
     LaunchedEffect(Unit) {
         authViewModel.refreshUser()
     }
-
+    if (propertyUiState.submitted)  {
+        AlertDialog(
+            onDismissRequest = { return@AlertDialog },
+            onConfirmation = {
+                propertyViewModel.resetPropertyData()
+            },
+            dialogTitle = stringResource(R.string.congratulations),
+            dialogText = stringResource(
+                R.string.subscribed_landlord_line
+            ),
+            icon = Icons.TwoTone.CheckCircle,
+            confirmationText = stringResource(
+                id = R.string.continue_next
+            )
+        )
+    }
     Column(
         modifier = modifier
             .padding(16.dp)

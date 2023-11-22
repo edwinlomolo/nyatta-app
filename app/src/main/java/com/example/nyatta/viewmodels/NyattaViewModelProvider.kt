@@ -23,7 +23,8 @@ object NyattaViewModelProvider {
         // Initializer for PropertyViewModel
         initializer {
             PropertyViewModel(
-                nyattaApplication().container.restApiRepository
+                nyattaApplication().container.restApiRepository,
+                nyattaApplication().container.nyattaGqlApiRepository
             )
         }
         // Initializer for TownsViewModel

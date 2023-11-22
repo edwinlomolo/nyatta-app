@@ -1,27 +1,18 @@
 mutation CreateProperty(
     $name: String!
     $type: String!
-    $lat: Float!
-    $lng: Float!
+    $location: GpsInput!
     $thumbnail: String!
     $isCaretaker: Boolean!
-    $caretakerFirstname: String!
-    $caretakerLastname: String!
-    $caretakerPhone: String!
-    $caretakerImage: String!
+    $caretaker: CaretakerInput!
 ) {
     createProperty(input: {
         name: $name
-        location: {lat: $lat, lng: $lng}
+        location: $location
         thumbnail: $thumbnail
         type: $type
         isCaretaker: $isCaretaker
-        caretaker: {
-            first_name: $caretakerFirstname
-            last_name: $caretakerLastname
-            phone: $caretakerPhone
-            image: $caretakerImage
-        }
+        caretaker: $caretaker
     }) {
         id
     }

@@ -29,9 +29,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.CircularProgressLoader
 import com.example.nyatta.compose.components.TextInput
-import com.example.nyatta.compose.home.HomeDestination
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.compose.home.TopAppBar
+import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.SignInUiState
@@ -101,21 +101,22 @@ fun Phone(
                         color = MaterialTheme.colorScheme.error
                     )
                 }
-                Button(
-                    onClick = {
-                        authViewModel.signIn()
-                        navigateNext(HomeDestination.route)
-
-                    },
-                    shape = MaterialTheme.shapes.small,
-                    modifier = Modifier.fillMaxWidth()
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        if (signInUiState is SignInUiState.Loading) {
-                            CircularProgressLoader()
-                        } else {
+                    if (signInUiState is SignInUiState.Loading) {
+                        CircularProgressLoader()
+                    } else {
+                        Button(
+                            onClick = {
+                                authViewModel.signIn() {
+                                    navigateNext(StartOnboardingDestination.route)
+                                }
+                            },
+                            shape = MaterialTheme.shapes.small,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
                             Text(
                                 text = stringResource(R.string.create_account),
                                 style = MaterialTheme.typography.labelSmall

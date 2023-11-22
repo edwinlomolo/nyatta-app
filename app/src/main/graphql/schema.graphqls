@@ -145,9 +145,9 @@ type Mutation {
 
   createProperty(input: NewProperty!): Property!
 
-  addPropertyUnit(input: PropertyUnitInput!): PropertyUnit!
+  addUnit(input: UnitInput!): Unit!
 
-  addPropertyUnitTenant(input: TenancyInput!): Tenant!
+  addUnitTenant(input: TenancyInput!): Tenant!
 
   uploadImage(file: Upload!): String!
 
@@ -195,7 +195,7 @@ type Property {
 
   thumbnail: AnyUpload
 
-  units: [PropertyUnit!]!
+  units: [Unit!]!
 
   createdBy: UUID!
 
@@ -216,56 +216,6 @@ enum PropertyType {
   APARTMENT
 }
 
-type PropertyUnit {
-  id: UUID!
-
-  name: String!
-
-  bedrooms: [Bedroom!]!
-
-  propertyId: UUID!
-
-  property: Property!
-
-  tenant: Tenant
-
-  price: String!
-
-  bathrooms: Int!
-
-  amenities: [Amenity!]!
-
-  state: UnitState!
-
-  type: String!
-
-  images: [AnyUpload!]!
-
-  tenancy: [Tenant!]!
-
-  createdAt: Time
-
-  updatedAt: Time
-}
-
-input PropertyUnitInput {
-  propertyId: UUID!
-
-  baths: Int!
-
-  name: String!
-
-  type: String!
-
-  amenities: [UnitAmenityInput!]!
-
-  bedrooms: [UnitBedroomInput!]!
-
-  price: String!
-
-  uploads: [UploadImages!]
-}
-
 type Query {
   getUser: User!
 
@@ -277,7 +227,7 @@ type Query {
 
   getTowns: [Town!]!
 
-  getPropertyUnits(propertyId: UUID!): [PropertyUnit!]!
+  getUnits(propertyId: UUID!): [Unit!]!
 
   getPropertyTenancy(propertyId: UUID!): [Tenant!]!
 
@@ -329,7 +279,7 @@ input TenancyInput {
 
   userId: UUID!
 
-  propertyUnitId: UUID!
+  unitId: UUID!
 }
 
 type Tenant {
@@ -339,13 +289,13 @@ type Tenant {
 
   endDate: Time
 
-  propertyUnitId: UUID!
+  unitId: UUID!
 
   userId: UUID!
 
   user: User!
 
-  propertyUnit: PropertyUnit
+  unit: Unit
 
   createdAt: Time
 
@@ -368,6 +318,48 @@ type Town {
 
 scalar UUID
 
+type Unit {
+  id: UUID!
+
+  name: String!
+
+  bedrooms: [Bedroom!]!
+
+  propertyId: UUID!
+
+  location: Gps
+
+  caretakerId: UUID
+
+  caretaker: Caretaker
+
+  property: Property!
+
+  tenant: Tenant
+
+  price: String!
+
+  createdBy: UUID
+
+  owner: User
+
+  bathrooms: Int!
+
+  amenities: [Amenity!]!
+
+  state: UnitState!
+
+  type: String!
+
+  images: [AnyUpload!]!
+
+  tenancy: [Tenant!]!
+
+  createdAt: Time
+
+  updatedAt: Time
+}
+
 input UnitAmenityInput {
   name: String!
 
@@ -380,6 +372,24 @@ input UnitBedroomInput {
   enSuite: Boolean!
 
   master: Boolean!
+}
+
+input UnitInput {
+  propertyId: UUID!
+
+  baths: Int!
+
+  name: String!
+
+  type: String!
+
+  amenities: [UnitAmenityInput!]!
+
+  bedrooms: [UnitBedroomInput!]!
+
+  price: String!
+
+  uploads: [UploadImages!]
 }
 
 enum UnitState {
@@ -422,6 +432,8 @@ type User {
   subscribe_retries: Int!
 
   properties: [Property!]!
+
+  units: [Unit!]!
 
   tenancy: [Tenant!]!
 

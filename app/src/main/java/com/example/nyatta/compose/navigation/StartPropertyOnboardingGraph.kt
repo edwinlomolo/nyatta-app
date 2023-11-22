@@ -23,6 +23,7 @@ import com.example.nyatta.compose.user.SignUp
 import com.example.nyatta.viewmodels.Auth
 import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.OnboardingUiState
+import com.example.nyatta.viewmodels.PropertyViewModel
 
 
 object StartPropertyOnboardingGraph: Navigation {
@@ -35,6 +36,7 @@ fun NavGraphBuilder.startPropertyOnboarding(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     onboardingViewModel: OnboardingViewModel,
+    propertyViewModel: PropertyViewModel,
     authViewModel: AuthViewModel,
     user: Auth,
     onboardingUiState: OnboardingUiState
@@ -97,7 +99,8 @@ fun NavGraphBuilder.startPropertyOnboarding(
                     if (isAuthenticated) {
                         Type(
                             onboardingViewModel = onboardingViewModel,
-                            authViewModel = authViewModel
+                            authViewModel = authViewModel,
+                            propertyViewModel = propertyViewModel
                         )
                     } else {
                         SignUp(

@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -30,17 +31,21 @@ fun OnboardingBottomBar(
 ) {
     BottomAppBar {
         Row(
-            modifier = modifier.padding(8.dp),
+            modifier = modifier.padding(8.dp).fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
-                onClick = { if (validToProceed) onActionButtonClick() },
-                shape = MaterialTheme.shapes.small
-            ) {
-                if (!isLoading) {
+            if (isLoading) {
+                CircularProgressLoader(
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+            } else {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp),
+                    onClick = { if (validToProceed) onActionButtonClick() },
+                    shape = MaterialTheme.shapes.small
+                ) {
                     actionButtonText()
                     if (showNextIcon) {
                         Icon(
@@ -48,8 +53,6 @@ fun OnboardingBottomBar(
                             contentDescription = stringResource(id = R.string.proceed)
                         )
                     }
-                } else {
-                    CircularProgressLoader()
                 }
             }
         }

@@ -14,7 +14,7 @@ interface AuthRepository {
 
     suspend fun signIn(phone: String)
 
-    suspend fun recycleUser(isLandlord: Boolean, gps: LatLng)
+    suspend fun recycleUser(tokenId: Int, gps: LatLng)
 
     suspend fun storeUserLocation(token: Token, gps: LatLng)
 
@@ -35,16 +35,18 @@ class OfflineAuthRepository(
         tokenDao.insertToken(
             Token(
                 token = res.signIn.Token,
+                isLandlord = res.signIn.user.is_landlord,
                 subscribeRetries = res.signIn.user.subscribe_retries
             )
         )
     }
 
-    override suspend fun recycleUser(isLandlord: Boolean, gps: LatLng) {
+    override suspend fun recycleUser(tokenId: Int, gps: LatLng) {
         val res = nyattaGqlApiRepository.refreshUser().dataOrThrow()
         tokenDao.updateAuthToken(
             Token(
-                isLandlord = isLandlord,
+                id = tokenId,
+                isLandlord = res.refreshToken.user.is_landlord,
                 token = res.refreshToken.Token,
                 subscribeRetries = res.refreshToken.user.subscribe_retries,
                 lat = gps.latitude,
@@ -56,6 +58,7 @@ class OfflineAuthRepository(
     override suspend fun storeUserLocation(token: Token, gps: LatLng) {
         tokenDao.updateAuthToken(
             Token(
+                id = token.id,
                 token = token.token,
                 subscribeRetries = token.subscribeRetries,
                 lat = gps.latitude,

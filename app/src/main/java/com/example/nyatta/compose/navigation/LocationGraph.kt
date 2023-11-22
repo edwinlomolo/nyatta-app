@@ -23,8 +23,7 @@ import com.example.nyatta.compose.location.LocationDestination
 import com.example.nyatta.compose.location.TownDestination
 import com.example.nyatta.compose.location.Towns
 import com.example.nyatta.compose.property.CaretakerDestination
-import com.example.nyatta.data.model.Token
-import com.example.nyatta.data.model.User
+import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.viewmodels.Auth
 import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.ICreateProperty
@@ -46,10 +45,9 @@ fun NavGraphBuilder.locationGraph(
     deviceLocation: LatLng,
     propertyType: String,
     navController: NavHostController,
+    createPropertyState: ICreateProperty,
     user: Auth
 ) {
-    val createPropertyState = propertyViewModel.createPropertyState
-
     navigation(
         startDestination = LocationDestination.route,
         route = LocationGraph.route
@@ -71,8 +69,14 @@ fun NavGraphBuilder.locationGraph(
                         onActionButtonClick = {
                             if (propertyType == "Apartments Building") {
                                 if (user.token.isLandlord) {
-                                    if (createPropertyState !is ICreateProperty.Loading) {
-                                        propertyViewModel.createProperty()
+                                    propertyViewModel.createProperty(propertyType, deviceLocation) {
+                                        propertyViewModel.propertySubmitted(true)
+                                        navController.navigate(StartOnboardingDestination.route) {
+                                            popUpTo(StartOnboardingDestination.route) {
+                                                saveState = false
+                                                inclusive = true
+                                            }
+                                        }
                                     }
                                 } else {
                                     navController.navigate(PaymentGraph.route) {
@@ -85,8 +89,8 @@ fun NavGraphBuilder.locationGraph(
                                 navController.navigate(CaretakerDestination.route)
                             }
                         },
-                        isLoading = createPropertyState is ICreateProperty.Loading,
-                        validToProceed = true,
+                        isLoading = propertyViewModel.createPropertyState is ICreateProperty.Loading,
+                        validToProceed = createPropertyState !is ICreateProperty.Loading && createPropertyState !is ICreateProperty.CreatePropertyError,
                         showNextIcon = propertyType != "Apartments Building",
                         actionButtonText = {
                             if (propertyType === "Apartments Building") {
@@ -110,16 +114,6 @@ fun NavGraphBuilder.locationGraph(
                         .padding(innerPadding)
                 ) {
                     Location(
-                        navigateNext = {
-                            navController.navigate(it) {
-                                popUpTo(LocationGraph.route) {
-                                    saveState = false
-                                    inclusive = true
-                                }
-                            }
-                        },
-                        auth = user,
-                        propertyViewModel = propertyViewModel,
                         deviceLocation = deviceLocation,
                         onboardingViewModel = onboardingViewModel,
                         authViewModel = authViewModel

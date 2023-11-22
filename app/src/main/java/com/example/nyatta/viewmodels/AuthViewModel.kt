@@ -105,7 +105,7 @@ class AuthViewModel(
         }
     }
 
-    fun signIn() {
+    fun signIn(cb: () -> Unit) {
         if (userUiDetails.value.phone.isNotEmpty() && userUiDetails.value.validDetails.phone) {
             signInUiState = SignInUiState.Loading
             viewModelScope.launch {
@@ -115,7 +115,7 @@ class AuthViewModel(
                         .signIn(
                             phone.countryCode.toString()+phone.nationalNumber.toString()
                         )
-                    SignInUiState.Success
+                    SignInUiState.Success.also { cb() }
                 } catch (e: Throwable) {
                     SignInUiState.SignInError(e.localizedMessage)
                 }
@@ -144,7 +144,7 @@ class AuthViewModel(
         viewModelScope.launch {
             try {
                 authRepository.recycleUser(
-                    isLandlord = authUiState.value.token.isLandlord,
+                    tokenId = authUiState.value.token.id,
                     gps = LatLng(authUiState.value.token.lat, authUiState.value.token.lng)
                 )
             } catch(e: Throwable) {

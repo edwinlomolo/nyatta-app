@@ -7,6 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nyatta.data.rest.RestApiRepository
+import com.example.nyatta.network.NyattaGqlApiRepository
+import com.google.android.gms.maps.model.LatLng
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,15 +22,17 @@ import okio.IOException
 import java.io.InputStream
 
 class PropertyViewModel(
-    private val restApiRepository: RestApiRepository
+    private val restApiRepository: RestApiRepository,
+    private val nyattaGqlApiRepository: NyattaGqlApiRepository
 ): ViewModel() {
     private val defaultRegion = "KE"
     val countryCode = "+254"
     val phoneUtil: PhoneNumberUtil = PhoneNumberUtil.getInstance()
+
     private val _uiState = MutableStateFlow(PropertyData())
     val uiState: StateFlow<PropertyData> = _uiState.asStateFlow()
 
-    var createPropertyState: ICreateProperty by mutableStateOf(ICreateProperty.Success())
+    var createPropertyState: ICreateProperty by mutableStateOf(ICreateProperty.Success(false))
         private set
 
     fun setName(name: String) {
@@ -138,7 +142,7 @@ class PropertyViewModel(
         }
     }
 
-    private fun propertySubmitted(submitted: Boolean) {
+    fun propertySubmitted(submitted: Boolean) {
         _uiState.update {
             it.copy(
                 submitted = submitted
@@ -146,21 +150,18 @@ class PropertyViewModel(
         }
     }
 
-    fun createProperty() {
+    fun createProperty(type: String, deviceLocation: LatLng, cb: () -> Unit) {
+        _uiState.update { it.copy(submitted = false) }
         createPropertyState = ICreateProperty.Loading
         viewModelScope.launch {
             createPropertyState = try {
-                ICreateProperty.Success(true)
+                nyattaGqlApiRepository.createProperty(type, deviceLocation, _uiState.value).dataOrThrow()
+                ICreateProperty.Success(true).also { cb() }
             } catch(e: Throwable) {
-                e.localizedMessage?.let {
-                    Log.e("CreatingPropertyOperationError", it)
+                _uiState.update {
+                    it.copy(submitted = false)
                 }
-                propertySubmitted(false)
                 ICreateProperty.CreatePropertyError(e.localizedMessage)
-            } finally {
-                if (createPropertyState is ICreateProperty.Success) {
-                    propertySubmitted(true)
-                }
             }
         }
     }
