@@ -43,15 +43,15 @@ fun UnitState(
         Row {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 RadioButton(
-                    selected = apartmentData.state == State.Vacant,
-                    onClick = { apartmentViewModel.setUnitState(State.Vacant) }
+                    selected = apartmentData.state == State.VACANT,
+                    onClick = { apartmentViewModel.setUnitState(State.VACANT) }
                 )
                 Text(stringResource(R.string.vacant))
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 RadioButton(
-                    selected = apartmentData.state == State.Occupied,
-                    onClick = { apartmentViewModel.setUnitState(State.Occupied) }
+                    selected = apartmentData.state == State.OCCUPIED,
+                    onClick = { apartmentViewModel.setUnitState(State.OCCUPIED) }
                 )
                 Text(stringResource(R.string.occupied))
             }

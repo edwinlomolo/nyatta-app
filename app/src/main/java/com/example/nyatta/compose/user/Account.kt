@@ -77,8 +77,8 @@ fun Account(
     LaunchedEffect(Unit) {
         state = try {
             val response = authViewModel.getUser()
-            authViewModel.updateFirstname(response.getUser.first_name)
-            authViewModel.updateLastname(response.getUser.last_name)
+            authViewModel.updateFirstname(response.getUser.first_name ?: "")
+            authViewModel.updateLastname(response.getUser.last_name ?: "")
             authViewModel.updateAvatar(response.getUser.avatar?.upload ?: User().avatar)
             authViewModel.updateUserPhone(response.getUser.phone)
             authViewModel.updateUserId(response.getUser.id)
@@ -86,8 +86,8 @@ fun Account(
                 user = User(
                     id = response.getUser.id,
                     phone = response.getUser.phone,
-                    firstName = response.getUser.first_name,
-                    lastName = response.getUser.last_name,
+                    firstName = response.getUser.first_name ?: "",
+                    lastName = response.getUser.last_name ?: "",
                     avatar = response.getUser.avatar?.upload ?: User().avatar),
             )
         } catch(e: ApolloException) {
