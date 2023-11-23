@@ -4,7 +4,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.cache.normalized.FetchPolicy
 import com.apollographql.apollo3.cache.normalized.fetchPolicy
-import com.apollographql.apollo3.cache.normalized.optimisticUpdates
+import com.example.nyatta.AddUnitMutation
 import com.example.nyatta.CreatePaymentMutation
 import com.example.nyatta.CreatePropertyMutation
 import com.example.nyatta.GetUserPropertiesQuery
@@ -15,6 +15,7 @@ import com.example.nyatta.UpdateUserInfoMutation
 import com.example.nyatta.data.model.User
 import com.example.nyatta.type.CaretakerInput
 import com.example.nyatta.type.GpsInput
+import com.example.nyatta.viewmodels.ApartmentData
 import com.example.nyatta.viewmodels.ImageState
 import com.example.nyatta.viewmodels.PropertyData
 import com.google.android.gms.maps.model.LatLng
@@ -33,6 +34,8 @@ interface NyattaGqlApiService {
     suspend fun getUserProperties(): ApolloResponse<GetUserPropertiesQuery.Data>
 
     suspend fun createProperty(type: String, deviceLocation: LatLng, property: PropertyData): ApolloResponse<CreatePropertyMutation.Data>
+
+    suspend fun addUnit(type: String, deviceLocation: LatLng, property: PropertyData, apartmentData: ApartmentData): ApolloResponse<AddUnitMutation.Data>
 }
 
 class NyattaGqlApiRepository(
@@ -90,6 +93,32 @@ class NyattaGqlApiRepository(
                     last_name = property.caretaker.lastName,
                     phone = property.caretaker.phone,
                     image = if (property.caretaker.image is ImageState.Success && property.caretaker.image.imageUri != null) property.caretaker.image.imageUri else User().avatar
+                )
+            )
+        ).execute()
+    }
+
+    override suspend fun addUnit(type: String, deviceLocation: LatLng, propertyData: PropertyData, apartmentData: ApartmentData): ApolloResponse<AddUnitMutation.Data> {
+        return apolloClient.mutation(
+            AddUnitMutation(
+                propertyId = apartmentData.associatedToProperty?.id ?: "",
+                name = apartmentData.description,
+                baths = apartmentData.bathrooms.toInt(),
+                type = type,
+                price = apartmentData.price,
+                bedrooms = apartmentData.bedrooms,
+                amenities = apartmentData.selectedAmenities,
+                location = GpsInput(
+                    lat = deviceLocation.latitude,
+                    lng = deviceLocation.longitude
+                ),
+                uploads = listOf(),
+                isCaretaker = propertyData.isCaretaker,
+                caretaker = CaretakerInput(
+                    first_name = propertyData.caretaker.firstName,
+                    last_name = propertyData.caretaker.lastName,
+                    phone = propertyData.caretaker.phone,
+                    image = if (propertyData.caretaker.image is ImageState.Success && propertyData.caretaker.image.imageUri != null) propertyData.caretaker.image.imageUri else User().avatar,
                 )
             )
         ).execute()

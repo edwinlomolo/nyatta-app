@@ -40,6 +40,7 @@ import com.example.nyatta.compose.components.AlertDialog
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.viewmodels.OnboardingViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
+import com.example.nyatta.viewmodels.ApartmentViewModel
 import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.PropertyViewModel
 
@@ -61,10 +62,12 @@ fun Type(
     modifier: Modifier = Modifier,
     onboardingViewModel: OnboardingViewModel = viewModel(),
     propertyViewModel: PropertyViewModel = viewModel(),
+    apartmentViewModel: ApartmentViewModel = viewModel(),
     authViewModel: AuthViewModel = viewModel()
 ) {
     val onboardingUiState by onboardingViewModel.uiState.collectAsState()
     val propertyUiState by propertyViewModel.uiState.collectAsState()
+    val apartmentUiState by apartmentViewModel.uiState.collectAsState()
     val propertyOptions = onboardingViewModel.propertyOptions
 
     // TODO will come back to this later
@@ -75,21 +78,34 @@ fun Type(
     LaunchedEffect(Unit) {
         authViewModel.refreshUser()
     }
-    if (propertyUiState.submitted)  {
-        AlertDialog(
-            onDismissRequest = { return@AlertDialog },
-            onConfirmation = {
-                propertyViewModel.resetPropertyData()
-            },
-            dialogTitle = stringResource(R.string.congratulations),
-            dialogText = stringResource(
-                R.string.subscribed_landlord_line
-            ),
-            icon = Icons.TwoTone.CheckCircle,
-            confirmationText = stringResource(
-                id = R.string.continue_next
+    when {
+        propertyUiState.submitted -> {
+            AlertDialog(
+                onDismissRequest = { return@AlertDialog },
+                onConfirmation = {
+                    propertyViewModel.resetPropertyData()
+                },
+                dialogTitle = stringResource(R.string.congratulations),
+                dialogText = stringResource(
+                    R.string.listing_saved
+                ),
+                icon = Icons.TwoTone.CheckCircle,
+                confirmationText = stringResource(
+                    id = R.string.continue_next
+                )
             )
-        )
+        }
+    }
+    when {
+        apartmentUiState.submitted -> {
+            AlertDialog(
+                onDismissRequest = { return@AlertDialog },
+                onConfirmation = { /*TODO*/ },
+                dialogTitle = stringResource(id = R.string.congratulations),
+                dialogText = stringResource(R.string.listing_saved),
+                icon = Icons.TwoTone.CheckCircle
+            )
+        }
     }
     Column(
         modifier = modifier

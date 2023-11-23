@@ -222,6 +222,7 @@ fun NyattaNavHost(
             navController = navController,
             onboardingViewModel = onboardingViewModel,
             authViewModel = authViewModel,
+            apartmentViewModel = apartmentViewModel,
             propertyViewModel = propertyViewModel,
             user = user,
             onboardingUiState = onboardingUiData

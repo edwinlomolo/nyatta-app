@@ -63,7 +63,6 @@ fun Uploads(
     val hasBedCount = apartmentData.unitType != "Single room" && apartmentData.unitType != "Studio"
     val hasFrontPorch = apartmentData.selectedAmenities.any { it.label == "Front Porch" }
     val hasBalcony = apartmentData.selectedAmenities.any { it.label == "Balcony" }
-    val unitSubmitted = apartmentData.submitted
 
     Column(
         modifier = modifier
@@ -113,17 +112,7 @@ fun Uploads(
             apartmentViewModel = apartmentViewModel,
             apartmentData = apartmentData
         )
-        when {
-            unitSubmitted -> {
-                AlertDialog(
-                    onDismissRequest = { return@AlertDialog },
-                    onConfirmation = { /*TODO*/ },
-                    dialogTitle = stringResource(id = R.string.congratulations),
-                    dialogText = stringResource(R.string.listing_saved),
-                    icon = Icons.TwoTone.CheckCircle
-                )
-            }
-        }
+
     }
 }
 

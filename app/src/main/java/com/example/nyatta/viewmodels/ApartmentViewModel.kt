@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apollographql.apollo3.exception.ApolloException
 import com.example.nyatta.GetUserPropertiesQuery
 import com.example.nyatta.data.Amenity
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.update
 import com.example.nyatta.data.amenities
 import com.example.nyatta.data.rest.RestApiRepository
 import com.example.nyatta.network.NyattaGqlApiRepository
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -209,6 +211,18 @@ class ApartmentViewModel(
     }
 
     suspend fun getUserProperties() = nyattaGqlApiRepository.getUserProperties()
+
+    fun createUnit(type: String, deviceLocation: LatLng, propertyData: PropertyData, cb: () -> Unit) {
+        createUnitState = ICreateUnit.Loading
+        viewModelScope.launch {
+            createUnitState = try {
+                nyattaGqlApiRepository.addUnit(type, deviceLocation, propertyData, _uiState.value)
+                ICreateUnit.Success().also { cb() }
+            } catch(e: ApolloException) {
+                ICreateUnit.CreateUnitError(e.localizedMessage)
+            }
+        }
+    }
 
     init {
         resetApartmentData()
