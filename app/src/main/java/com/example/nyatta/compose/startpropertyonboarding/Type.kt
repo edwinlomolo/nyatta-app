@@ -100,7 +100,7 @@ fun Type(
         apartmentUiState.submitted -> {
             AlertDialog(
                 onDismissRequest = { return@AlertDialog },
-                onConfirmation = { /*TODO*/ },
+                onConfirmation = { apartmentViewModel.resetApartmentData() },
                 dialogTitle = stringResource(id = R.string.congratulations),
                 dialogText = stringResource(R.string.listing_saved),
                 icon = Icons.TwoTone.CheckCircle

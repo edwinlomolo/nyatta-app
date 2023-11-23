@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.twotone.CheckCircle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,14 +33,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.nyatta.R
-import com.example.nyatta.compose.components.AlertDialog
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.viewmodels.ApartmentViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.ApartmentData
 import com.example.nyatta.viewmodels.ImageState
-import com.example.nyatta.viewmodels.OnboardingViewModel
 import kotlinx.coroutines.launch
 
 object UploadsDestination: Navigation {
@@ -55,7 +51,6 @@ fun Uploads(
     modifier: Modifier = Modifier,
     navigateNext: (String) -> Unit = {},
     apartmentViewModel: ApartmentViewModel = viewModel(),
-    onboardingViewModel: OnboardingViewModel = viewModel()
 ) {
     val apartmentUiState by apartmentViewModel.uiState.collectAsState()
 

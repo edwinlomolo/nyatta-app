@@ -184,27 +184,13 @@ class ApartmentViewModel(
         }
     }
 
-    private fun unitSubmitted(submitted: Boolean) {
+    fun unitSubmitted(submitted: Boolean) {
         _uiState.update {
             it.copy(submitted = submitted)
         }
     }
 
-    fun createUnit() {
-        createUnitState = ICreateUnit.Loading
-        viewModelScope.launch {
-            createUnitState = try {
-                resetApartmentData()
-                ICreateUnit.Success(true)
-            } catch(e: Throwable) {
-                unitSubmitted(false)
-                e.localizedMessage?.let { Log.e("CreateUnitOperationError", it) }
-                ICreateUnit.CreateUnitError(e.localizedMessage)
-            }
-        }
-    }
-
-    private fun resetApartmentData() {
+    fun resetApartmentData() {
         _uiState.value = ApartmentData(
             unitType = unitTypeOptions[0]
         )

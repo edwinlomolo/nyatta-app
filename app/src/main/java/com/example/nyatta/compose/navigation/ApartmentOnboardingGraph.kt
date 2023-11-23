@@ -43,6 +43,8 @@ import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.ICreateUnit
 import com.example.nyatta.viewmodels.ImageState
 import com.example.nyatta.viewmodels.OnboardingViewModel
+import com.example.nyatta.viewmodels.PropertyData
+import com.google.android.gms.maps.model.LatLng
 
 object ApartmentOnboarding: Navigation {
     override val route = "onboarding/apartment"
@@ -54,6 +56,8 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
     modifier: Modifier,
     navController: NavHostController,
     apartmentViewModel: ApartmentViewModel,
+    propertyData: PropertyData,
+    deviceLocation: LatLng,
     authViewModel: AuthViewModel,
     onboardingViewModel: OnboardingViewModel,
     apartmentData: ApartmentData,
@@ -414,7 +418,15 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                                 }
                             } else {
                                 if (createUnitState !is ICreateUnit.Loading) {
-                                    apartmentViewModel.createUnit()
+                                    apartmentViewModel.createUnit(propertyType, deviceLocation, propertyData) {
+                                        apartmentViewModel.unitSubmitted(true)
+                                        navController.navigate(StartOnboardingDestination.route) {
+                                            popUpTo(StartOnboardingDestination.route) {
+                                                inclusive = true
+                                                saveState = false
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },
@@ -436,7 +448,6 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                 ) {
                     Uploads(
                         apartmentViewModel = apartmentViewModel,
-                        onboardingViewModel = onboardingViewModel,
                         navigateNext = { navController.navigate(StartOnboardingDestination.route) {
                             popUpTo(UploadsDestination.route) {
                                 inclusive = true

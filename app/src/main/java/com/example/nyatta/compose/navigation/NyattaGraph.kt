@@ -262,6 +262,8 @@ fun NyattaNavHost(
             user = user.token,
             authViewModel = authViewModel,
             onboardingViewModel = onboardingViewModel,
+            propertyData = propertyUiData,
+            deviceLocation = deviceLocation,
             propertyType = onboardingUiState.type
         )
         loginGraph(
