@@ -83,8 +83,6 @@ fun NavGraphBuilder.locationGraph(
                                         launchSingleTop = true
                                     }
                                 }
-                            } else if (propertyType == "Unit") {
-                                navController.navigate(UnitTypeDestination.route)
                             } else {
                                 navController.navigate(CaretakerDestination.route)
                             }
@@ -93,17 +91,14 @@ fun NavGraphBuilder.locationGraph(
                         validToProceed = createPropertyState !is ICreateProperty.Loading && createPropertyState !is ICreateProperty.CreatePropertyError,
                         showNextIcon = propertyType != "Apartments Building",
                         actionButtonText = {
-                            if (propertyType === "Apartments Building") {
-                                Text(
-                                    text = stringResource(R.string.create_property),
-                                    style = MaterialTheme.typography.labelSmall
-                                )
-                            } else {
-                                Text(
-                                    text = "Confirm location",
-                                    style = MaterialTheme.typography.labelSmall
-                                )
-                            }
+                            val buttonText = if (propertyType != "Apartments Building")
+                                stringResource(id = R.string.declare_caretaker)
+                            else
+                                stringResource(id = R.string.create_property)
+                            Text(
+                                text = buttonText,
+                                style = MaterialTheme.typography.labelSmall
+                            )
                         }
                     )
                 }

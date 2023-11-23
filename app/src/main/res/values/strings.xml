@@ -155,4 +155,5 @@
     <string name="homestead">An isolated dwelling, especially a farmhouse, and adjacent outbuildings</string>
     <string name="setup_home">Setup home</string>
     <string name="create_property_for_unit">Create property to add units to it</string>
+    <string name="home_description">This is what your home will be referred to as on the platform</string>
 </resources>

@@ -96,8 +96,12 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                             }
                         },
                         actionButtonText = {
+                            val buttonText = if (propertyType == "Unit")
+                                stringResource(id = R.string.associate_with_property)
+                            else
+                                stringResource(id = R.string.confirm_location)
                             Text(
-                                text = stringResource(R.string.associate_with_property),
+                                text = buttonText,
                                 style = MaterialTheme.typography.labelSmall,
                             )
                         }
@@ -110,6 +114,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         .padding(innerPadding)
                 ) {
                     ApartmentDescription(
+                        onboardingViewModel = onboardingViewModel,
                         apartmentViewModel = apartmentViewModel
                     )
                 }
