@@ -2,6 +2,7 @@ package com.example.nyatta.network
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
+import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.cache.normalized.FetchPolicy
 import com.apollographql.apollo3.cache.normalized.fetchPolicy
 import com.example.nyatta.AddUnitMutation
@@ -15,6 +16,9 @@ import com.example.nyatta.UpdateUserInfoMutation
 import com.example.nyatta.data.model.User
 import com.example.nyatta.type.CaretakerInput
 import com.example.nyatta.type.GpsInput
+import com.example.nyatta.type.UnitAmenityInput
+import com.example.nyatta.type.UnitBedroomInput
+import com.example.nyatta.type.UploadImages
 import com.example.nyatta.viewmodels.ApartmentData
 import com.example.nyatta.viewmodels.ImageState
 import com.example.nyatta.viewmodels.PropertyData
@@ -99,27 +103,45 @@ class NyattaGqlApiRepository(
     }
 
     override suspend fun addUnit(type: String, deviceLocation: LatLng, propertyData: PropertyData, apartmentData: ApartmentData): ApolloResponse<AddUnitMutation.Data> {
+        val images = apartmentData.images.entries.flatMap { entry ->
+            entry.value.map { value ->  UploadImages((value as ImageState.Success).imageUri!!, entry.key) }
+        }
+        val location: Optional<GpsInput?> = Optional.presentIfNotNull(GpsInput(lat = deviceLocation.latitude, lng = deviceLocation.longitude
+        ))
+        val caretaker: Optional<CaretakerInput> = Optional.presentIfNotNull(CaretakerInput(
+            first_name = propertyData.caretaker.firstName,
+            last_name = propertyData.caretaker.lastName,
+            image = (propertyData.caretaker.image as ImageState.Success).imageUri!!,
+            phone = propertyData.caretaker.phone
+        ))
+        val isCaretaker: Optional<Boolean> = Optional.presentIfNotNull(propertyData.isCaretaker)
+
         return apolloClient.mutation(
             AddUnitMutation(
-                propertyId = apartmentData.associatedToProperty?.id ?: "",
+                propertyId = (apartmentData.associatedToProperty?.id ?: "") as Optional<Any?>,
                 name = apartmentData.description,
                 baths = apartmentData.bathrooms.toInt(),
                 type = type,
                 price = apartmentData.price,
-                bedrooms = apartmentData.bedrooms,
-                amenities = apartmentData.selectedAmenities,
-                location = GpsInput(
-                    lat = deviceLocation.latitude,
-                    lng = deviceLocation.longitude
-                ),
-                uploads = listOf(),
-                isCaretaker = propertyData.isCaretaker,
-                caretaker = CaretakerInput(
-                    first_name = propertyData.caretaker.firstName,
-                    last_name = propertyData.caretaker.lastName,
-                    phone = propertyData.caretaker.phone,
-                    image = if (propertyData.caretaker.image is ImageState.Success && propertyData.caretaker.image.imageUri != null) propertyData.caretaker.image.imageUri else User().avatar,
-                )
+                bedrooms = apartmentData.bedrooms
+                    .map {
+                        UnitBedroomInput(
+                           bedroomNumber = it.number,
+                            enSuite = it.enSuite,
+                            master = it.master
+                        )
+                    },
+                amenities = apartmentData.selectedAmenities
+                    .map {
+                        UnitAmenityInput(
+                            name = it.label,
+                            category = it.category
+                        )
+                    },
+                location = location,
+                uploads = images,
+                isCaretaker = isCaretaker,
+                caretaker = caretaker,
             )
         ).execute()
     }
