@@ -383,6 +383,8 @@ input UnitInput {
 
   type: String!
 
+  state: UnitState!
+
   isCaretaker: Boolean
 
   location: GpsInput

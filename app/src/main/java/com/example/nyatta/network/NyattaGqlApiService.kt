@@ -13,11 +13,14 @@ import com.example.nyatta.GetUserQuery
 import com.example.nyatta.RefreshTokenQuery
 import com.example.nyatta.SignInMutation
 import com.example.nyatta.UpdateUserInfoMutation
+import com.example.nyatta.data.daos.TokenDao
+import com.example.nyatta.data.model.Token
 import com.example.nyatta.data.model.User
 import com.example.nyatta.type.CaretakerInput
 import com.example.nyatta.type.GpsInput
 import com.example.nyatta.type.UnitAmenityInput
 import com.example.nyatta.type.UnitBedroomInput
+import com.example.nyatta.type.UnitState
 import com.example.nyatta.type.UploadImages
 import com.example.nyatta.viewmodels.ApartmentData
 import com.example.nyatta.viewmodels.ImageState
@@ -27,7 +30,7 @@ import com.google.android.gms.maps.model.LatLng
 interface NyattaGqlApiService {
     suspend fun signIn(phone: String): ApolloResponse<SignInMutation.Data>
 
-    suspend fun createPayment(phone: String, amount: String): ApolloResponse<CreatePaymentMutation.Data>
+    suspend fun createPayment(token: Token, phone: String, amount: String): ApolloResponse<CreatePaymentMutation.Data>
 
     suspend fun updateUser(user: User): ApolloResponse<UpdateUserInfoMutation.Data>
 
@@ -43,7 +46,8 @@ interface NyattaGqlApiService {
 }
 
 class NyattaGqlApiRepository(
-    private val apolloClient: ApolloClient
+    private val apolloClient: ApolloClient,
+    private val tokenDao: TokenDao
 ): NyattaGqlApiService {
     override suspend fun signIn(phone: String): ApolloResponse<SignInMutation.Data> {
         return apolloClient
@@ -51,7 +55,16 @@ class NyattaGqlApiRepository(
             .execute()
     }
 
-    override suspend fun createPayment(phone: String, amount: String): ApolloResponse<CreatePaymentMutation.Data> {
+    override suspend fun createPayment(token: Token, phone: String, amount: String): ApolloResponse<CreatePaymentMutation.Data> {
+        tokenDao.updateAuthToken(
+            token = Token(
+                id = token.id,
+                subscribeRetries = token.subscribeRetries,
+                subscribeTried = true,
+                token = token.token,
+                isLandlord = token.isLandlord
+            )
+        )
         return apolloClient
             .mutation(CreatePaymentMutation(phone = phone, amount = amount))
             .execute()
@@ -104,21 +117,34 @@ class NyattaGqlApiRepository(
 
     override suspend fun addUnit(type: String, deviceLocation: LatLng, propertyData: PropertyData, apartmentData: ApartmentData): ApolloResponse<AddUnitMutation.Data> {
         val images = apartmentData.images.entries.flatMap { entry ->
-            entry.value.map { value ->  UploadImages((value as ImageState.Success).imageUri!!, entry.key) }
+            entry.value.map { value ->
+                UploadImages((value as ImageState.Success).imageUri ?: User().avatar, entry.key)
+            }
         }
-        val location: Optional<GpsInput?> = Optional.presentIfNotNull(GpsInput(lat = deviceLocation.latitude, lng = deviceLocation.longitude
-        ))
+        val deviceGps: Optional<GpsInput?> = Optional.presentIfNotNull(
+            GpsInput(
+                lat = deviceLocation.latitude,
+                lng = deviceLocation.longitude
+            )
+        )
+        val propertyId: Optional<Any?> = Optional.presentIfNotNull(apartmentData.associatedToProperty?.id)
+        val propertyLocation: Optional<GpsInput?> = Optional.presentIfNotNull(
+            GpsInput(
+                lat = apartmentData.associatedToProperty?.location?.lat ?: 0.0,
+                lng = apartmentData.associatedToProperty?.location?.lng ?: 0.0
+            )
+        )
         val caretaker: Optional<CaretakerInput> = Optional.presentIfNotNull(CaretakerInput(
             first_name = propertyData.caretaker.firstName,
             last_name = propertyData.caretaker.lastName,
-            image = (propertyData.caretaker.image as ImageState.Success).imageUri!!,
+            image = (propertyData.caretaker.image as ImageState.Success).imageUri ?: User().avatar,
             phone = propertyData.caretaker.phone
         ))
         val isCaretaker: Optional<Boolean> = Optional.presentIfNotNull(propertyData.isCaretaker)
 
         return apolloClient.mutation(
             AddUnitMutation(
-                propertyId = (apartmentData.associatedToProperty?.id ?: "") as Optional<Any?>,
+                propertyId = propertyId,
                 name = apartmentData.description,
                 baths = apartmentData.bathrooms.toInt(),
                 type = type,
@@ -138,10 +164,11 @@ class NyattaGqlApiRepository(
                             category = it.category
                         )
                     },
-                location = location,
+                location = if (type == "Unit") propertyLocation else deviceGps,
                 uploads = images,
                 isCaretaker = isCaretaker,
                 caretaker = caretaker,
+                state = if (apartmentData.state.toString() == "VACANT") UnitState.VACANT else UnitState.OCCUPIED
             )
         ).execute()
     }

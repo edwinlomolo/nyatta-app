@@ -152,8 +152,9 @@ fun Mpesa(
                 isLoading = (createPaymentState is ICreatePayment.Loading),
                 text = stringResource(R.string.pay),
                 onClick = {
-                    authViewModel.createPayment()
-                    onShowDialog(true)
+                    authViewModel.createPayment {
+                        onShowDialog(true)
+                    }
                 }
             )
         }

@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class Token(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val token: String = "",
+    val subscribeTried: Boolean = false,
     val isLandlord: Boolean = false,
     val subscribeRetries: Int = 0,
     val lat: Double = 0.0,

@@ -4,6 +4,7 @@ mutation AddUnit(
     $baths: Int!
     $type: String!
     $price: String!
+    $state: UnitState!
     $isCaretaker: Boolean
     $location: GpsInput
     $caretaker: CaretakerInput
@@ -16,6 +17,7 @@ mutation AddUnit(
         name: $name
         baths: $baths
         type: $type
+        state: $state
         price: $price
         isCaretaker: $isCaretaker
         location: $location

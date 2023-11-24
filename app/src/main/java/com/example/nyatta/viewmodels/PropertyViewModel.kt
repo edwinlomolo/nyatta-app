@@ -87,7 +87,8 @@ class PropertyViewModel(
     fun setCaretakerPhone(phone: String) {
         _uiState.update {
             val valid = it.validToProceed.copy(caretakerPhone = if (phone.isNotEmpty()) validatePhone(phone) else true)
-            val caretaker = it.caretaker.copy(phone = phone)
+            val parsedPhone = phoneUtil.parse(phone, defaultRegion)
+            val caretaker = it.caretaker.copy(phone = parsedPhone.countryCode.toString()+parsedPhone.nationalNumber.toString())
             it.copy(
                 caretaker = caretaker,
                 validToProceed = valid

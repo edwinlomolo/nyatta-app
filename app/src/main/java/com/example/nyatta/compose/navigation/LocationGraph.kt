@@ -14,7 +14,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.nyatta.R
-import com.example.nyatta.compose.apartment.UnitTypeDestination
 import com.example.nyatta.compose.components.OnboardingBottomBar
 import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.viewmodels.OnboardingViewModel
@@ -68,7 +67,7 @@ fun NavGraphBuilder.locationGraph(
                         },
                         onActionButtonClick = {
                             if (propertyType == "Apartments Building") {
-                                if (user.token.isLandlord) {
+                                if (user.token.isLandlord || (!user.token.isLandlord && user.token.subscribeTried)) {
                                     propertyViewModel.createProperty(propertyType, deviceLocation) {
                                         propertyViewModel.propertySubmitted(true)
                                         navController.navigate(StartOnboardingDestination.route) {
@@ -78,7 +77,7 @@ fun NavGraphBuilder.locationGraph(
                                             }
                                         }
                                     }
-                                } else {
+                                } else if (!user.token.isLandlord && !user.token.subscribeTried) {
                                     navController.navigate(PaymentGraph.route) {
                                         launchSingleTop = true
                                     }

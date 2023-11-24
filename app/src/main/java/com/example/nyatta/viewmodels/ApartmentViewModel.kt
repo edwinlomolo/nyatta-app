@@ -199,12 +199,14 @@ class ApartmentViewModel(
     suspend fun getUserProperties() = nyattaGqlApiRepository.getUserProperties()
 
     fun createUnit(type: String, deviceLocation: LatLng, propertyData: PropertyData, cb: () -> Unit) {
+        _uiState.update { it.copy(submitted = false) }
         createUnitState = ICreateUnit.Loading
         viewModelScope.launch {
             createUnitState = try {
                 nyattaGqlApiRepository.addUnit(type, deviceLocation, propertyData, _uiState.value)
-                ICreateUnit.Success().also { cb() }
+                ICreateUnit.Success(true).also { cb() }
             } catch(e: ApolloException) {
+                _uiState.update { it.copy(submitted = false) }
                 ICreateUnit.CreateUnitError(e.localizedMessage)
             }
         }

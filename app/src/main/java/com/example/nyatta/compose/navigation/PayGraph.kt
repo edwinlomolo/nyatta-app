@@ -16,7 +16,6 @@ import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.compose.payment.Mpesa
 import com.example.nyatta.compose.payment.PayDestination
 import com.example.nyatta.viewmodels.AuthViewModel
-import com.example.nyatta.viewmodels.PropertyViewModel
 
 object PaymentGraph: Navigation {
     override val route = "pay_graph"
@@ -28,7 +27,6 @@ fun NavGraphBuilder.paymentGraph(
     modifier: Modifier,
     navController: NavHostController,
     authViewModel: AuthViewModel,
-    propertyViewModel: PropertyViewModel
 ) {
     navigation(
         startDestination = PayDestination.route,
@@ -49,17 +47,11 @@ fun NavGraphBuilder.paymentGraph(
                 ) {
                     Mpesa(
                         authViewModel = authViewModel,
-                        navigateUp = { navController.popBackStack() },
-                        navigateNext = {
-                            navController.navigate(it) {
-                                popUpTo(PaymentGraph.route) {
-                                    inclusive = true
-                                    saveState = false
-                                }
-                                authViewModel.resetAuthState()
-                                propertyViewModel.resetPropertyData()
-                            }
-                        }
+                        navigateUp = {
+                            navController.popBackStack()
+                            authViewModel.resetAuthState()
+                        },
+                        navigateNext = {}
                     )
                 }
             }

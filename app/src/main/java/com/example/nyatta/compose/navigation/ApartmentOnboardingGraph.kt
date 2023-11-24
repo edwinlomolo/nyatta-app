@@ -412,12 +412,13 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                         },
                         onActionButtonClick = {
                             // TODO call submission endpoint depending on unit type
-                            if (!user.isLandlord) {
+                            if (!user.isLandlord && !user.subscribeTried) {
                                 navController.navigate(PaymentGraph.route) {
                                     launchSingleTop = true
                                 }
                             } else {
                                 if (createUnitState !is ICreateUnit.Loading) {
+                                    apartmentViewModel.unitSubmitted(true)
                                     apartmentViewModel.createUnit(propertyType, deviceLocation, propertyData) {
                                         apartmentViewModel.unitSubmitted(true)
                                         navController.navigate(StartOnboardingDestination.route) {
@@ -430,7 +431,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                                 }
                             }
                         },
-                        isLoading = createUnitState is ICreateUnit.Loading,
+                        isLoading = apartmentViewModel.createUnitState is ICreateUnit.Loading,
                         showNextIcon = false,
                         actionButtonText = {
                             Text(

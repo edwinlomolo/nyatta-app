@@ -123,17 +123,18 @@ class AuthViewModel(
         }
     }
 
-    fun createPayment() {
+    fun createPayment(cb: () -> Unit) {
         val phone = phoneUtil.parse(userUiDetails.value.phone, defaultRegion)
         createPaymentUiState = ICreatePayment.Loading
         viewModelScope.launch {
             createPaymentUiState = try {
                 val response = nyattaGqlApiRepository
                     .createPayment(
+                        token = authUiState.value.token,
                         phone = phone.countryCode.toString()+phone.nationalNumber.toString(),
                         amount = landlordSubscriptionFee
                     ).dataOrThrow()
-                ICreatePayment.Success(response.createPayment.success)
+                ICreatePayment.Success(response.createPayment.success).also { cb() }
             } catch (e: Throwable) {
                 ICreatePayment.ApolloError(e.localizedMessage)
             }

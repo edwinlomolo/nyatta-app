@@ -112,7 +112,10 @@ class DefaultContainer(private val context: Context): AppContainer {
     }
 
     override val nyattaGqlApiRepository: NyattaGqlApiRepository by lazy {
-        NyattaGqlApiRepository(apolloClient)
+        NyattaGqlApiRepository(
+            apolloClient,
+            NyattaDatabase.getDatabase(context).tokenDao()
+        )
     }
 
     override val helloRepository: HelloRepository by lazy {
