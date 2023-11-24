@@ -19,19 +19,19 @@ fun ActionButton(
     onClick: () -> Unit = {},
     content: (@Composable () -> Unit)? = null
 ) {
-    Button(
-        modifier = modifier
-            .padding(top = 4.dp)
-            .fillMaxWidth(),
-        shape = MaterialTheme.shapes.small,
-        onClick = { if (!isLoading) onClick() }
+    Row(
+        modifier = modifier.fillMaxWidth()
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Center
-        ) {
-            if (isLoading) {
-                CircularProgressLoader()
-            } else {
+        if (isLoading) {
+            CircularProgressLoader()
+        } else {
+            Button(
+                modifier = modifier
+                    .padding(top = 4.dp)
+                    .fillMaxWidth(),
+                shape = MaterialTheme.shapes.small,
+                onClick = { onClick() }
+            ) {
                 Text(
                     text = text,
                     style = MaterialTheme.typography.labelSmall,
@@ -39,9 +39,9 @@ fun ActionButton(
                         .padding(4.dp)
                 )
             }
-        }
-        if (content != null) {
-            content()
+            if (content != null) {
+                content()
+            }
         }
     }
 }

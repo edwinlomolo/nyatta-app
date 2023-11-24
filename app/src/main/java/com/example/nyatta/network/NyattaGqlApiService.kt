@@ -26,6 +26,8 @@ import com.example.nyatta.viewmodels.ApartmentData
 import com.example.nyatta.viewmodels.ImageState
 import com.example.nyatta.viewmodels.PropertyData
 import com.google.android.gms.maps.model.LatLng
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber
 
 interface NyattaGqlApiService {
     suspend fun signIn(phone: String): ApolloResponse<SignInMutation.Data>
@@ -60,7 +62,6 @@ class NyattaGqlApiRepository(
             token = Token(
                 id = token.id,
                 subscribeRetries = token.subscribeRetries,
-                subscribeTried = true,
                 token = token.token,
                 isLandlord = token.isLandlord
             )
@@ -134,11 +135,13 @@ class NyattaGqlApiRepository(
                 lng = apartmentData.associatedToProperty?.location?.lng ?: 0.0
             )
         )
+        val phoneUtil = PhoneNumberUtil.getInstance()
+        val phone = phoneUtil.parse(propertyData.caretaker.phone, "KE")
         val caretaker: Optional<CaretakerInput> = Optional.presentIfNotNull(CaretakerInput(
             first_name = propertyData.caretaker.firstName,
             last_name = propertyData.caretaker.lastName,
             image = (propertyData.caretaker.image as ImageState.Success).imageUri ?: User().avatar,
-            phone = propertyData.caretaker.phone
+            phone = phone.countryCode.toString()+phone.nationalNumber.toString()
         ))
         val isCaretaker: Optional<Boolean> = Optional.presentIfNotNull(propertyData.isCaretaker)
 

@@ -69,6 +69,7 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
     val bathroomsValidToProceed = dataValidity.bathrooms
     val amenitiesValidToProceed = apartmentData.selectedAmenities.isNotEmpty()
     val stillUploading = apartmentData.images.values.flatten().any { it is ImageState.Loading }
+    val hasUploadedAny = apartmentData.images.values.flatten().any { it is ImageState.Success && it.imageUri != null }
     val priceValidToProceed = dataValidity.price
     val hasBedCount: Boolean = apartmentData.unitType != "Single room" && apartmentData.unitType != "Studio"
     val createUnitState: ICreateUnit = apartmentViewModel.createUnitState
@@ -406,17 +407,20 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                 },
                 bottomBar = {
                     OnboardingBottomBar(
-                        validToProceed = !stillUploading,
+                        validToProceed = !stillUploading && hasUploadedAny,
                         navigateBack = {
                             navController.popBackStack()
                         },
                         onActionButtonClick = {
                             // TODO call submission endpoint depending on unit type
-                            if (!user.isLandlord && !user.subscribeTried) {
+                            if (!user.isLandlord && user.subscribeRetries == 0) {
                                 navController.navigate(PaymentGraph.route) {
-                                    launchSingleTop = true
+                                    popUpTo(PaymentGraph.route) {
+                                        inclusive = true
+                                        saveState = true
+                                    }
                                 }
-                            } else {
+                            } else if (user.isLandlord && user.subscribeRetries == 0) {
                                 if (createUnitState !is ICreateUnit.Loading) {
                                     apartmentViewModel.unitSubmitted(true)
                                     apartmentViewModel.createUnit(propertyType, deviceLocation, propertyData) {
@@ -427,6 +431,13 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                                                 saveState = false
                                             }
                                         }
+                                    }
+                                }
+                            } else {
+                                navController.navigate(PaymentGraph.route) {
+                                    popUpTo(PaymentGraph.route) {
+                                        inclusive = true
+                                        saveState = true
                                     }
                                 }
                             }
@@ -454,7 +465,8 @@ fun NavGraphBuilder.apartmentOnboardingGraph(
                                 inclusive = true
                                 saveState = false
                             }
-                        } }
+                        } },
+                        authViewModel = authViewModel,
                     )
                 }
             }

@@ -17,6 +17,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -38,6 +39,7 @@ import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.viewmodels.ApartmentViewModel
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.ApartmentData
+import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.ImageState
 import kotlinx.coroutines.launch
 
@@ -51,6 +53,7 @@ fun Uploads(
     modifier: Modifier = Modifier,
     navigateNext: (String) -> Unit = {},
     apartmentViewModel: ApartmentViewModel = viewModel(),
+    authViewModel: AuthViewModel = viewModel(),
 ) {
     val apartmentUiState by apartmentViewModel.uiState.collectAsState()
 
@@ -59,6 +62,9 @@ fun Uploads(
     val hasFrontPorch = apartmentData.selectedAmenities.any { it.label == "Front Porch" }
     val hasBalcony = apartmentData.selectedAmenities.any { it.label == "Balcony" }
 
+    LaunchedEffect(Unit) {
+        authViewModel.refreshUser()
+    }
     Column(
         modifier = modifier
             .padding(12.dp)

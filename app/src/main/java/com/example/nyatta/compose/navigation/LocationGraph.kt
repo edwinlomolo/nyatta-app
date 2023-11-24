@@ -67,7 +67,7 @@ fun NavGraphBuilder.locationGraph(
                         },
                         onActionButtonClick = {
                             if (propertyType == "Apartments Building") {
-                                if (user.token.isLandlord || (!user.token.isLandlord && user.token.subscribeTried)) {
+                                if (user.token.isLandlord && user.token.subscribeRetries == 0) {
                                     propertyViewModel.createProperty(propertyType, deviceLocation) {
                                         propertyViewModel.propertySubmitted(true)
                                         navController.navigate(StartOnboardingDestination.route) {
@@ -77,7 +77,11 @@ fun NavGraphBuilder.locationGraph(
                                             }
                                         }
                                     }
-                                } else if (!user.token.isLandlord && !user.token.subscribeTried) {
+                                } else if (!user.token.isLandlord && user.token.subscribeRetries == 0) {
+                                    navController.navigate(PaymentGraph.route) {
+                                        launchSingleTop = true
+                                    }
+                                } else {
                                     navController.navigate(PaymentGraph.route) {
                                         launchSingleTop = true
                                     }

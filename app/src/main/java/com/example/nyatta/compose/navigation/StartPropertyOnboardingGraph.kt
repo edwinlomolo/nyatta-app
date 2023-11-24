@@ -68,12 +68,21 @@ fun NavGraphBuilder.startPropertyOnboarding(
                             validToProceed = validToProceed,
                             navigateBack = { navController.popBackStack() },
                             onActionButtonClick = {
-                                when (onboardingUiState.type) {
-                                    "Apartments Building" -> navController.navigate(
-                                        PropertyOnboarding.route
-                                    )
+                                if (user.token.subscribeRetries > 0) {
+                                    navController.navigate(PaymentGraph.route) {
+                                        popUpTo(PaymentGraph.route) {
+                                            inclusive = true
+                                            saveState = false
+                                        }
+                                    }
+                                } else {
+                                    when (onboardingUiState.type) {
+                                        "Apartments Building" -> navController.navigate(
+                                            PropertyOnboarding.route
+                                        )
 
-                                    else -> navController.navigate(ApartmentOnboarding.route)
+                                        else -> navController.navigate(ApartmentOnboarding.route)
+                                    }
                                 }
                             },
                             actionButtonText = {
@@ -85,7 +94,7 @@ fun NavGraphBuilder.startPropertyOnboarding(
                                     else -> R.string.setup
                                 }
                                 Text(
-                                    text = stringResource(buttonText),
+                                    text = if (user.token.subscribeRetries > 0) stringResource(id = R.string.subscribe_to_continue) else stringResource(buttonText),
                                     style = MaterialTheme.typography.labelSmall
                                 )
                             }
