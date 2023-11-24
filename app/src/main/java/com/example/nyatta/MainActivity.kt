@@ -16,6 +16,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.twotone.LocationOn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -37,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.example.nyatta.compose.components.AlertDialog
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.AuthViewModel
 import com.example.nyatta.viewmodels.NyattaViewModelProvider
@@ -158,14 +161,9 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            val scope = rememberCoroutineScope()
-            val snackbarHostState = remember { SnackbarHostState() }
-
             NyattaTheme {
                 // A surface container using the 'background' color from the theme
-                Scaffold(
-                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
-                ) { innerPadding ->
+                Scaffold { innerPadding ->
                     Surface(
                         modifier = Modifier
                             .fillMaxSize()
@@ -173,24 +171,17 @@ class MainActivity : ComponentActivity() {
                         color = MaterialTheme.colorScheme.background
                     ) {
                         if (shouldShowPermissionRationale) {
-                            LaunchedEffect(Unit) {
-                                scope.launch {
-                                    val userAction = snackbarHostState.showSnackbar(
-                                        message = "You experience on Nyatta would be better if we can have your device location.",
-                                        actionLabel = "Approve",
-                                        duration = SnackbarDuration.Indefinite,
-                                        withDismissAction = true
-                                    )
-                                    when (userAction) {
-                                        SnackbarResult.ActionPerformed -> {
-                                            shouldShowPermissionRationale = false
-                                            locationPermissionLauncher.launch(locationPermissions)
-                                        }
-                                        SnackbarResult.Dismissed -> {
-                                        }
-                                    }
-                                }
-                            }
+                            AlertDialog(
+                                onDismissRequest = { return@AlertDialog },
+                                onConfirmation = {
+                                    shouldShowPermissionRationale = false
+                                    locationPermissionLauncher.launch(locationPermissions)
+                                },
+                                dialogTitle = getString(R.string.location_required),
+                                dialogText = getString(R.string.gps_permission_headline),
+                                icon = Icons.TwoTone.LocationOn,
+                                confirmationText = "Approve"
+                            )
                         }
                         if (shouldDirectUserToApplicationSettings) {
                             openApplicationSettings()

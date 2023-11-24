@@ -4,6 +4,8 @@ plugins {
     id("com.apollographql.apollo3") version "4.0.0-alpha.3"
     id("com.google.devtools.ksp") version "1.9.10-1.0.13"
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+
+    id("io.sentry.android.gradle") version "3.14.0"
 }
 
 android {
@@ -106,4 +108,13 @@ apollo {
         packageName.set("com.example.nyatta")
         mapScalarToUpload("Upload")
     }
+}
+
+sentry {
+    org.set("nyatta")
+    projectName.set("android")
+
+    // this will upload your source code to Sentry to show it as part of the stack traces
+    // disable if you don't want to expose your sources
+    includeSourceContext.set(true)
 }

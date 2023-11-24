@@ -156,4 +156,6 @@
     <string name="setup_home">Setup home</string>
     <string name="create_property_for_unit">Create property to add units to it</string>
     <string name="home_description">This is what your home will be referred to as on the platform</string>
+    <string name="gps_permission_headline">You experience on Nyatta would be better if we can have your device location.</string>
+    <string name="location_required">Location required!</string>
 </resources>
