@@ -82,6 +82,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-core:1.5.4")
     implementation("com.apollographql.apollo3:apollo-runtime:4.0.0-alpha.3")
+    implementation("io.sentry:sentry-apollo-3:6.34.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation ("com.google.android.gms:play-services-location:21.0.1")
     implementation("io.coil-kt:coil-compose:2.4.0")
@@ -92,6 +93,7 @@ dependencies {
 
     // define any required OkHttp artifacts without version
     implementation("com.squareup.okhttp3:okhttp")
+    implementation("io.sentry:sentry-android:6.34.0")
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.room:room-testing:$roomVersion")
     androidTestImplementation("androidx.navigation:navigation-testing:$navVersion") // Testing Navigation

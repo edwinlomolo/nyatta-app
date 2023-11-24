@@ -28,6 +28,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
+import io.sentry.apollo3.sentryTracing
 
 interface AppContainer {
     val helloRepository: HelloRepository
@@ -107,6 +108,7 @@ class DefaultContainer(private val context: Context): AppContainer {
                     NyattaDatabase.getDatabase(context).tokenDao()
                 )
             )
+            .sentryTracing(captureFailedRequests = true)
             .normalizedCache(sqlNormalizedCacheFactory)
             .build()
     }
