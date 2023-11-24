@@ -166,6 +166,10 @@ type Mutation {
   updateUserInfo(firstName: String!, lastName: String!, avatar: String!): User!
 }
 
+input NearByListingsInput {
+  gps: GpsInput!
+}
+
 input NewProperty {
   name: String!
 
@@ -238,6 +242,8 @@ type Query {
   getListings: [Property!]!
 
   refreshToken: SignInResponse!
+
+  getNearByListings(input: NearByListingsInput!): [Unit!]!
 }
 
 type Shoot {
