@@ -20,7 +20,8 @@ fun ActionButton(
     content: (@Composable () -> Unit)? = null
 ) {
     Row(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
     ) {
         if (isLoading) {
             CircularProgressLoader()
