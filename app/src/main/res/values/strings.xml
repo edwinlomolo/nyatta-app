@@ -158,4 +158,7 @@
     <string name="home_description">This is what your home will be referred to as on the platform</string>
     <string name="gps_permission_headline">You experience on Nyatta would be better if we can have your device location.</string>
     <string name="location_required">Location required!</string>
+    <string name="network_error">Network error</string>
+    <string name="home">Home</string>
+    <string name="no_listings">No listings in your area. We are onboarding more properties.</string>
 </resources>

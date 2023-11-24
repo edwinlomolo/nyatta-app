@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.nyatta.R
@@ -20,7 +21,7 @@ import com.example.nyatta.ui.theme.NyattaTheme
 @Composable
 fun NetworkError(
     modifier: Modifier = Modifier,
-    errorString: String? = null
+    errorString: String = ""
 ) {
     Column(
         modifier = modifier
@@ -32,17 +33,15 @@ fun NetworkError(
             painter = painterResource(id = R.drawable.ic_connection_error),
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .size(200.dp),
+                .size(40.dp),
             contentScale = ContentScale.Crop,
-            contentDescription = "Network error"
+            contentDescription = stringResource(R.string.network_error)
         )
-        if (errorString != null) {
-            Text(
-                text = errorString,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.error
-            )
-        }
+        Text(
+            text = errorString,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.error
+        )
     }
 }
 

@@ -10,10 +10,6 @@ import com.apollographql.apollo3.network.http.HttpInterceptor
 import com.apollographql.apollo3.network.http.HttpInterceptorChain
 import com.example.nyatta.data.auth.OfflineAuthRepository
 import com.example.nyatta.data.daos.TokenDao
-import com.example.nyatta.data.hello.GqlHelloRepository
-import com.example.nyatta.data.hello.HelloRepository
-import com.example.nyatta.data.listings.GqlListingsRepository
-import com.example.nyatta.data.listings.ListingsRepository
 import com.example.nyatta.data.rest.RestApiRepository
 import com.example.nyatta.data.towns.GqlTownsRepository
 import com.example.nyatta.data.towns.TownsRepository
@@ -31,8 +27,6 @@ import java.util.concurrent.TimeUnit
 import io.sentry.apollo3.sentryTracing
 
 interface AppContainer {
-    val helloRepository: HelloRepository
-    val listingsRepository: ListingsRepository
     val townsRepository: TownsRepository
     val authRepository: OfflineAuthRepository
     val apolloClient: ApolloClient
@@ -118,14 +112,6 @@ class DefaultContainer(private val context: Context): AppContainer {
             apolloClient,
             NyattaDatabase.getDatabase(context).tokenDao()
         )
-    }
-
-    override val helloRepository: HelloRepository by lazy {
-        GqlHelloRepository(apolloClient)
-    }
-
-    override val listingsRepository: ListingsRepository by lazy {
-        GqlListingsRepository(apolloClient)
     }
 
     override val townsRepository: TownsRepository by lazy {

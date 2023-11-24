@@ -144,6 +144,7 @@ fun NyattaNavHost(
                         .padding(innerPadding)
                 ) {
                     Home(
+                        deviceLocation = deviceLocation,
                         onNavigateToListing = {
                             navController.navigate("${ListingDetailsDestination.route}/${it}")
                         },

@@ -8,6 +8,7 @@ import com.apollographql.apollo3.cache.normalized.fetchPolicy
 import com.example.nyatta.AddUnitMutation
 import com.example.nyatta.CreatePaymentMutation
 import com.example.nyatta.CreatePropertyMutation
+import com.example.nyatta.GetNearByListingsQuery
 import com.example.nyatta.GetUserPropertiesQuery
 import com.example.nyatta.GetUserQuery
 import com.example.nyatta.RefreshTokenQuery
@@ -27,7 +28,6 @@ import com.example.nyatta.viewmodels.ImageState
 import com.example.nyatta.viewmodels.PropertyData
 import com.google.android.gms.maps.model.LatLng
 import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber
 
 interface NyattaGqlApiService {
     suspend fun signIn(phone: String): ApolloResponse<SignInMutation.Data>
@@ -44,7 +44,9 @@ interface NyattaGqlApiService {
 
     suspend fun createProperty(type: String, deviceLocation: LatLng, property: PropertyData): ApolloResponse<CreatePropertyMutation.Data>
 
-    suspend fun addUnit(type: String, deviceLocation: LatLng, property: PropertyData, apartmentData: ApartmentData): ApolloResponse<AddUnitMutation.Data>
+    suspend fun addUnit(type: String, deviceLocation: LatLng, propertyData: PropertyData, apartmentData: ApartmentData): ApolloResponse<AddUnitMutation.Data>
+
+    suspend fun getNearByListings(deviceLocation: LatLng): ApolloResponse<GetNearByListingsQuery.Data>
 }
 
 class NyattaGqlApiRepository(
@@ -174,5 +176,14 @@ class NyattaGqlApiRepository(
                 state = if (apartmentData.state.toString() == "VACANT") UnitState.VACANT else UnitState.OCCUPIED
             )
         ).execute()
+    }
+
+    override suspend fun getNearByListings(deviceLocation: LatLng): ApolloResponse<GetNearByListingsQuery.Data> {
+        return apolloClient.query(
+            GetNearByListingsQuery(
+                lat = deviceLocation.latitude,
+                lng = deviceLocation.longitude
+            )
+        ).fetchPolicy(FetchPolicy.NetworkFirst).execute()
     }
 }

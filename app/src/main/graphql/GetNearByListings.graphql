@@ -1,0 +1,10 @@
+query GetNearByListings($lat: Float! $lng: Float!){
+    getNearByListings(input: {
+        gps: {
+            lat: $lat
+            lng: $lng
+        }
+    }) {
+        id
+    }
+}
