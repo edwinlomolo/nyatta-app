@@ -369,10 +369,9 @@ fun ListingBottomBar(
             Button(
                 onClick = {
                     // TODO use caretaker phone
-                    val dialIntent = Intent(Intent.ACTION_DIAL).apply {
+                    Intent(Intent.ACTION_DIAL).apply {
                         data = Uri.parse("tel:0792921440")
-                    }
-                    context.startActivity(dialIntent)
+                    }.also { context.startActivity(it) }
                 },
                 shape = MaterialTheme.shapes.small,
                 modifier = Modifier
