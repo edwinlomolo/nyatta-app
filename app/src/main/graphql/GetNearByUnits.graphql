@@ -1,5 +1,5 @@
-query GetNearByListings($lat: Float! $lng: Float!){
-    getNearByListings(input: {
+query GetNearByUnits($lat: Float! $lng: Float!){
+    getNearByUnits(input: {
         gps: {
             lat: $lat
             lng: $lng

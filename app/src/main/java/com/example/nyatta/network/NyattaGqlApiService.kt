@@ -8,7 +8,7 @@ import com.apollographql.apollo3.cache.normalized.fetchPolicy
 import com.example.nyatta.AddUnitMutation
 import com.example.nyatta.CreatePaymentMutation
 import com.example.nyatta.CreatePropertyMutation
-import com.example.nyatta.GetNearByListingsQuery
+import com.example.nyatta.GetNearByUnitsQuery
 import com.example.nyatta.GetUserPropertiesQuery
 import com.example.nyatta.GetUserQuery
 import com.example.nyatta.RefreshTokenQuery
@@ -46,7 +46,7 @@ interface NyattaGqlApiService {
 
     suspend fun addUnit(type: String, deviceLocation: LatLng, propertyData: PropertyData, apartmentData: ApartmentData): ApolloResponse<AddUnitMutation.Data>
 
-    suspend fun getNearByListings(deviceLocation: LatLng): ApolloResponse<GetNearByListingsQuery.Data>
+    suspend fun getNearByListings(deviceLocation: LatLng): ApolloResponse<GetNearByUnitsQuery.Data>
 }
 
 class NyattaGqlApiRepository(
@@ -130,22 +130,17 @@ class NyattaGqlApiRepository(
                 lng = deviceLocation.longitude
             )
         )
+        val isCaretaker: Optional<Boolean> = Optional.presentIfNotNull(propertyData.isCaretaker)
         val propertyId: Optional<Any?> = Optional.presentIfNotNull(apartmentData.associatedToProperty?.id)
-        val propertyLocation: Optional<GpsInput?> = Optional.presentIfNotNull(
-            GpsInput(
-                lat = apartmentData.associatedToProperty?.location?.lat ?: 0.0,
-                lng = apartmentData.associatedToProperty?.location?.lng ?: 0.0
-            )
-        )
         val phoneUtil = PhoneNumberUtil.getInstance()
-        val phone = phoneUtil.parse(propertyData.caretaker.phone, "KE")
+        // TODO to make phoneutil happy give it a default regional number
+        val phone = phoneUtil.parse(if (propertyData.isCaretaker) "0700000000" else propertyData.caretaker.phone, "KE")
         val caretaker: Optional<CaretakerInput> = Optional.presentIfNotNull(CaretakerInput(
             first_name = propertyData.caretaker.firstName,
             last_name = propertyData.caretaker.lastName,
             image = (propertyData.caretaker.image as ImageState.Success).imageUri ?: User().avatar,
             phone = phone.countryCode.toString()+phone.nationalNumber.toString()
         ))
-        val isCaretaker: Optional<Boolean> = Optional.presentIfNotNull(propertyData.isCaretaker)
 
         return apolloClient.mutation(
             AddUnitMutation(
@@ -169,7 +164,7 @@ class NyattaGqlApiRepository(
                             category = it.category
                         )
                     },
-                location = if (type == "Unit") propertyLocation else deviceGps,
+                location = deviceGps,
                 uploads = images,
                 isCaretaker = isCaretaker,
                 caretaker = caretaker,
@@ -178,9 +173,9 @@ class NyattaGqlApiRepository(
         ).execute()
     }
 
-    override suspend fun getNearByListings(deviceLocation: LatLng): ApolloResponse<GetNearByListingsQuery.Data> {
+    override suspend fun getNearByListings(deviceLocation: LatLng): ApolloResponse<GetNearByUnitsQuery.Data> {
         return apolloClient.query(
-            GetNearByListingsQuery(
+            GetNearByUnitsQuery(
                 lat = deviceLocation.latitude,
                 lng = deviceLocation.longitude
             )

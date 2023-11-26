@@ -41,7 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.nyatta.GetNearByListingsQuery
+import com.example.nyatta.GetNearByUnitsQuery
 import com.example.nyatta.R
 import com.example.nyatta.compose.components.Loading
 import com.example.nyatta.compose.components.NetworkError
@@ -58,7 +58,7 @@ object HomeDestination: Navigation {
 
 private sealed interface IGetNearByListings {
     data object Loading: IGetNearByListings
-    data class Success(val listings: List<GetNearByListingsQuery.GetNearByListing>?): IGetNearByListings
+    data class Success(val listings: List<GetNearByUnitsQuery.GetNearByUnit>?): IGetNearByListings
     data class ApolloError(val message: String?): IGetNearByListings
 }
 
@@ -78,7 +78,7 @@ fun Home(
     LaunchedEffect(deviceLocation.latitude, deviceLocation.longitude) {
         state = try {
             val res = homeViewModel.getNearByListings(deviceLocation)
-            IGetNearByListings.Success(res.getNearByListings)
+            IGetNearByListings.Success(res.getNearByUnits)
         } catch(e: Throwable) {
             IGetNearByListings.ApolloError(e.localizedMessage)
         }
