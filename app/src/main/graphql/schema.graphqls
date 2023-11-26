@@ -343,6 +343,8 @@ type Unit {
 
   tenant: Tenant
 
+  distance: String
+
   price: String!
 
   createdBy: UUID
