@@ -134,7 +134,7 @@ class NyattaGqlApiRepository(
         val propertyId: Optional<Any?> = Optional.presentIfNotNull(apartmentData.associatedToProperty?.id)
         val phoneUtil = PhoneNumberUtil.getInstance()
         // TODO to make phoneutil happy give it a default regional number
-        val phone = phoneUtil.parse(if (propertyData.isCaretaker) "0700000000" else propertyData.caretaker.phone, "KE")
+        val phone = phoneUtil.parse(propertyData.caretaker.phone.ifEmpty { "0700000000" }, "KE")
         val caretaker: Optional<CaretakerInput> = Optional.presentIfNotNull(CaretakerInput(
             first_name = propertyData.caretaker.firstName,
             last_name = propertyData.caretaker.lastName,

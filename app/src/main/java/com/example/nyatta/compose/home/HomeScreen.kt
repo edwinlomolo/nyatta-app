@@ -122,7 +122,7 @@ fun Home(
                                 contentDescription = stringResource(R.string.home),
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
-                                    .size(40.dp)
+                                    .size(20.dp)
                             )
                             Text(
                                 text = stringResource(R.string.no_listings),
