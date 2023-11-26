@@ -10,13 +10,17 @@ import com.example.nyatta.compose.listing.Listing
 import com.example.nyatta.compose.listing.ListingDetailsDestination
 import com.example.nyatta.compose.listing.ListingPhoto
 import com.example.nyatta.compose.listing.ListingPhotosDestination
+import com.example.nyatta.viewmodels.ListingViewModel
 
 object ListingDetailsGraph: Navigation {
     override val route = "listing/details"
     override val title = "Listing"
 }
 
-fun NavGraphBuilder.listingDetailsGraph(navController: NavHostController) {
+fun NavGraphBuilder.listingDetailsGraph(
+    navController: NavHostController,
+    listingViewModel: ListingViewModel
+) {
     navigation(
         startDestination = ListingDetailsDestination.route,
         route = ListingDetailsGraph.route
@@ -24,11 +28,13 @@ fun NavGraphBuilder.listingDetailsGraph(navController: NavHostController) {
         composable(
             route = ListingDetailsDestination.routeWithArgs,
             arguments = listOf(navArgument(ListingDetailsDestination.listingIdArg) {
-                type = NavType.IntType
+                type = NavType.StringType
             })
         ) {
             Listing(
+                unitId = it.arguments!!.getString(ListingDetailsDestination.listingIdArg)!!,
                 navigateUp = { navController.navigateUp() },
+                listingViewModel = listingViewModel,
                 onNavigateToPhotos = { navController.navigate(it) }
             )
         }

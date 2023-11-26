@@ -9,6 +9,7 @@ import com.example.nyatta.AddUnitMutation
 import com.example.nyatta.CreatePaymentMutation
 import com.example.nyatta.CreatePropertyMutation
 import com.example.nyatta.GetNearByUnitsQuery
+import com.example.nyatta.GetUnitQuery
 import com.example.nyatta.GetUserPropertiesQuery
 import com.example.nyatta.GetUserQuery
 import com.example.nyatta.RefreshTokenQuery
@@ -47,6 +48,8 @@ interface NyattaGqlApiService {
     suspend fun addUnit(type: String, deviceLocation: LatLng, propertyData: PropertyData, apartmentData: ApartmentData): ApolloResponse<AddUnitMutation.Data>
 
     suspend fun getNearByListings(deviceLocation: LatLng): ApolloResponse<GetNearByUnitsQuery.Data>
+
+    suspend fun getUnit(id: String): ApolloResponse<GetUnitQuery.Data>
 }
 
 class NyattaGqlApiRepository(
@@ -180,5 +183,9 @@ class NyattaGqlApiRepository(
                 lng = deviceLocation.longitude
             )
         ).fetchPolicy(FetchPolicy.NetworkFirst).execute()
+    }
+
+    override suspend fun getUnit(id: String): ApolloResponse<GetUnitQuery.Data> {
+        return apolloClient.query(GetUnitQuery(id)).execute()
     }
 }

@@ -3,7 +3,6 @@ package com.example.nyatta.compose.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -102,10 +101,11 @@ fun Home(
                 IGetNearByListings.Loading -> Loading()
                 is IGetNearByListings.Success -> {
                     LazyColumn {
-                        items(s.listings!!) {
+                        items(items  = s.listings!!, key = { it.id }) { unit ->
                             ListingCard(
+                                unit = unit,
                                 modifier = Modifier
-                                    .clickable { onNavigateToListing(it.id.toString()) }
+                                    .clickable { onNavigateToListing(unit.id.toString()) }
                             )
                         }
 

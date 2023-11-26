@@ -15,7 +15,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -27,13 +26,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.nyatta.GetNearByUnitsQuery
 import com.example.nyatta.R
 import com.example.nyatta.ui.theme.MabryFont
-
 
 @Composable
 fun ListingCard(
     modifier: Modifier = Modifier,
+    unit: GetNearByUnitsQuery.GetNearByUnit,
 ) {
     val image = R.drawable.vacant_unfurnished_apartment_with_a_balcony_and_african_00656184_015b_4296_8063_d4957def7a7d
 
@@ -77,7 +77,7 @@ fun ListingCard(
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text = "KES 10,000",
+                        text = "KES "+unit.price,
                         style = TextStyle(
                             fontFamily = MabryFont,
                             fontWeight = FontWeight.SemiBold
@@ -86,18 +86,20 @@ fun ListingCard(
                     )
                 }
                 Text(
-                    text = "3 KM away",
+                    text = unit.distance+" away",
                     style = TextStyle(
                         fontFamily = MabryFont,
                         fontStyle = FontStyle.Italic
                     ),
                     modifier = Modifier.padding(start = 8.dp, bottom = 2.dp)
                 )
+                /*
                 Text(
                     text = "2 days ago",
                     style = TextStyle(fontFamily = MabryFont),
                     modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
                 )
+                 */
             }
         }
 

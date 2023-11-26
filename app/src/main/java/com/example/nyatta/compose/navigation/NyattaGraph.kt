@@ -42,6 +42,7 @@ import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestina
 import com.example.nyatta.compose.user.Account
 import com.example.nyatta.compose.user.AccountDestination
 import com.example.nyatta.compose.user.SignUp
+import com.example.nyatta.viewmodels.ListingViewModel
 import com.example.nyatta.viewmodels.TownsViewModel
 import com.example.nyatta.viewmodels.PropertyViewModel
 
@@ -87,7 +88,8 @@ fun NyattaNavHost(
     apartmentViewModel: ApartmentViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     homeViewModel: HomeViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
     townsViewModel: TownsViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
-    authViewModel: AuthViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
+    authViewModel: AuthViewModel = viewModel(factory = NyattaViewModelProvider.Factory),
+    listingViewModel: ListingViewModel = viewModel(factory = NyattaViewModelProvider.Factory)
 ) {
     val authUiState by authViewModel.authUiState.collectAsState()
     val onboardingUiState by onboardingViewModel.uiState.collectAsState()
@@ -245,7 +247,10 @@ fun NyattaNavHost(
             propertyType = onboardingUiData.type,
             user = user,
         )
-        listingDetailsGraph(navController)
+        listingDetailsGraph(
+            navController = navController,
+            listingViewModel = listingViewModel
+        )
         propertyOnboardingGraph(
             modifier = modifier,
             propertyViewModel = propertyViewModel,

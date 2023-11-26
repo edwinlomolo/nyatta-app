@@ -2,6 +2,7 @@ package com.example.nyatta.viewmodels
 
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.nyatta.NyattaApp
@@ -43,6 +44,13 @@ object NyattaViewModelProvider {
                 nyattaApplication().container.authRepository,
                 nyattaApplication().container.restApiRepository,
                 nyattaApplication().container.nyattaGqlApiRepository
+            )
+        }
+        // Initializer for ListingViewModel
+        initializer {
+            ListingViewModel(
+                nyattaApplication().container.nyattaGqlApiRepository,
+                this.createSavedStateHandle()
             )
         }
     }

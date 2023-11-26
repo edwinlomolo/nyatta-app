@@ -2,6 +2,7 @@ package com.example.nyatta.compose.listing
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -36,6 +37,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,13 +49,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.nyatta.GetUnitQuery
 import com.example.nyatta.R
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.ui.theme.MabryFont
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.compose.home.TopAppBar
+import com.example.nyatta.viewmodels.ListingViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -65,6 +70,12 @@ data class Amenity(
     val category: String,
     val name: String
 )
+
+private sealed interface IGetUnit {
+    data object Loading: IGetUnit
+    data class Success(val unit: GetUnitQuery.GetUnit?): IGetUnit
+    data class ApolloError(val message: String?): IGetUnit
+}
 
 object ListingDetailsDestination: Navigation {
     override val route = "listing_details"
@@ -102,10 +113,16 @@ val featuredAmenityIcon = mapOf(
 @Composable
 fun Listing(
     modifier: Modifier = Modifier,
+    unitId: String = "",
+    listingViewModel: ListingViewModel = viewModel(),
     navigateUp: () -> Unit = {},
     onNavigateToPhotos: (String) -> Unit = {}
 ) {
     val image = R.drawable.vacant_unfurnished_apartment_with_a_balcony_and_african_00656184_015b_4296_8063_d4957def7a7d
+
+    LaunchedEffect(Unit) {
+        Log.d("UnitID", unitId)
+    }
 
     Scaffold(
         topBar = {
