@@ -239,11 +239,11 @@ type Query {
 
   listingOverview(propertyId: UUID!): ListingOverview!
 
-  getListings: [Property!]!
-
   refreshToken: SignInResponse!
 
   getNearByUnits(input: NearByUnitsInput!): [Unit!]!
+
+  getUnit(id: UUID!): Unit!
 }
 
 type Shoot {

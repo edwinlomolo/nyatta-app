@@ -75,7 +75,7 @@ fun Home(
     val showBars = state !is IGetNearByListings.Loading
     val errored = (state is IGetNearByListings.ApolloError)
 
-    LaunchedEffect(deviceLocation.latitude, deviceLocation.longitude) {
+    LaunchedEffect(key1 = deviceLocation.latitude, key2 = deviceLocation.longitude) {
         state = try {
             val res = homeViewModel.getNearByListings(deviceLocation)
             IGetNearByListings.Success(res.getNearByUnits)
@@ -100,40 +100,39 @@ fun Home(
         ) {
             when(val s = state) {
                 IGetNearByListings.Loading -> Loading()
-                is IGetNearByListings.ApolloError -> NetworkError(errorString = s.message!!)
                 is IGetNearByListings.Success -> {
-                    if (!s.listings.isNullOrEmpty()) {
-                        LazyColumn {
-                            items(s.listings) {
-                                ListingCard(
-                                    modifier = Modifier
-                                        .clickable { onNavigateToListing(it.id.toString()) }
-                                )
+                    LazyColumn {
+                        items(s.listings!!) {
+                            ListingCard(
+                                modifier = Modifier
+                                    .clickable { onNavigateToListing(it.id.toString()) }
+                            )
+                        }
+
+                        item {
+                            if (s.listings.isEmpty()) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ){
+                                    Image(
+                                        painter = painterResource(R.drawable.homestead_icon),
+                                        contentDescription = stringResource(R.string.home),
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .size(20.dp)
+                                    )
+                                    Text(
+                                        text = stringResource(R.string.no_listings),
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        textAlign = TextAlign.Center,
+                                        color = MaterialTheme.colorScheme.outline
+                                    )
+                                }
                             }
                         }
-                    } else {
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ){
-                            Image(
-                                painter = painterResource(R.drawable.homestead_icon),
-                                contentDescription = stringResource(R.string.home),
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .size(20.dp)
-                            )
-                            Text(
-                                text = stringResource(R.string.no_listings),
-                                style = MaterialTheme.typography.labelSmall,
-                                textAlign = TextAlign.Center,
-                                color = MaterialTheme.colorScheme.outline
-                            )
-                        }
                     }
-
                 }
+                is IGetNearByListings.ApolloError -> NetworkError(errorString = s.message!!)
             }
         }
     }
