@@ -98,8 +98,9 @@ fun Home(
                 .padding(it)
         ) {
             when(val s = state) {
-                IGetNearByListings.Loading -> Loading()
+                is IGetNearByListings.Loading -> Loading()
                 is IGetNearByListings.Success -> {
+                    if (s.listings == null) Loading()
                     LazyColumn {
                         items(items  = s.listings!!, key = { it.id }) { unit ->
                             ListingCard(
@@ -108,7 +109,6 @@ fun Home(
                                     .clickable { onNavigateToListing(unit.id.toString()) }
                             )
                         }
-
                         item {
                             if (s.listings.isEmpty()) {
                                 Column(

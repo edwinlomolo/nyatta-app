@@ -8,6 +8,10 @@ query GetNearByUnits($lat: Float! $lng: Float!){
         id
         name
         price
+        images {
+            id
+            upload
+        }
         distance
         type
         updatedAt

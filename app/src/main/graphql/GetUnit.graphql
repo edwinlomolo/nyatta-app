@@ -3,5 +3,24 @@ query GetUnit($id: UUID!) {
         id
         name
         price
+        type
+        caretaker { id, first_name, last_name phone avatar { upload } }
+        property { id, caretakerId caretaker { id first_name last_name phone avatar { upload } } location { lat lng }}
+        amenities {
+            id
+            name
+            category
+        }
+        bedrooms {
+            id
+            bedroomNumber
+            enSuite
+            master
+        }
+        location {
+            lat
+            lng
+        }
+        images { id upload }
     }
 }

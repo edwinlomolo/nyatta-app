@@ -68,7 +68,15 @@ fun ListingCard(
             ) {
                 Row {
                     Text(
-                        text = "2 bedroom",
+                        text = when(unit.type) {
+                            "1" -> "1 bedroom"
+                            "2" -> "2 bedroom"
+                            "3" -> "3 bedroom"
+                            "4" -> "4 bedroom"
+                            "5" -> "5 bedroom"
+                            "Unit" -> "Apartment Unit"
+                            else -> unit.type
+                        },
                         style = TextStyle(
                             fontFamily = MabryFont,
                             fontWeight = FontWeight.SemiBold
@@ -77,7 +85,7 @@ fun ListingCard(
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text = "KES "+unit.price,
+                        text = "KES ${unit.price}",
                         style = TextStyle(
                             fontFamily = MabryFont,
                             fontWeight = FontWeight.SemiBold
@@ -86,7 +94,7 @@ fun ListingCard(
                     )
                 }
                 Text(
-                    text = unit.distance+" away",
+                    text = "${unit.distance} away",
                     style = TextStyle(
                         fontFamily = MabryFont,
                         fontStyle = FontStyle.Italic
