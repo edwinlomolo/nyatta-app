@@ -195,7 +195,7 @@ type Property {
 
   type: PropertyType!
 
-  location: Gps!
+  location: Gps
 
   thumbnail: AnyUpload
 
@@ -203,11 +203,11 @@ type Property {
 
   createdBy: UUID!
 
-  caretaker: Caretaker!
+  caretaker: Caretaker
 
-  caretakerId: UUID!
+  caretakerId: UUID
 
-  owner: User!
+  owner: User
 
   createdAt: Time
 
@@ -339,7 +339,7 @@ type Unit {
 
   caretaker: Caretaker
 
-  property: Property!
+  property: Property
 
   tenant: Tenant
 
