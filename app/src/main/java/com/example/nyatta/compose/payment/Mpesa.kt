@@ -55,7 +55,6 @@ object PayDestination: Navigation {
 val paymentOptions = listOf("Mpesa")
 val optionsIcon = listOf(R.drawable.mpesa)
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Mpesa(
     modifier: Modifier = Modifier,
