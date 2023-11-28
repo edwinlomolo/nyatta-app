@@ -1,5 +1,6 @@
 package com.example.nyatta.compose.apartment
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import com.example.nyatta.compose.components.CircularProgressLoader
 import com.example.nyatta.compose.components.Description
 import com.example.nyatta.compose.components.TextInput
 import com.example.nyatta.compose.navigation.Navigation
+import com.example.nyatta.type.PropertyType
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.ApartmentViewModel
 
@@ -74,7 +76,8 @@ fun SelectProperty(
             when(val s = propertiesState) {
                 IUserProperties.Loading -> CircularProgressLoader()
                 is IUserProperties.Success -> {
-                    if (s.properties.isNotEmpty()) {
+                    val p = s.properties/*.filter { it.type.toString() == "Apartments Building" }*/
+                    if (p.isNotEmpty()) {
                         Box {
                             ExposedDropdownMenuBox(
                                 expanded = expanded,
@@ -101,7 +104,7 @@ fun SelectProperty(
                                     modifier = Modifier
                                         .background(MaterialTheme.colorScheme.background)
                                 ) {
-                                    s.properties!!.forEach {
+                                    p.forEach {
                                         DropdownMenuItem(
                                             text = { Text(it.name) },
                                             onClick = {

@@ -56,6 +56,8 @@ class NyattaGqlApiRepository(
     private val apolloClient: ApolloClient,
     private val tokenDao: TokenDao
 ): NyattaGqlApiService {
+    private val phoneUtil = PhoneNumberUtil.getInstance()
+
     override suspend fun signIn(phone: String): ApolloResponse<SignInMutation.Data> {
         return apolloClient
             .mutation(SignInMutation(phone = phone))
@@ -101,6 +103,7 @@ class NyattaGqlApiRepository(
     }
 
     override suspend fun createProperty(type: String, deviceLocation: LatLng, property: PropertyData): ApolloResponse<CreatePropertyMutation.Data> {
+        val tel = phoneUtil.parse(property.caretaker.phone, "KE")
         return apolloClient.mutation(
             CreatePropertyMutation(
                 name = property.description,
@@ -114,7 +117,7 @@ class NyattaGqlApiRepository(
                 caretaker = CaretakerInput(
                     first_name = property.caretaker.firstName,
                     last_name = property.caretaker.lastName,
-                    phone = property.caretaker.phone,
+                    phone = tel.countryCode.toString()+tel.nationalNumber.toString(),
                     image = if (property.caretaker.image is ImageState.Success && property.caretaker.image.imageUri != null) property.caretaker.image.imageUri else User().avatar
                 )
             )
@@ -135,7 +138,6 @@ class NyattaGqlApiRepository(
         )
         val isCaretaker: Optional<Boolean> = Optional.presentIfNotNull(propertyData.isCaretaker)
         val propertyId: Optional<Any?> = Optional.presentIfNotNull(apartmentData.associatedToProperty?.id)
-        val phoneUtil = PhoneNumberUtil.getInstance()
         // TODO to make phoneutil happy give it a default regional number
         val phone = phoneUtil.parse(propertyData.caretaker.phone.ifEmpty { "0700000000" }, "KE")
         val caretaker: Optional<CaretakerInput> = Optional.presentIfNotNull(CaretakerInput(
