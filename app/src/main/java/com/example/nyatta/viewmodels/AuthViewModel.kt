@@ -34,7 +34,7 @@ class AuthViewModel(
     private val restApiRepository: RestApiRepository,
     private val nyattaGqlApiRepository: NyattaGqlApiRepository
 ): ViewModel() {
-    val landlordSubscriptionFee = "1500"
+    val landlordSubscriptionFee = "1000"
     val countryPhoneCode = mapOf("KE" to "+254")
     val countryCurrencyCode = mapOf("KE" to "KES")
     val defaultRegion = "KE"
