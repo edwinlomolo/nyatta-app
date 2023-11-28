@@ -8,8 +8,6 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.nyatta.compose.listing.Listing
 import com.example.nyatta.compose.listing.ListingDetailsDestination
-import com.example.nyatta.compose.listing.ListingPhoto
-import com.example.nyatta.compose.listing.ListingPhotosDestination
 import com.example.nyatta.viewmodels.ListingViewModel
 
 object ListingDetailsGraph: Navigation {
@@ -36,11 +34,6 @@ fun NavGraphBuilder.listingDetailsGraph(
                 navigateUp = { navController.navigateUp() },
                 listingViewModel = listingViewModel,
                 onNavigateToPhotos = { navController.navigate(it) }
-            )
-        }
-        composable(route = ListingPhotosDestination.route) {
-            ListingPhoto(
-                navigateUp = { navController.navigateUp() }
             )
         }
     }

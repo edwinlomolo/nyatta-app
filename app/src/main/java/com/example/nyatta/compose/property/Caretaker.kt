@@ -6,19 +6,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -33,8 +29,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -98,46 +92,6 @@ fun Caretaker(
     ) {
         Description(stringResource(R.string.caretaker_description))
         Column {
-            Text(
-                text = stringResource(R.string.is_caretaker),
-                style = MaterialTheme.typography.labelSmall,
-                modifier = Modifier.padding(8.dp)
-            )
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .selectableGroup()
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    RadioButton(
-                        selected = propertyUiState.isCaretaker,
-                        onClick = { propertyViewModel.setIsCaretaker(true) },
-                        modifier = Modifier
-                            .semantics {
-                                contentDescription = "Yes"
-                            }
-                    )
-                    Text(
-                        text = stringResource(R.string.yes_caretaker),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-                Spacer(modifier = Modifier.size(32.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    RadioButton(
-                        selected = !propertyUiState.isCaretaker,
-                        onClick = { propertyViewModel.setIsCaretaker(false) },
-                        modifier = Modifier
-                            .semantics {
-                                contentDescription = "No"
-                            }
-                    )
-                    Text(
-                        text = stringResource(R.string.no_caretaker),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-            }
             Box(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
@@ -173,11 +127,9 @@ fun Caretaker(
                 )
             }
         }
-        if (!propertyUiState.isCaretaker) {
-            CaretakerDetails(
-                propertyViewModel = propertyViewModel
-            )
-        }
+        CaretakerDetails(
+            propertyViewModel = propertyViewModel
+        )
     }
 }
 

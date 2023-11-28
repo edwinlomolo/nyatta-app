@@ -4,8 +4,9 @@ plugins {
     id("com.apollographql.apollo3") version "4.0.0-alpha.3"
     id("com.google.devtools.ksp") version "1.9.10-1.0.13"
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-
+    id("com.google.gms.google-services")
     id("io.sentry.android.gradle") version "3.14.0"
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -59,12 +60,15 @@ dependencies {
     val navVersion = "2.7.5"
     val roomVersion = "2.6.0"
 
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
     // To use Kotlin Symbol Processing (KSP)
     ksp("androidx.room:room-compiler:$roomVersion")
 
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-analytics")
     implementation("com.apollographql.apollo3:apollo-normalized-cache-sqlite:4.0.0-alpha.3")
     implementation("com.google.maps.android:maps-compose-utils:4.1.1")
     implementation("com.google.maps.android:maps-compose:4.1.1")
@@ -79,7 +83,7 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material3:material3-android:1.2.0-alpha11")
     implementation("androidx.compose.material:material-icons-core:1.5.4")
     implementation("com.apollographql.apollo3:apollo-runtime:4.0.0-alpha.3")
     implementation("io.sentry:sentry-apollo-3:6.34.0")

@@ -29,6 +29,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,6 +50,8 @@ import com.example.nyatta.compose.listing.ListingCard
 import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.HomeViewModel
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 object HomeDestination: Navigation {
     override val route = "home"
@@ -73,13 +76,16 @@ fun Home(
     var state by remember { mutableStateOf<IGetNearByListings>(IGetNearByListings.Loading) }
     val showBars = state !is IGetNearByListings.Loading
     val errored = (state is IGetNearByListings.ApolloError)
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = deviceLocation.latitude, key2 = deviceLocation.longitude) {
-        state = try {
-            val res = homeViewModel.getNearByListings(deviceLocation)
-            IGetNearByListings.Success(res.getNearByUnits)
-        } catch(e: Throwable) {
-            IGetNearByListings.ApolloError(e.localizedMessage)
+        scope.launch(Dispatchers.IO) {
+            state = try {
+                val res = homeViewModel.getNearByListings(deviceLocation)
+                IGetNearByListings.Success(res.getNearByUnits)
+            } catch (e: Throwable) {
+                IGetNearByListings.ApolloError(e.localizedMessage)
+            }
         }
     }
 
@@ -100,8 +106,7 @@ fun Home(
             when(val s = state) {
                 is IGetNearByListings.Loading -> Loading()
                 is IGetNearByListings.Success -> {
-                    if (s.listings == null) Loading()
-                    LazyColumn {
+                    LazyColumn(Modifier.fillMaxSize()) {
                         items(items  = s.listings!!, key = { it.id }) { unit ->
                             ListingCard(
                                 unit = unit,
@@ -109,26 +114,24 @@ fun Home(
                                     .clickable { onNavigateToListing(unit.id.toString()) }
                             )
                         }
-                        item {
-                            if (s.listings.isEmpty()) {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ){
-                                    Image(
-                                        painter = painterResource(R.drawable.homestead_icon),
-                                        contentDescription = stringResource(R.string.home),
-                                        contentScale = ContentScale.Crop,
-                                        modifier = Modifier
-                                            .size(20.dp)
-                                    )
-                                    Text(
-                                        text = stringResource(R.string.no_listings),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        textAlign = TextAlign.Center,
-                                        color = MaterialTheme.colorScheme.outline
-                                    )
-                                }
-                            }
+                    }
+                    if (s.listings?.isEmpty() == true) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ){
+                            Image(
+                                painter = painterResource(R.drawable.homestead_icon),
+                                contentDescription = stringResource(R.string.home),
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .size(20.dp)
+                            )
+                            Text(
+                                text = stringResource(R.string.no_listings),
+                                style = MaterialTheme.typography.bodyLarge,
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colorScheme.outline
+                            )
                         }
                     }
                 }

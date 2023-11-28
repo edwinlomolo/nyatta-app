@@ -35,8 +35,6 @@ fun ListingCard(
     modifier: Modifier = Modifier,
     unit: GetNearByUnitsQuery.GetNearByUnit,
 ) {
-    val image = R.drawable.vacant_unfurnished_apartment_with_a_balcony_and_african_00656184_015b_4296_8063_d4957def7a7d
-
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
@@ -49,7 +47,7 @@ fun ListingCard(
         Box {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(image)
+                    .data(unit.images[0].upload)
                     .crossfade(true)
                     .build(),
                 contentDescription = stringResource(R.string.listing_image),

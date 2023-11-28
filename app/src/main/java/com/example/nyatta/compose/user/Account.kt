@@ -225,9 +225,11 @@ private fun FaceCard(
                 }
             }
         }
+        /*
         if (isLandlord) {
             UserListings()
         }
+         */
     }
 }
 

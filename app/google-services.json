@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "124087937903",
+    "project_id": "nyatta-app",
+    "storage_bucket": "nyatta-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124087937903:android:445d8cc197278f723bd69a",
+        "android_client_info": {
+          "package_name": "com.example.nyatta"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgIz_AXkQW_1wYT17gbnBl7FqBCcAWBUI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

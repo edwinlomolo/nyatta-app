@@ -138,7 +138,7 @@ fun NavGraphBuilder.propertyOnboardingGraph(
                 },
                 bottomBar = {
                     OnboardingBottomBar(
-                        validToProceed = if (isCaretaker) caretakerImageValid else validToProceed,
+                        validToProceed = validToProceed,
                         navigateBack = { navController.popBackStack() },
                         onActionButtonClick = {
                             if (propertyType == "Apartments Building") {

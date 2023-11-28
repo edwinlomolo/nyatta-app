@@ -182,7 +182,7 @@ class NyattaGqlApiRepository(
                 lat = deviceLocation.latitude,
                 lng = deviceLocation.longitude
             )
-        ).fetchPolicy(FetchPolicy.NetworkFirst).execute()
+        ).execute()
     }
 
     override suspend fun getUnit(id: String): ApolloResponse<GetUnitQuery.Data> {
