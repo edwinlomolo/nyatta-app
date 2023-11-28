@@ -24,6 +24,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Nyatta"
         tools:targetApi="31">
+        <!-- Trigger Google Play services to install the backported photo picker module. -->
+        <!--suppress AndroidDomInspection -->
+        <service android:name="com.google.android.gms.metadata.ModuleDependencies"
+            android:enabled="false"
+            android:exported="false"
+            tools:ignore="MissingClass">
+            <intent-filter>
+                <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
+            </intent-filter>
+            <meta-data android:name="photopicker_activity:0:required" android:value="" />
+        </service>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
@@ -42,7 +53,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    
+
     <!-- Required: set your sentry.io project identifier (DSN) -->
     <meta-data android:name="io.sentry.dsn" android:value="https://5d1b5cba696d7d06167da02365682b83@o4505483459756032.ingest.sentry.io/4506280795504640" />
 
