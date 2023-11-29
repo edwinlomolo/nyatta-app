@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
                 )
             }
             val locationPermissions = arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION
             )
             val usePreciseLocation = locationPermissions.contains(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -87,22 +87,24 @@ class MainActivity : ComponentActivity() {
                 rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestMultiplePermissions()
                 ) { permissions ->
-                    hasLocationPermissions = permissions.values.reduce { acc, isPermissionGranted ->
-                        acc && isPermissionGranted
-                    }
+                    hasLocationPermissions = permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) ||
+                            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false)
+
                     if (hasLocationPermissions) {
                         fusedLocationClient?.getCurrentLocation(
                             locationPriority!!,
                             CancellationTokenSource().token
                         )
-                            ?.addOnSuccessListener { location: Location ->
-                                authViewModel
-                                    .setDeviceLocation(
-                                        LatLng(
-                                            location.latitude,
-                                            location.longitude
-                                        )
-                                    )
+                            ?.addOnSuccessListener { location: Location? ->
+                                if (location != null) {
+                                        authViewModel
+                                            .setDeviceLocation(
+                                                LatLng(
+                                                    location.latitude,
+                                                    location.longitude
+                                                )
+                                            )
+                                    }
                             }
                     }
 
