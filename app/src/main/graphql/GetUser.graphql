@@ -7,6 +7,7 @@ query GetUser{
         properties{
             id
             name
+            type
         }
         first_name
         avatar {
