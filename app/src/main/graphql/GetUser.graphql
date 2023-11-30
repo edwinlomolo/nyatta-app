@@ -8,6 +8,17 @@ query GetUser{
             id
             name
             type
+            thumbnail {
+                upload
+            }
+        }
+        units {
+            id
+            name
+            type
+            thumbnail {
+                upload
+            }
         }
         first_name
         avatar {

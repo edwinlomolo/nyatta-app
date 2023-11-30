@@ -164,6 +164,10 @@ fun NyattaNavHost(
                             canNavigateBack = true,
                             navigateUp = { navController.popBackStack() }
                         )
+                    } else if (isAuthenticated) {
+                        TopAppBar(
+                            title = stringResource(R.string.your_listings)
+                        )
                     }
                 },
                 bottomBar = {

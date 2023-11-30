@@ -1,22 +1,15 @@
 package com.example.nyatta.compose.user
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -25,35 +18,27 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.apollographql.apollo3.exception.ApolloException
+import com.example.nyatta.GetUserQuery
 import com.example.nyatta.R
-import com.example.nyatta.compose.components.CircularProgressLoader
 import com.example.nyatta.compose.components.ErrorContainer
 import com.example.nyatta.compose.components.Loading
-import com.example.nyatta.compose.components.TextInput
+import com.example.nyatta.compose.listing.Tag
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.data.model.User
-import com.example.nyatta.ui.theme.NyattaTheme
 import com.example.nyatta.viewmodels.AuthViewModel
-import com.example.nyatta.viewmodels.IUpdateUserDetails
-import kotlinx.coroutines.launch
 
 object AccountDestination: Navigation {
     override val route = "account"
@@ -88,7 +73,9 @@ fun Account(
                     phone = response.getUser.phone,
                     firstName = response.getUser.first_name ?: "",
                     lastName = response.getUser.last_name ?: "",
-                    avatar = response.getUser.avatar?.upload ?: User().avatar),
+                    avatar = response.getUser.avatar?.upload ?: User().avatar,
+                    properties = response.getUser.properties,
+                    units = response.getUser.units),
             )
         } catch(e: ApolloException) {
             GetUserDetailsState.ApolloError(e.localizedMessage)
@@ -103,10 +90,10 @@ fun Account(
             ErrorContainer(message = s.message!!)
         }
         is GetUserDetailsState.Success -> {
-            FaceCard(
-                modifier = modifier,
-                authViewModel = authViewModel,
-                isLandlord = isLandlord
+            AccountCard(
+                modifier = modifier.padding(12.dp),
+                properties = s.user?.properties ?: listOf(),
+                units = s.user?.units ?: listOf()
             )
         }
     }
@@ -114,128 +101,39 @@ fun Account(
 
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun FaceCard(
+private fun AccountCard(
     modifier: Modifier = Modifier,
-    authViewModel: AuthViewModel = viewModel(),
-    isLandlord: Boolean = false
+    properties: List<GetUserQuery.Property>,
+    units: List<GetUserQuery.Unit>
 ) {
-    val context = LocalContext.current
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val pickMedia = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia()
-    ) {
-        if (it != null) {
-            val stream = context.contentResolver.openInputStream(it)
-            if (stream != null) {
-                authViewModel.uploadUserAvatar(stream)
-            }
-        }
-    }
-    val scope = rememberCoroutineScope()
-
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(12.dp),
+            .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 40.dp),
-        ) {
-            Box {
-                // TODO avatar upload
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(authViewModel.userAvatar)
-                        .crossfade(true)
-                        .build(),
-                    placeholder = painterResource(R.drawable.loading_img),
-                    error = painterResource(R.drawable.ic_broken_image),
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .padding(start = 8.dp, end = 32.dp)
-                        .clip(MaterialTheme.shapes.small)
-                        .size(100.dp)
-                        .clickable {
-                            scope.launch {
-                                pickMedia.launch(
-                                    PickVisualMediaRequest(
-                                        ActivityResultContracts.PickVisualMedia.ImageOnly
-                                    )
-                                )
-                            }
-                        },
-                    contentDescription = "user_avatar"
-                )
-            }
-            Column(verticalArrangement = Arrangement.Center) {
-                TextInput(
-                    value = authViewModel.firstName,
-                    placeholder = {
-                        Text(stringResource(R.string.first_name))
-                    },
-                    onValueChange = {
-                        authViewModel.updateFirstname(it)
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Next
-                    )
-                )
-                TextInput(
-                    value = authViewModel.lastName,
-                    placeholder = {
-                        Text(stringResource(R.string.last_name))
-                    },
-                    onValueChange = {
-                        authViewModel.updateLastname(it)
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            keyboardController?.hide()
-                        }
-                    )
-                )
-                TextInput(
-                    value = authViewModel.userPhone,
-                    enabled = false,
-                    readOnly = true,
-                    onValueChange = {}
-                )
-                // TODO show only if user data changed
-                if (authViewModel.updateUserDetailsState is IUpdateUserDetails.Loading) {
-                    CircularProgressLoader()
-                } else {
-                    Button(
-                        onClick = { authViewModel.updateUser() },
-                        shape = MaterialTheme.shapes.small,
-                        modifier = Modifier.height(50.dp)
-                    ) {
-                       Text(
-                           text = stringResource(id = R.string.save),
-                           style = MaterialTheme.typography.labelSmall,
-                       )
-                    }
-                }
-            }
-        }
-        /*
-        if (isLandlord) {
-            UserListings()
-        }
-         */
+        UserListings(
+            properties = properties,
+            units = units
+        )
     }
 }
 
 @Composable
 fun UserListings(
-    modifier: Modifier = Modifier
+    properties: List<GetUserQuery.Property>,
+    units: List<GetUserQuery.Unit>
+) {
+   Properties(properties = properties)
+   PrivateUnits(units = units)
+
+}
+
+@Composable
+fun Properties(
+    modifier: Modifier = Modifier,
+    properties: List<GetUserQuery.Property>
 ) {
     Row(
         modifier = modifier
@@ -248,23 +146,35 @@ fun UserListings(
                 modifier = Modifier.padding(bottom = 8.dp),
                 style = MaterialTheme.typography.titleMedium
             )
-            LazyRow {
-                // TODO if user has listed properties
-                if (true) {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                if (properties.isEmpty()) {
                     item {
-                        Text(
-                            text = "No properties",
-                            style = MaterialTheme.typography.bodySmall
-                        )
+                        Column(
+                            modifier = Modifier.padding(24.dp)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.you_have_no_properties),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
                     }
                 } else {
-                    items(5) {
-                        PropertyCard()
+                    items(items = properties, key = { it.id }) {
+                        PropertyCard(property = it)
                     }
                 }
             }
         }
     }
+}
+
+@Composable
+fun PrivateUnits(
+    modifier: Modifier = Modifier,
+    units: List<GetUserQuery.Unit>
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -272,23 +182,28 @@ fun UserListings(
     ) {
         Column {
             Text(
-                text = "Owned Units",
+                text = stringResource(R.string.your_private_units),
                 modifier = Modifier
                     .padding(bottom = 8.dp),
                 style = MaterialTheme.typography.titleMedium
             )
-            LazyRow {
-                // TODO if user has owned units(condo)
-                if (true) {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                if (units.isEmpty()) {
                     item {
-                        Text(
-                            text = "No owned units",
-                            style = MaterialTheme.typography.bodySmall
-                        )
+                        Column(
+                            modifier = Modifier.padding(24.dp)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.you_have_no_private_units),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
                     }
                 } else {
-                    items(5) {
-                        PropertyCard()
+                    items(items = units, key = { it.id }) {
+                        UnitCard(unit = it)
                     }
                 }
             }
@@ -298,7 +213,8 @@ fun UserListings(
 
 @Composable
 fun PropertyCard(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    property: GetUserQuery.Property
 ) {
     OutlinedCard(
         modifier = modifier
@@ -313,9 +229,11 @@ fun PropertyCard(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(R.drawable.apartment_sunset_in_the_background_in_africa_and_person_c4dadd13_9720_4c7f_ad7b_86e197bfd86c)
+                    .data(property.thumbnail?.upload)
                     .crossfade(true)
                     .build(),
+                placeholder = painterResource(id = R.drawable.loading_img),
+                error = painterResource(id = R.drawable.ic_broken_image),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(width = 240.dp, height = 100.dp)
@@ -323,20 +241,61 @@ fun PropertyCard(
                 contentDescription = stringResource(R.string.thumbnail)
             )
             Text(
-                text = "Beach front properties",
+                text = property.name,
                 modifier = Modifier
                     .align(Alignment.BottomStart)
                     .padding(8.dp),
-                style = MaterialTheme.typography.titleSmall
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }
 }
 
-@Preview
 @Composable
-fun AccountPreview() {
-    NyattaTheme {
-        Account()
+fun UnitCard(
+    modifier: Modifier = Modifier,
+    unit: GetUserQuery.Unit
+) {
+    OutlinedCard(
+        modifier = modifier
+            .size(width = 240.dp, height = 160.dp)
+            .padding(4.dp),
+        shape = MaterialTheme.shapes.small
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .fillMaxWidth()
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(unit.thumbnail?.upload)
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(id = R.drawable.loading_img),
+                error = painterResource(id = R.drawable.ic_broken_image),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(width = 240.dp, height = 100.dp)
+                    .clip(MaterialTheme.shapes.small),
+                contentDescription = stringResource(R.string.thumbnail)
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomStart),
+            ) {
+                Text(
+                    text = unit.name,
+                    modifier = Modifier
+                        .padding(8.dp),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Tag(
+                    modifier = Modifier.padding(start = 8.dp),
+                    text = unit.type
+                )
+            }
+        }
     }
 }

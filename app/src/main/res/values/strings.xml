@@ -161,4 +161,8 @@
     <string name="network_error">Network error</string>
     <string name="home">Home</string>
     <string name="no_listings">No listings in your area. We are onboarding more properties.</string>
+    <string name="your_private_units">Private units</string>
+    <string name="you_have_no_private_units">You have no private units</string>
+    <string name="you_have_no_properties">You have no properties</string>
+    <string name="your_listings">Your listings</string>
 </resources>
