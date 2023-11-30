@@ -8,6 +8,7 @@ query GetUser{
             id
             name
             type
+            unitsCount
             thumbnail {
                 upload
             }

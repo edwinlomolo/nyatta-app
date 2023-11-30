@@ -201,6 +201,8 @@ type Property {
 
   units: [Unit!]!
 
+  unitsCount: Int!
+
   createdBy: UUID!
 
   caretaker: Caretaker
