@@ -1,5 +1,6 @@
 package com.example.nyatta.compose.user
 
+import android.graphics.Paint.Align
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
@@ -240,13 +242,30 @@ fun PropertyCard(
                     .clip(MaterialTheme.shapes.small),
                 contentDescription = stringResource(R.string.thumbnail)
             )
-            Text(
-                text = property.name,
+            Row(
                 modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(8.dp),
-                style = MaterialTheme.typography.bodyMedium
-            )
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .align(Alignment.BottomStart),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = property.name,
+                        modifier = Modifier
+                            .padding(4.dp, top = 8.dp),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = "${property.unitsCount} units",
+                        modifier = Modifier
+                            .padding(4.dp),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
         }
     }
 }
@@ -283,16 +302,16 @@ fun UnitCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(8.dp)
                     .align(Alignment.BottomStart),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = unit.name,
-                    modifier = Modifier
-                        .padding(8.dp),
+                    modifier = Modifier.padding(end = 8.dp),
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Tag(
-                    modifier = Modifier.padding(start = 8.dp),
                     text = unit.type
                 )
             }
