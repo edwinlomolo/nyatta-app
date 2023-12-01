@@ -1,13 +1,7 @@
 package com.example.nyatta.compose.navigation
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.twotone.AccountCircle
-import androidx.compose.material.icons.twotone.AddCircle
-import androidx.compose.material.icons.twotone.LocationOn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -18,9 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -38,45 +30,12 @@ import com.example.nyatta.compose.home.HomeDestination
 import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.viewmodels.HomeViewModel
 import com.example.nyatta.compose.listing.ListingDetailsDestination
-import com.example.nyatta.compose.startpropertyonboarding.StartOnboardingDestination
 import com.example.nyatta.compose.user.Account
 import com.example.nyatta.compose.user.AccountDestination
 import com.example.nyatta.compose.user.SignUp
 import com.example.nyatta.viewmodels.ListingViewModel
 import com.example.nyatta.viewmodels.TownsViewModel
 import com.example.nyatta.viewmodels.PropertyViewModel
-
-sealed class Screen(
-    val route: String,
-    @StringRes val nameResourceId: Int,
-    val icon: ImageVector,
-    val modifier: Modifier
-) {
-    data object Home: Screen(
-        HomeDestination.route,
-        R.string.explore,
-        Icons.TwoTone.LocationOn,
-        Modifier
-    )
-    data object Add: Screen(
-        StartOnboardingDestination.route,
-        R.string.add,
-        Icons.TwoTone.AddCircle,
-        modifier = Modifier.size(36.dp)
-    )
-    data object Account: Screen(
-        AccountDestination.route,
-        R.string.account,
-        Icons.TwoTone.AccountCircle,
-        Modifier
-    )
-}
-
-val navigationItems = listOf(
-    Screen.Home,
-    Screen.Add,
-    Screen.Account
-)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -277,6 +236,9 @@ fun NyattaNavHost(
         )
         loginGraph(
             authViewModel = authViewModel,
+            navController = navController
+        )
+        propertyDetails(
             navController = navController
         )
     }
