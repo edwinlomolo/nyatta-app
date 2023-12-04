@@ -40,7 +40,7 @@ import java.util.Date
 import java.util.Locale
 
 object PropertyDetailsDestination: Navigation {
-    override val route = "property/details"
+    override val route = "user/property/details"
     override val title = null
     const val propertyIdArg = "propertyIdArg"
     val routeWithArgs = "${route}/{$propertyIdArg}"

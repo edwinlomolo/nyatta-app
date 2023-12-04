@@ -30,6 +30,7 @@ import com.example.nyatta.compose.home.HomeDestination
 import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.viewmodels.HomeViewModel
 import com.example.nyatta.compose.listing.ListingDetailsDestination
+import com.example.nyatta.compose.property.PropertyDetailsDestination
 import com.example.nyatta.compose.user.Account
 import com.example.nyatta.compose.user.AccountDestination
 import com.example.nyatta.compose.user.SignUp
@@ -166,7 +167,10 @@ fun NyattaNavHost(
                     if (isAuthenticated) {
                         Account(
                             authViewModel = authViewModel,
-                            isLandlord = user.token.isLandlord
+                            isLandlord = user.token.isLandlord,
+                            onNavigateToProperty = {
+                                navController.navigate("${PropertyDetailsDestination.route}/${it}")
+                            }
                         )
                     } else {
                         SignUp(
@@ -239,6 +243,7 @@ fun NyattaNavHost(
             navController = navController
         )
         propertyDetails(
+            modifier = modifier,
             navController = navController
         )
     }

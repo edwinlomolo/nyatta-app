@@ -1,6 +1,5 @@
 package com.example.nyatta.compose.navigation
 
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -29,9 +28,9 @@ fun NavGraphBuilder.listingDetailsGraph(
             arguments = listOf(navArgument(ListingDetailsDestination.listingIdArg) {
                 type = NavType.StringType
             })
-        ) {stack: NavBackStackEntry ->
+        ) {
             Listing(
-                unitId = stack.arguments!!.getString(ListingDetailsDestination.listingIdArg)!!,
+                unitId = it.arguments!!.getString(ListingDetailsDestination.listingIdArg)!!,
                 navigateUp = { navController.navigateUp() },
                 listingViewModel = listingViewModel,
                 onNavigateToPhotos = { navController.navigate(it) }

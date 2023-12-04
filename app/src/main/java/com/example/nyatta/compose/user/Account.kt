@@ -1,6 +1,7 @@
 package com.example.nyatta.compose.user
 
 import android.graphics.Paint.Align
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,7 @@ import com.example.nyatta.compose.components.ErrorContainer
 import com.example.nyatta.compose.components.Loading
 import com.example.nyatta.compose.listing.Tag
 import com.example.nyatta.compose.navigation.Navigation
+import com.example.nyatta.compose.property.PropertyDetailsDestination
 import com.example.nyatta.data.model.User
 import com.example.nyatta.viewmodels.AuthViewModel
 
@@ -57,7 +59,8 @@ private sealed interface GetUserDetailsState {
 fun Account(
     modifier: Modifier = Modifier,
     authViewModel: AuthViewModel = viewModel(),
-    isLandlord: Boolean = false
+    isLandlord: Boolean = false,
+    onNavigateToProperty: (String) -> Unit = {}
 ) {
     var state by remember { mutableStateOf<GetUserDetailsState>(GetUserDetailsState.Loading) }
 
@@ -95,7 +98,8 @@ fun Account(
             AccountCard(
                 modifier = modifier.padding(12.dp),
                 properties = s.user?.properties ?: listOf(),
-                units = s.user?.units ?: listOf()
+                units = s.user?.units ?: listOf(),
+                onNavigateToProperty = onNavigateToProperty
             )
         }
     }
@@ -107,7 +111,8 @@ fun Account(
 private fun AccountCard(
     modifier: Modifier = Modifier,
     properties: List<GetUserQuery.Property>,
-    units: List<GetUserQuery.Unit>
+    units: List<GetUserQuery.Unit>,
+    onNavigateToProperty: (String) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -117,7 +122,8 @@ private fun AccountCard(
     ) {
         UserListings(
             properties = properties,
-            units = units
+            units = units,
+            onNavigateToProperty = onNavigateToProperty
         )
     }
 }
@@ -125,9 +131,10 @@ private fun AccountCard(
 @Composable
 fun UserListings(
     properties: List<GetUserQuery.Property>,
-    units: List<GetUserQuery.Unit>
+    units: List<GetUserQuery.Unit>,
+    onNavigateToProperty: (String) -> Unit
 ) {
-   Properties(properties = properties)
+   Properties(onNavigateToProperty = onNavigateToProperty, properties = properties)
    PrivateUnits(units = units)
 
 }
@@ -135,7 +142,8 @@ fun UserListings(
 @Composable
 fun Properties(
     modifier: Modifier = Modifier,
-    properties: List<GetUserQuery.Property>
+    properties: List<GetUserQuery.Property>,
+    onNavigateToProperty: (String) -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -164,7 +172,13 @@ fun Properties(
                     }
                 } else {
                     items(items = properties, key = { it.id }) {
-                        PropertyCard(property = it)
+                        PropertyCard(
+                            modifier = modifier
+                                .clickable {
+                                    onNavigateToProperty(it.id.toString())
+                                },
+                            property = it
+                        )
                     }
                 }
             }
@@ -216,7 +230,7 @@ fun PrivateUnits(
 @Composable
 fun PropertyCard(
     modifier: Modifier = Modifier,
-    property: GetUserQuery.Property
+    property: GetUserQuery.Property,
 ) {
     OutlinedCard(
         modifier = modifier
