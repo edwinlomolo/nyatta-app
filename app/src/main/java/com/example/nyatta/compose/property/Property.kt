@@ -1,22 +1,15 @@
 package com.example.nyatta.compose.property
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.twotone.Call
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
@@ -32,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,12 +34,24 @@ import coil.request.ImageRequest
 import com.example.nyatta.R
 import com.example.nyatta.compose.navigation.Navigation
 import com.example.nyatta.ui.theme.NyattaTheme
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 object PropertyDetailsDestination: Navigation {
     override val route = "property/details"
     override val title = null
     const val propertyIdArg = "propertyIdArg"
     val routeWithArgs = "${route}/{$propertyIdArg}"
+}
+
+private fun getMonthYearDate(date: Date): String? {
+    val formatter = SimpleDateFormat("MMMM, yyyy", Locale.getDefault())
+
+    val c = Calendar.getInstance()
+    c.time = date
+    return formatter.format(c.time)
 }
 
 @Composable
@@ -57,7 +63,7 @@ fun Property(
 }
 
 @Composable
-fun PropertyHeader(
+private fun PropertyHeader(
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -81,7 +87,7 @@ fun PropertyHeader(
                     .align(Alignment.CenterVertically)
                     .width(100.dp)
                     .height(100.dp),
-                contentDescription = "thumbnail"
+                contentDescription = stringResource(id = R.string.thumbnail)
             )
             Column(
                 modifier = Modifier.padding(start = 16.dp)
@@ -98,28 +104,26 @@ fun PropertyHeader(
             }
         }
         Text(
-            text = "Join date",
+            text = "Added ${getMonthYearDate(Calendar.getInstance().time)}",
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier
                 .padding(top = 24.dp)
         )
-
         PropertyMenu()
     }
 }
 
-data class TabTitle(
-    val title: String = "",
-    val enabled: Boolean = false
-)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PropertyMenu(
+private fun PropertyMenu(
     modifier: Modifier = Modifier
 ) {
     var state by remember { mutableIntStateOf(0) }
-    val titles = listOf(TabTitle("Units",true), TabTitle("Tenants", false))
+    val titles = listOf(
+        "Units"/*,
+        "Tenants"*/
+    )
 
     Column {
         PrimaryTabRow(
@@ -130,10 +134,10 @@ fun PropertyMenu(
                 Tab(
                     selected = state == index,
                     onClick = { state = index },
-                    enabled = tab.enabled,
+                    unselectedContentColor = MaterialTheme.colorScheme.surfaceVariant,
                     text = {
                         Text(
-                            text = tab.title,
+                            text = tab,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -141,23 +145,26 @@ fun PropertyMenu(
                 )
             }
         }
-        Tenants()
-    }
-}
-
-@Composable
-fun Tenants(
-    modifier: Modifier = Modifier
-) {
-    LazyColumn {
-        items(5) {
-            Tenant()
+        when (state) {
+            0 -> Units()
+            1 -> {}
         }
     }
 }
 
 @Composable
-fun Tenant(
+private fun Units(
+    modifier: Modifier = Modifier
+) {
+    LazyColumn {
+        items(5) {
+            Unit()
+        }
+    }
+}
+
+@Composable
+private fun Unit(
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -165,43 +172,32 @@ fun Tenant(
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-       Box(
-           Modifier
-               .padding(12.dp)
-               .align(Alignment.CenterVertically)
-               .size(100.dp)
-               .height(100.dp)
-               .width(100.dp)
-               .background(
-                   color = MaterialTheme.colorScheme.surfaceVariant,
-                   shape = MaterialTheme.shapes.small
-               )
-       ) {
-           Text(
-               text = "T",
-               style = MaterialTheme.typography.titleLarge,
-               modifier = Modifier.align(Alignment.Center)
-           )
-       }
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(R.drawable.apartment_sunset_in_the_background_in_africa_and_person_c4dadd13_9720_4c7f_ad7b_86e197bfd86c)
+                .crossfade(true)
+                .build(),
+            contentScale = ContentScale.Crop,
+            placeholder = painterResource(id = R.drawable.loading_img),
+            error = painterResource(id = R.drawable.ic_broken_image),
+            modifier = Modifier
+                .padding(top = 12.dp, end = 12.dp, bottom = 12.dp)
+                .clip(MaterialTheme.shapes.small)
+                .align(Alignment.CenterVertically)
+                .width(100.dp)
+                .height(100.dp),
+            contentDescription = stringResource(id = R.string.thumbnail)
+        )
         Column {
             Text(
-                text = "John Doe",
+                text = "Unit name",
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(
-                text = "Unit name",
+                text = "state tag",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = 8.dp)
             )
-            IconButton(onClick = { /*TODO*/ }) {
-               Icon(
-                   Icons.TwoTone.Call,
-                   contentDescription = "call",
-                   modifier = Modifier
-                       .align(Alignment.Start)
-                       .size(24.dp)
-               )
-            }
         }
     }
 }
