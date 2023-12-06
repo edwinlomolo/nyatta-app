@@ -16,6 +16,7 @@ import androidx.navigation.navigation
 import com.example.nyatta.compose.home.TopAppBar
 import com.example.nyatta.compose.property.Property
 import com.example.nyatta.compose.property.PropertyDetailsDestination
+import com.example.nyatta.viewmodels.PropertyViewModel
 
 object PropertyGraph: Navigation {
     override val route = "property/details"
@@ -25,7 +26,8 @@ object PropertyGraph: Navigation {
 @OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.propertyDetails(
     navController: NavHostController,
-    modifier: Modifier
+    modifier: Modifier,
+    propertyViewModel: PropertyViewModel
 ) {
     navigation(
         startDestination = PropertyDetailsDestination.route,
@@ -51,6 +53,7 @@ fun NavGraphBuilder.propertyDetails(
                         .padding(innerPadding)
                 ) {
                     Property(
+                        propertyViewModel = propertyViewModel,
                         propertyId = stack.arguments!!.getString(PropertyDetailsDestination.propertyIdArg)!!
                     )
                 }

@@ -244,7 +244,8 @@ fun NyattaNavHost(
         )
         propertyDetails(
             modifier = modifier,
-            navController = navController
+            navController = navController,
+            propertyViewModel = propertyViewModel
         )
     }
 }

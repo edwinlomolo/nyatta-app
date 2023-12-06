@@ -166,6 +166,8 @@ class PropertyViewModel(
         }
     }
 
+    suspend fun getProperty(id: String) = nyattaGqlApiRepository.getProperty(id).dataOrThrow()
+
     fun resetPropertyData() {
         _uiState.value = PropertyData()
     }
