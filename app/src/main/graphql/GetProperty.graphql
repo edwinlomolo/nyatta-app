@@ -1,0 +1,23 @@
+query GetProperty($id: UUID!) {
+    getProperty(id: $id) {
+        id
+        name
+        thumbnail{
+            upload
+        }
+        caretaker {
+            id
+            first_name
+            last_name
+        }
+        units {
+            id
+            name
+            thumbnail {
+                upload
+            }
+            state
+        }
+        createdAt
+    }
+}

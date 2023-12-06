@@ -1,6 +1,5 @@
 package com.example.nyatta.compose.user
 
-import android.graphics.Paint.Align
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,7 +27,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
@@ -40,7 +38,6 @@ import com.example.nyatta.compose.components.ErrorContainer
 import com.example.nyatta.compose.components.Loading
 import com.example.nyatta.compose.listing.Tag
 import com.example.nyatta.compose.navigation.Navigation
-import com.example.nyatta.compose.property.PropertyDetailsDestination
 import com.example.nyatta.data.model.User
 import com.example.nyatta.viewmodels.AuthViewModel
 
@@ -67,11 +64,6 @@ fun Account(
     LaunchedEffect(Unit) {
         state = try {
             val response = authViewModel.getUser()
-            authViewModel.updateFirstname(response.getUser.first_name ?: "")
-            authViewModel.updateLastname(response.getUser.last_name ?: "")
-            authViewModel.updateAvatar(response.getUser.avatar?.upload ?: User().avatar)
-            authViewModel.updateUserPhone(response.getUser.phone)
-            authViewModel.updateUserId(response.getUser.id)
             GetUserDetailsState.Success(
                 user = User(
                     id = response.getUser.id,
