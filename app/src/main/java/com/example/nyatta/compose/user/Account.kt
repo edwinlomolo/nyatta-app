@@ -95,8 +95,6 @@ fun Account(
             )
         }
     }
-
-
 }
 
 @Composable
