@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ElevatedSuggestionChip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
@@ -217,8 +218,14 @@ private fun Unit(
                 text = unit.name,
                 style = MaterialTheme.typography.bodyLarge
             )
+            ElevatedSuggestionChip(
+                onClick = { /*TODO*/ },
+                label = {
+                    Text(unit.state.toString())
+                }
+            )
             Text(
-                text = unit.state.toString(),
+                text = "Tenant",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = 8.dp)
             )
