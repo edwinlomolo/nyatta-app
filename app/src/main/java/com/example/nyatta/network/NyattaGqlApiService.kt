@@ -21,7 +21,6 @@ import com.example.nyatta.data.model.Token
 import com.example.nyatta.data.model.User
 import com.example.nyatta.type.CaretakerInput
 import com.example.nyatta.type.GpsInput
-import com.example.nyatta.type.UUID
 import com.example.nyatta.type.UnitAmenityInput
 import com.example.nyatta.type.UnitBedroomInput
 import com.example.nyatta.type.UnitState
